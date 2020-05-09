@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# TLE ver.
 import math
 from itertools import combinations_with_replacement
 
@@ -21,25 +20,28 @@ def calcPosFromMoves(moves: list) -> list:
 def createMovePatterns(count: int) -> list:
   moves = [(1,0), (-1,0), (0,1), (0,-1)]
   return list(combinations_with_replacement(moves, count))
- 
+
 def observeTwoPoints(_observed: list, _expectation: list) -> bool:
   # print(observed,'?',expectation, '\n')
   result = [o == e for o, e in zip(_observed, _expectation)]
   return all(result)
-    
+
+def possibleMove(item: list) -> bool:
+  return False if item[0] < abs(item[1]) + abs(item[2]) else True
+
 def readByOneLine(_items: dict) -> list:
   _judges = []
   append = _judges.append
-  for l, item in _items.items():  # read one line at once
+  for _, item in _items.items():  # read one line at once
+    if not possibleMove(item): break;
     patterns = createMovePatterns(item[0])
     expectation = [item[1], item[2]]
     for pattern in patterns:  # brute force
-      observed = calcPosFromMoves(pattern) 
-      if observeTwoPoints(observed, expectation): 
+      observed = calcPosFromMoves(pattern)
+      if observeTwoPoints(observed, expectation):
         append(True)
         break;
   return _judges
 
 judges = readByOneLine(items)
-print('{}'.format('Yes' if len(judges) == N and all(judges) else 'No'))
-
+print('{}'.format('Yes' if len(judges) == N and all(judges) else 'No' ))
