@@ -64,7 +64,8 @@ void solve_dp()
         int subc = t[ref][j - c];
         if (j - c != 0 && subc == INF)
           continue;
-        t[v][j] = min(subc == INF ? 1 : subc + 1, t[ref][j]);
+        // acc が１コインの価値を超えていても、後方のループで最小が必然的に求まるため min は不要
+        t[v][j] = subc == INF ? 1 : subc + 1;
       }
     }
   }
