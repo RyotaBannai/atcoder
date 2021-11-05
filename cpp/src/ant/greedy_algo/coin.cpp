@@ -6,6 +6,18 @@ inputs:
 620
 3 2 1 3 0 2
 6
+
+620
+15 2 1 3 0 2
+6
+
+600
+600 0 0 2 0 0
+502
+
+600
+600 0 0 0 0 1
+101
 */
 
 #include <iostream>
@@ -54,17 +66,20 @@ void solve_dp()
     if (v > 0)
       t[v] = t[v - 1];
 
-    for (int i = 1; i <= coins[c]; i++) {
-      int idx = i * c;
-      acc += c;
-      for (int j = idx; j <= A && j <= acc; j++) {
-        // 価値の少ないコインを全て使った合計が、今回分のコインの一枚分よりも大きい時場合に注意.
-        // (i + 1) * c の域を超えるため、 v - 1 の場合状態を使って計算
-        int ref = (v > 0 && j >= (i + 1) * c) ? v - 1 : v;
-        int subc = t[ref][j - c];
+    acc += coins[c] * c;
+    for (int j = c; j <= A && j <= acc; j++) {
+      if (v > 0 && j >= (coins[c] + 1) * c) {
+        // コインの使用枚数が上限を超えた時は、j-1 の行をチェック
+        int subc = t[v - 1][j - coins[c] * c];
+        if (subc == INF)
+          continue;
+        t[v][j] = subc + coins[c];
+      }
+      else {
+        // コインの一枚の価値 ~ コインを最大数+1 枚使用した価値-1 まで
+        int subc = t[v][j - c];
         if (j - c != 0 && subc == INF)
           continue;
-        // acc が１コインの価値を超えていても、後方のループで最小が必然的に求まるため min は不要
         t[v][j] = subc == INF ? 1 : subc + 1;
       }
     }
