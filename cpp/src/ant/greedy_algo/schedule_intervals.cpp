@@ -27,7 +27,6 @@ inputs:
 #include <iostream>
 #include <vector>
 #define lp(i, n) for (int i = 0; i < n; i++)
-#define lps(i, j, n) for (int i = j; i < n; i++)
 using namespace std;
 
 const int MAX = 100000;
