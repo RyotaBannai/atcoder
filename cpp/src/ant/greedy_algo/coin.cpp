@@ -29,7 +29,7 @@ using namespace std;
 // const vector<int> V{1, 5};
 const vector<int> V{1, 5, 10, 50, 100, 500};
 
-void solve_greedly()
+void solve_greedy()
 {
   int A, n = V.size();
   cin >> A;
@@ -91,6 +91,6 @@ void solve_dp()
 
 auto main() -> int
 {
-  // solve_greedly();
+  // solve_greedy();
   solve_dp();
 }
