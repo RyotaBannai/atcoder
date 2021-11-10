@@ -63,5 +63,4 @@ auto main() -> int
     N--;
   }
   cout << ans << endl;
-  ;
 }
