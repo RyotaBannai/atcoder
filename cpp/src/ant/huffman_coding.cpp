@@ -19,6 +19,17 @@ struct Node {
 };
 
 auto newNode() -> Node * { return (Node *)malloc(sizeof(Node)); }
+void printNode(Node *n)
+{
+  cout << (n->c ? (static_cast<string>("leaf-")).append(1, n->c) : "node") << ": " << n->freq
+       << endl;
+
+  if (n->right != nullptr)
+    printNode(n->right);
+
+  if (n->left != nullptr)
+    printNode(n->left);
+}
 
 auto main() -> int
 {
@@ -48,6 +59,8 @@ auto main() -> int
 
     auto nn = newNode();
     nn->freq = T[m1]->freq + T[m2]->freq;
+    nn->left = T[m1];
+    nn->right = T[m2];
 
     if (m1 == N - 1)
       swap(m1, m2);
@@ -55,4 +68,6 @@ auto main() -> int
     T[m2] = T[N - 1];
     N--;
   }
+
+  printNode(T[0]);
 }
