@@ -9,56 +9,65 @@ out1:
 
 入力は文字列
 in2:
-abca
+ADBCBABCBBCE
 
+out2-encoded:
+1111101010011101000101100
+out2-decoded:
+ADBCBABCBBCE
+
+checkout https://michisugara.jp/huffman
 */
-#include <bitset>
 #include <iostream>
-#include <memory>
 #include <queue>
 #include <unordered_map>
 #include <vector>
+#define range(container) container.begin(), container.end()
 using namespace std;
+using M = pair<string, string>;
 
-struct Node {
+class Node {
+public:
   string c;
   int freq;
-  Node *right, *left;
+  int right, left;
+  Node(int r = -1, int l = -1) : right(r), left(l) {}
 };
+using SPN = shared_ptr<Node>;
 
-auto newNode() -> Node * { return (Node *)malloc(sizeof(Node)); }
+vector<SPN> reservoir;
 
-void printNode(Node *n)
+void printNode(SPN n)
 {
-  // cout << n->freq << endl;
   cout << (n->c.length() == 0 ? "node" : "leaf-" + n->c) << ": " << n->freq << endl;
 
-  if (n->left != nullptr)
-    printNode(n->left);
+  if (n->left != -1)
+    printNode(reservoir[n->left]);
 
-  if (n->right != nullptr)
-    printNode(n->right);
+  if (n->right != -1)
+    printNode(reservoir[n->right]);
 }
 
-auto findNode(Node *n) -> string
+// 文字と encoded の文字のペアを構築
+auto getHuffmanCoding(SPN n) -> vector<M>
 {
-  string s = "";
-  queue<pair<Node *, string>> q;
+  vector<M> bits_arr;
+  queue<pair<SPN, string>> q;
   q.push(make_pair(n, ""));
   while (!q.empty()) {
     auto u = q.front();
     q.pop();
     if (u.first->c.length() != 0)
-      s += u.second;
-    if (u.first->left != nullptr) {
-      q.push(make_pair(u.first->left, u.second + "0"));
+      bits_arr.emplace_back(u.second, u.first->c);
+    if (u.first->left != -1) {
+      q.push(make_pair(reservoir[u.first->left], u.second + "0"));
     }
-    if (u.first->right != nullptr) {
-      q.push(make_pair(u.first->right, u.second + "1"));
+    if (u.first->right != -1) {
+      q.push(make_pair(reservoir[u.first->right], u.second + "1"));
     }
   }
 
-  return s;
+  return bits_arr;
 }
 
 template <typename T> auto counter(vector<T> V) -> unordered_map<T, int>
@@ -75,8 +84,6 @@ template <typename T> auto counter(vector<T> V) -> unordered_map<T, int>
     }
   }
 
-  // for (auto x : counter)
-  //   cout << x.first << "," << x.second << endl;
   return counter;
 }
 
@@ -85,41 +92,42 @@ auto main() -> int
   vector<string> V;
   string s;
   cin >> s;
-  for (auto c : s) {
-    string s(1, c);
-    V.push_back(s);
-  }
+  for (auto c : s)
+    V.push_back(string(1, c));
   auto cnts = counter(V);
 
   int N = cnts.size();
-  Node *T[N];
-  int i = 0;
+  // reservoir と同じポインタを共有
+  vector<SPN> T;
   for (auto cnt : cnts) {
-    int f;
-    auto n = newNode();
+    SPN n(new Node());
     n->freq = cnt.second;
     n->c = cnt.first;
-    T[i] = n, i++;
+    T.push_back(n);
   }
 
   while (N > 1) {
-    // cout << "N" << N << endl;
     int m1 = 0, m2 = 1;
     if (T[m1]->freq > T[m2]->freq)
       swap(m1, m2);
 
+    /*
+    出現回数の長さが同じ時は左右どちらでも良いので、
+    入力や処理順によって encoded される結果が変わる
+    */
     for (int i = 2; i < N; i++) {
       if (T[i]->freq < T[m1]->freq)
         m2 = m1, m1 = i;
       else if (T[i]->freq < T[m2]->freq)
         m2 = i;
     }
-    // cout << m1 << "," << m2 << endl;
 
-    auto nn = newNode();
+    SPN nn(new Node());
     nn->freq = T[m1]->freq + T[m2]->freq;
-    nn->left = T[m2]; // 大きい方が left に来ることで 0 ビットにできる
-    nn->right = T[m1];
+    reservoir.push_back(T[m1]);
+    nn->left = reservoir.size() - 1;
+    reservoir.push_back(T[m2]);
+    nn->right = reservoir.size() - 1;
 
     if (m1 == N - 1)
       swap(m1, m2);
@@ -128,6 +136,33 @@ auto main() -> int
     N--;
   }
 
-  printNode(T[0]);
-  // cout << findNode(T[0]).length() << endl;
+  // cout << reservoir.size() << endl;
+  // for (auto x : reservoir)
+  //   cout << x->right << " " << x->left << endl;
+
+  // printNode(T[0]);
+
+  auto mapper = getHuffmanCoding(T[0]);
+
+  string encoded = "";
+  for (auto c : s) {
+    auto result = std::find_if(range(mapper), [&c](M p) { return p.second == string(1, c); });
+    if (result != mapper.end())
+      encoded += result->first;
+  }
+
+  cout << encoded << endl;
+
+  // for (auto x : mapper)
+  //   cout << x.first << ", " << x.second << endl;
+
+  string decoded = "", cur_str = "";
+  for (char c : encoded) {
+    cur_str += c;
+    auto result = std::find_if(range(mapper), [&cur_str](M p) { return p.first == cur_str; });
+    if (result != mapper.end())
+      decoded += result->second, cur_str = ""; // reset
+  }
+
+  cout << decoded << endl;
 }
