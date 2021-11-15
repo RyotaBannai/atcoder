@@ -16,15 +16,20 @@ out:
 using namespace std;
 
 static const int MAX_N = 100;
+// i x j の mat
+// i 番目以降の品物から重さの総和が j 以下となるように選んだ時の、価値の総和の最大値
+int dp[MAX_N][MAX_N];
 int w[MAX_N], v[MAX_N];
 int n, W;
 
-// i-th product, j := current remained weight.
 auto rec(int i, int j) -> int
 {
+  // すでに調べたことがあるならばその結果を再利用. p53
+  if (dp[i][j] >= 0)
+    return dp[i][j];
+
   int res;
   if (i == n) {
-    // 品物は残っていない
     res = 0;
   }
   else if (j < w[i]) {
@@ -33,13 +38,17 @@ auto rec(int i, int j) -> int
   else {
     res = max(rec(i + 1, j), rec(i + 1, j - w[i]) + v[i]);
   }
-  return res;
+  return dp[i][j] = res; // 結果をテーブルに記憶する
 }
 
 auto main() -> int
 {
   cin >> n >> W;
   lp(i, n) cin >> w[i], cin >> v[i];
+
+  // まだ調べていないことを表す -1 でメモ化テーブルを初期化
+  // memset(void* dest, int ch, std::size_t count);
+  memset(dp, -1, sizeof(dp)); // memset(dp, -1, sizeof dp);
 
   cout << rec(0, W) << endl;
 }
