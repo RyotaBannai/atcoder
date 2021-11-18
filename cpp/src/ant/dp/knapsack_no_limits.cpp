@@ -1,4 +1,5 @@
 /*
+ナップザック問題, 同じ品物を複数選択可能なパターン
 in:
 3 7
 3 4
@@ -11,7 +12,6 @@ out:
 #include <iostream>
 #include <vector>
 #define lp(i, n) for (int i = 0; i < n; i++)
-#define lps(i, j, n) for (int i = j; i < n; i++)
 using namespace std;
 
 static const int MAX_N = 100;
@@ -23,6 +23,11 @@ void solve(int i, int j)
 {
   for (int i = 0; i < n; i++) {
     for (int j = 0; j <= W; j++) {
+      /*
+      j(:= 許容する重さ)を制限容量(:= W)まで１つずつ増やしていき、
+      0 <= j <= W のレンジ内で複数使用できる品物を W を超えないようにループしながら
+      使用する個数を１つずつ増やして最大価値になるかどうか試す
+      */
       for (int k = 0; k * w[i] <= j; k++) {
         dp[i + 1][j] = max(dp[i + 1][j], dp[i][j - k * w[i]] + k * v[i]);
       }
