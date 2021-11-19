@@ -19,7 +19,7 @@ int dp[MAX_N][MAX_N];
 int w[MAX_N], v[MAX_N];
 int n, W;
 
-void solve(int i, int j)
+void solve()
 {
   for (int i = 0; i < n; i++) {
     for (int j = 0; j <= W; j++) {
@@ -47,5 +47,5 @@ auto main() -> int
 
   memset(dp, 0, sizeof(dp));
 
-  solve(0, W);
+  solve();
 }
