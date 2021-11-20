@@ -22,7 +22,8 @@ auto main() -> int
   }
 
   tmp = scores;
-  sort(tmp.begin(), tmp.end(), std::greater<int>());
+  // prefer transparent functors 'greater<>' instead of 'greater<int>'
+  sort(tmp.begin(), tmp.end(), greater<>());
 
   int KsTotal = tmp[K - 1];
   for (int x : scores) {
