@@ -1,4 +1,6 @@
 /*
+Linear Probing
+
 経路圧縮2
 */
 #include <iostream>

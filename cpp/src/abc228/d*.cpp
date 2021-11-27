@@ -1,4 +1,6 @@
 /*
+Linear Probing
+
 input:
 
 4

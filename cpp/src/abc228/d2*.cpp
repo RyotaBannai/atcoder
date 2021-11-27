@@ -1,4 +1,6 @@
 /*
+Linear Probing
+
 経路圧縮
 
 https://algo-logic.info/union-find-tree/#toc_id_2

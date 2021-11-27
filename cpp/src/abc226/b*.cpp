@@ -1,3 +1,6 @@
+/*
+Counting Arrays
+*/
 #include <iostream>
 #include <set>
 #include <string>

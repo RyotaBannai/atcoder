@@ -1,3 +1,6 @@
+/*
+Star or Not
+*/
 #include <algorithm>
 #include <iostream>
 #include <vector>

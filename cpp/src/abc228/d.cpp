@@ -1,3 +1,6 @@
+/*
+Linear Probing
+*/
 #include <iostream>
 #include <vector>
 #define ll long long
