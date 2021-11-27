@@ -1,5 +1,7 @@
 /*
 経路圧縮
+
+https://algo-logic.info/union-find-tree/#toc_id_2
 */
 #include <iostream>
 #include <vector>
