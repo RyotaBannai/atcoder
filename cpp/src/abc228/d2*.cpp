@@ -1,3 +1,6 @@
+/*
+経路圧縮
+*/
 #include <iostream>
 #include <vector>
 using namespace std;

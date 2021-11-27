@@ -1,3 +1,16 @@
+/*
+input:
+
+4
+1 1048577
+1 1
+2 2097153
+2 3
+
+output:
+1048577
+-1
+*/
 #include <iostream>
 #include <set>
 #define ll long long
