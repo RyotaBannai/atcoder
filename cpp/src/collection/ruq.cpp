@@ -15,36 +15,51 @@ static const int INF = 1 << 20;
 
 template <typename T> struct RMQ {
   int n;
-  vector<int> dat, lazy;
-  RMQ(int n) : n(n), dat(n * 2), lazy(n * 2) {}
+  vector<T> dat, lazy;
+  RMQ(int leafs) : dat(leafs * 4, INF), lazy(leafs * 4, INF)
+  {
+    /*
+    必要最低限の最小二分木のメモリを確保 leafs = 7 の時 n = 8 確保するため
+    全内部接点は２つの子供を持つ.
+    */
+    int x = 1;
+    while (leafs > x)
+      x *= 2;
+    n = x;
+  }
 
   auto left(int i) -> int { return dat[i * 2 + 1]; }
   auto right(int i) -> int { return dat[i * 2 + 2]; }
 
-  void eval(int k)
+  void eval(int k) // 配列のk番目を更新
   {
-    if (lazy[k] == INF)
+    if (lazy[k] == INF) // 更新するものが無ければ終了
       return;
-    if (k < n - 1) {
+    if (k < n - 1) { // 葉でなければ子に伝搬
       lazy[left(k)] = lazy[k];
       lazy[right(k)] = lazy[k];
     }
-    dat[k] = lazy[k];
+    dat[k] = lazy[k]; // 自身を更新
     lazy[k] = INF;
   }
 
-  void update(int i, int v)
+  void update(int a, int b, int v, int k, int l, int r)
   {
-    i += n - 1;
-    dat[i] = v;
-    while (i > 0) {
-      i = (i - 1) / 2;
-      dat[i] = min(left(i), right(i));
+    eval(k);
+    if (a <= l && r <= b) { // 完全に内側の時
+      lazy[k] = v;
+      eval(k);
+    }
+    else if (a < r && l < b) { // 一部区間が被る時
+      update(a, b, k * 2 + 1, l, (l + r) / 2);
+      update(a, b, k * 2 + 2, (l + r) / 2, r);
+      dat[k] = min(left(k), right(k));
     }
   }
 
   auto query_sub(int a, int b, int k, int l, int r) -> int
   {
+    eval(k); // 追加
     if (r <= a || b <= l)
       return INF;
     else if (a <= l && r <= b)

@@ -21,8 +21,8 @@ static const int INF = 1 << 20;
 */
 template <typename T> struct RMQ {
   // static const int SIZE = 2 << 10;
-  int n = 8;       // 葉の数
-  vector<int> dat; // 管理するノード
+  int n = 8;     // 葉の数
+  vector<T> dat; // 管理するノード
   auto left(int i) -> int { return dat[i * 2 + 1]; }
   auto right(int i) -> int { return dat[i * 2 + 2]; }
 
