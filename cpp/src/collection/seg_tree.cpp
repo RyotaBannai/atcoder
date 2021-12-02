@@ -1,5 +1,7 @@
 /*
-セグメント木　Range Minimam Query（RMQ）
+セグメント木 （Segment Tree）
+
+RMQ (Range Minimam Query), RUQ（Range Update Query）
 https://algo-logic.info/segment-tree/
 
 それぞれへのアクセス:
@@ -13,14 +15,13 @@ https://algo-logic.info/segment-tree/
 #include <vector>
 using namespace std;
 using ll = long long;
-static const int INF = 1 << 20;
 
 /* RMQ：[0,n-1] について、区間ごとの最小値を管理する構造体
     update(i,x): i 番目の要素を x に更新。O(log(n))
     query(a,b): [a,b) での最小の要素を取得。O(log(n))
 */
 template <typename T> struct RMQ {
-  // static const int SIZE = 2 << 10;
+  const T INF = numeric_limits<T>::max();
   int n = 8;     // 葉の数
   vector<T> dat; // 管理するノード
   auto left(int i) -> int { return dat[i * 2 + 1]; }
@@ -39,19 +40,19 @@ template <typename T> struct RMQ {
   }
 
   // k := 現在見ているノードの位置  [l,r) := dat[k]が表している区間
-  auto query_sub(int a, int b, int k, int l, int r) -> int
+  auto query_sub(int a, int b, int k, int l, int r) -> T
   {
     if (r <= a || b <= l) // 範囲外なら考えない
       return INF;
     else if (a <= l && r <= b) // 範囲内なので自身の値を返す（子供の最小値を確認するまでもない）
       return dat[k];
     else { // 一部区間が被る時
-      int vl = query_sub(a, b, k * 2 + 1, l, (l + r) / 2);
-      int vr = query_sub(a, b, k * 2 + 2, (l + r) / 2, r);
+      T vl = query_sub(a, b, k * 2 + 1, l, (l + r) / 2);
+      T vr = query_sub(a, b, k * 2 + 2, (l + r) / 2, r);
       return min(vl, vr);
     }
   }
-  auto query(int a, int b) -> int { return query_sub(a, b, 0, 0, n); }
+  auto query(int a, int b) -> T { return query_sub(a, b, 0, 0, n); }
 };
 
 auto main() -> int { return 0; }
