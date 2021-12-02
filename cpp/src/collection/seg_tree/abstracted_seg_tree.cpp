@@ -8,6 +8,7 @@ using M = int;
 auto fx = [](X x1, X x2) -> X { return min(x1, x2); };
 auto fa = [](X x, M m) -> X { return m; };
 auto fm = [](M m1, M m2) -> M { return m2; };
+// auto fp = [](M m, long long n) -> M { return m * n; };
 int ex = numeric_limits<int>::max();
 int em = numeric_limits<int>::max();
 
@@ -68,6 +69,14 @@ template <typename X, typename M> struct SegTreeLazy {
     }
     dat[k] = fa(dat[k], lazy[k]);
     lazy[k] = em;
+
+    // dat[k] = fa(dat[k], fp(lazy[k], len));
+    /*
+    len := r-l
+    RSQ の時は
+    例えば、[1,3) の区間に a を加算したとすれば、その区間の区間和は a*2
+    だけ増えるため、その分を節点に加算すれば良い
+    */
   }
   void update(int a, int b, M x, int k, int l, int r)
   {
