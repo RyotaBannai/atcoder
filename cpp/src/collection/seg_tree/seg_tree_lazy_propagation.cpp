@@ -25,11 +25,11 @@ https://algo-logic.info/segment-tree/
 using namespace std;
 using ll = long long;
 
-template <typename T> struct RUQ {
+template <typename T> struct SegTreeLazy {
   const T INF = numeric_limits<T>::max();
   int n;
   vector<T> dat, lazy;
-  RUQ(int leafs) : dat(leafs * 4, INF), lazy(leafs * 4, INF)
+  SegTreeLazy(int leafs) : dat(leafs * 4, INF), lazy(leafs * 4, INF)
   {
     /*
     必要最低限の最小二分木のメモリを確保 leafs = 7 の時 n = 8 確保するため
@@ -179,7 +179,7 @@ template <typename T> struct RUQ {
 
 auto main() -> int
 {
-  auto ruq = new RUQ<int>{8};
+  auto ruq = new SegTreeLazy<int>{8};
   ruq->update(3, 7, 2);
   ruq->print();
   // ruq->print_lazy();

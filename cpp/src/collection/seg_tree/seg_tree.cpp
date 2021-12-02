@@ -20,7 +20,7 @@ using ll = long long;
     update(i,x): i 番目の要素を x に更新。O(log(n))
     query(a,b): [a,b) での最小の要素を取得。O(log(n))
 */
-template <typename T> struct RMQ {
+template <typename T> struct SegTree {
   const T INF = numeric_limits<T>::max();
   int n = 8;     // 葉の数
   vector<T> dat; // 管理するノード
