@@ -24,6 +24,24 @@ auto split(string s, string delim, bool include_empty = false) -> vector<string>
   return res;
 }
 
+auto equals_shortest(string base, string tar, bool from_back = false) -> bool
+{
+  bool check = true;
+  if (from_back) {
+    auto rtar = tar;
+    auto rbase = base;
+    reverse(rtar.begin(), rtar.end());
+    reverse(rbase.begin(), rbase.end());
+    for (int i = 0; i < rtar.length(); i++)
+      check &= rbase[i] == rtar[i];
+  }
+  else
+    for (int i = 0; i < tar.length(); i++)
+      check &= (base[i] == tar[i]);
+
+  return check;
+}
+
 auto main() -> int
 {
   string S;
@@ -40,27 +58,15 @@ auto main() -> int
       auto fst = S.substr(0, pos_found);
       auto rest = S.substr(pos_found, S.size());
 
-      // 先頭にくっついている場合の判定
-      bool prev_check = true;
-      if (fst != "") { // oxx の前に文字列が入っている i.g. x, xx
-        auto rfst = fst;
-        auto rbase = base;
-        reverse(rfst.begin(), rfst.end());
-        reverse(rbase.begin(), rbase.end());
-        for (int i = 0; i < rfst.length(); i++)
-          prev_check &= rbase[i] == rfst[i];
-      }
+      // * 先頭にくっついている場合の判定
+      // oxx の前に文字列が入っている（i.g. x, xx）ならそれらが oxx と後ろからチェックして等しいか
+      bool prev_check = fst == "" ? true : equals_shortest(base, fst, true);
 
-      // 先頭が ok なら末尾にくっついている文字列を判定
+      // * 先頭が ok なら末尾にくっついている文字列を判定
       if (prev_check) {
-        bool after_check = true;
         auto re = split(rest, base, false);
-        if (re.size() == 1) { // delim は連結しているため、return 値は末尾だけ
-          for (int i = 0; i < re[0].length(); i++)
-            after_check &= (base[i] == re[0][i]);
-        }
-        if (after_check)
-          ans = true;
+        // delim は連結しているため、return 値は末尾だけ. 末尾がなければチェック不要で true
+        ans = re.size() == 1 ? equals_shortest(base, re[0], false) : true;
       }
     }
   }
