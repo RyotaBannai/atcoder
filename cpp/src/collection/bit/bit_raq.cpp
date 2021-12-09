@@ -49,10 +49,17 @@ template <typename T> struct BIT {
   }
 
   auto sum(int i) -> T { return sum_sub(0, i) + sum_sub(1, i) * i; }
+
+  /*
+   [l, r) の区間和は「[1, r)の区間和 – [1, l)の区間和」 で計算できる
+   */
+  auto query(int l, int r) -> T { return sum(r - 1) - sum(l - 1); }
 };
+
 auto main() -> int
 {
   auto bit = make_unique<BIT<int>>(10);
   bit->add(3, 6, 2);
   cout << bit->sum(3) << endl;
+  cout << bit->query(3, 6) << endl; // (5-3 + 1) * 2
 }
