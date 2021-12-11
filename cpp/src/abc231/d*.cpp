@@ -1,38 +1,36 @@
 /*
 Neighbors
 
-BFS queue
+DFS stack
 
-TLE ver.
+passed.
 */
 #include <iostream>
 #include <map>
-#include <queue>
-#include <set>
+#include <stack>
 #include <vector>
 using namespace std;
 static const int MAXN = 100100;
 vector<int> mat[MAXN + 1];
+int depth[MAXN + 1];
 
-auto bfs(int s) -> bool
+auto dfs(int s, int d) -> bool
 {
-  queue<pair<int, int>> q;
-  q.push(make_pair(s, s)); // (子, 親)
-  map<int, int> visited;
+  stack<pair<int, int>> stk;
+  stk.push(make_pair(s, d));
 
-  while (!q.empty()) {
-    auto u = q.front();
-    q.pop();
-
-    if (visited[u.first]) // 訪問済み
-      return false;
-    else
-      visited[u.first]++;
+  while (!stk.empty()) {
+    auto u = stk.top();
+    stk.pop();
+    depth[u.first] = u.second;
 
     for (auto x : mat[u.first]) {
-      if (u.second == x) // 親
-        continue;
-      q.push(make_pair(x, u.first)); // (子, 親)
+      if (depth[x]) {
+        if (u.second - 1 == depth[x]) // 親
+          continue;
+        return false;
+      }
+      stk.push(make_pair(x, u.second + 1));
     }
   }
 
@@ -59,11 +57,11 @@ auto main() -> int
       exit(0);
     }
   }
-  for (int i = 1; i <= N; i++) {
-    if (mat[i].size() == 0)
-      continue;
 
-    if (!bfs(i)) {
+  for (int i = 1; i <= N; i++) {
+    if (depth[i])
+      continue;
+    if (!dfs(i, 1)) {
       cout << "No" << endl;
       exit(0);
     }
