@@ -35,7 +35,7 @@ template <typename T> struct BIT {
   /*
   i から初めて最後に 1 が立っているビットを減算しながら、i の値を合計していく
   */
-  T sum(int i)
+  auto sum(int i) -> T
   {
     T s(0);
     for (int idx = i; idx > 0; idx -= (idx & -idx)) {
@@ -65,7 +65,7 @@ template <typename T> struct BIT {
       return x + 1;
     }
   }
-  inline T operator[](int i) { return bit[i]; }
+  inline auto operator[](int i) -> T { return bit[i]; }
 };
 
 void test()
