@@ -1,45 +1,55 @@
 /*
 Graph Isomorphism
+
+この実装だと以下のグラフが同型になってしまう.
+1.
+・・・・
+　　・
+2.
+　　・
+・・・
+　　・
+
 */
 #include <algorithm>
 #include <iostream>
+#include <set>
 #include <vector>
 using namespace std;
+template <typename T> using vector2d = vector<vector<T>>;
 
 auto main() -> int
 {
   int N, M;
   cin >> N >> M;
-  vector<int> takahashi[N + 1], aoki[N + 1];
-  vector<int> ts, as;
+  vector2d<int> x(N, vector<int>(N, 0)), y(N, vector<int>(N, 0));
+  set<int> xs, ys;
 
   for (int i = 0; i < M; i++) {
     int a, b;
     cin >> a >> b;
-    takahashi[a].push_back(b);
-    takahashi[b].push_back(a);
+    a -= 1, b -= 1;
+    x[a][b] = x[b][a] = 1;
   }
 
   for (int i = 0; i < M; i++) {
     int a, b;
     cin >> a >> b;
-    aoki[a].push_back(b);
-    aoki[b].push_back(a);
+    a -= 1, b -= 1;
+    y[a][b] = y[b][a] = 1;
   }
-
-  for (int i = 1; i <= N; i++) {
-    ts.push_back(takahashi[i].size());
-    as.push_back(aoki[i].size());
-  }
-
-  sort(ts.begin(), ts.end());
-  sort(as.begin(), as.end());
-
-  bool ans = true;
 
   for (int i = 0; i < N; i++) {
-    ans &= (ts[i] == as[i]);
+    int cnt = 0;
+    for (auto a : x[i])
+      cnt += a;
+    xs.insert(cnt);
+
+    cnt = 0;
+    for (auto a : y[i])
+      cnt += a;
+    ys.insert(cnt);
   }
 
-  cout << (ans ? "Yes" : "No") << endl;
+  cout << (xs == ys ? "Yes" : "No") << endl;
 }

@@ -10,13 +10,13 @@ x の頂点と y の頂点が完全一致していて、隣接行列が同じ形
 #include <string>
 #include <vector>
 using namespace std;
-template <typename T> using nvector = vector<vector<T>>;
+template <typename T> using vector2d = vector<vector<T>>;
 
 auto main() -> int
 {
   int n, m;
   cin >> n >> m;
-  nvector<bool> x(n, vector<bool>(n)), y(n, vector<bool>(n));
+  vector2d<bool> x(n, vector<bool>(n)), y(n, vector<bool>(n));
   for (int i = 0; i < m; ++i) {
     int a, b;
     cin >> a >> b;
