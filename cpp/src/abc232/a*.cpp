@@ -1,5 +1,5 @@
 /*
-
+QQ solver
 */
 #include <iostream>
 #include <string>

@@ -1,6 +1,5 @@
 /*
-迷路探索
-
+Weak Takahashi
 */
 #include <iostream>
 #include <queue>
