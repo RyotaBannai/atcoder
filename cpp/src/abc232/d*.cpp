@@ -19,16 +19,16 @@ auto main() -> int
 {
   int N, M;
   cin >> N >> M;
-  string line;
   vector2d<char> maze(N, vector<char>(M));
-  vector2d<int> dist(N, vector<int>(M, INF));
+  vector2d<int> dist(N, vector<int>(M, INF)); // (1,1) 地点からの距離
 
-  for (int i = 0; i < N; i++) {
-    cin >> line;
-    for (int j = 0; j < M; j++)
-      maze[i][j] = line[j];
-  };
+  for (auto &v : maze) {
+    for (char &x : v) {
+      cin >> x;
+    }
+  }
 
+  vector<P> ns{P(0, 1), P(1, 0)}; // x+1 or y+1
   queue<P> que;
   que.push(P(0, 0)); // 0-indexed
   dist[0][0] = 1;
@@ -36,8 +36,6 @@ auto main() -> int
   while (que.size()) {
     P p = que.front();
     que.pop();
-
-    vector<P> ns{P(0, 1), P(1, 0)};
     for (P n : ns) {
       int ny = p.first + n.first;
       int nx = p.second + n.second;
@@ -50,9 +48,9 @@ auto main() -> int
   }
 
   int ans = 0;
-  for (int i = 0; i < N; i++) {
-    for (int j = 0; j < M; j++) {
-      ans = max(ans, dist[i][j]);
+  for (auto v : dist) {
+    for (int x : v) {
+      ans = max(ans, x);
     }
   }
 
