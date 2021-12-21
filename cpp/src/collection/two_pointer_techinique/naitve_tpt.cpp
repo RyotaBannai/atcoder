@@ -11,7 +11,7 @@ input:
 output:
 32
 
-各 left に対して最悪 O(n)O(n) かかるので全体で O(n2)O(n2)
+各 left に対して最悪 O(n) かかるので全体で O(n2)
 
 */
 #include <iostream>
@@ -44,7 +44,7 @@ auto main() -> int
         right++;
       }
 
-      /* break した状態で right は条件を満たす最大*/
+      /* break した状態で right は条件を満たす最大 */
       res += (right - left);
     }
 
