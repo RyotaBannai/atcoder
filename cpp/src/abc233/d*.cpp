@@ -1,4 +1,6 @@
 /*
+@cpg_dirspec d
+
 Count Interval
 */
 #include <iostream>
