@@ -1,4 +1,4 @@
-/*
+/* @cpg_dirspec d
 Weak Takahashi
 
 with queue passed.

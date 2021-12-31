@@ -1,4 +1,4 @@
-/*
+/* @cpg_dirspec c
 Graph Isomorphism
 
 隣接行列を作成して、

@@ -1,4 +1,4 @@
-/*
+/* @cpg_dirspec d
 Weak Takahashi
 
 N-1,M-1 点から開始し、逆向きに処理を実行

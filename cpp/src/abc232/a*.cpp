@@ -1,4 +1,4 @@
-/*
+/* @cpg_dirspec a
 QQ solver
 */
 #include <iostream>
