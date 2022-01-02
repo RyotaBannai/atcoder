@@ -1,8 +1,12 @@
 /*
 POJ 3061 Subsequence
+http://poj.org/problem?id=3061
 
+長さ n の正の整数列 a1,a2,…,an と整数 x が与えられる。
+整数列の連続する部分列で、その総和が x 以上となるもののうち、最小の長さを求めよ
+(実際の出題は Q 個のクエリがあって各クエリごとに x が与えられ、
+条件を満たす区間がないときは 0 を出力)。
 */
-
 #include <iostream>
 #include <vector>
 using namespace std;

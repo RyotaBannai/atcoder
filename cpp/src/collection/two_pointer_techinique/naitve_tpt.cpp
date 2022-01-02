@@ -1,18 +1,6 @@
-/*
-n=12
-a=(4,6,7,8,1,2,110,2,4,12,3,9)
-x=25
-
-input:
-12 1
-4 6 7 8 1 2 110 2 4 12 3 9
-25
-
-output:
-32
+/* @cpg_dirspec tpt
 
 各 left に対して最悪 O(n) かかるので全体で O(n2)
-
 */
 #include <iostream>
 #include <vector>

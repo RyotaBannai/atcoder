@@ -1,20 +1,12 @@
 /*
 AOJ  DSL_3_C
+https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_3_C&lang=jp
 
-n=12
-a=(4,6,7,8,1,2,110,2,4,12,3,9)
-x=25
-
-input:
-12 1
-4 6 7 8 1 2 110 2 4 12 3 9
-25
-
-output:
-32
+長さ n の正の整数列 a1,a2,…,anと整数 x が与えられる。
+整数列の連続する部分列で、その総和が x 以下となるものを数え上げよ
+(実際の出題は Q 個のクエリがあって各クエリごとに x が与えられる)。
 
 各 left に対して最悪 O(n) かかるので全体で O(n2)
-
 */
 #include <iostream>
 #include <vector>
