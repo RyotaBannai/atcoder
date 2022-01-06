@@ -20,14 +20,21 @@ auto main() -> int
     cin >> a[i];
   }
 
-  ll res = 0;
+  int res = 0;
   int right = 0;
+  set<ll> s;
   for (int left = 0; left < n; left++) {
-    while (right < n && (right == left || a[right - 1] < a[right])) {
+    while (right < n && s.find(a[right]) == s.end()) {
+      s.insert(a[right]);
       right++;
     }
 
-    res += right - left;
+    res = max(res, (int)s.size());
+
+    if (right == left)
+      right++;
+    else
+      s.erase(a[left]);
   }
 
   cout << res << endl;
