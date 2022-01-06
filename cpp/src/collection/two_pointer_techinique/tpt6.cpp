@@ -5,12 +5,17 @@ https://beta.atcoder.jp/contests/abc098/tasks/arc098_b
 長さ n の正の整数列 a1,a2,…,a が与えられる。
 整数列の連続する部分列のうち、「xor 和と加算和とが等しい」という条件を満たすものを数え上げよ。
 */
-#include <deque>
 #include <iostream>
 #include <vector>
 using namespace std;
 using ll = long long;
 
+/**
+ * uncomment out comments for debugging.
+ * ・イコールにならなかった時は、break し right++
+ * をイコールにならなかった時に追加した要素だけになるまで停止する
+ * ・最後は right <= n になるため、right++ を停止し、最後に上の処理を繰り返して完了
+ */
 auto main() -> int
 {
   int n;
@@ -46,9 +51,6 @@ auto main() -> int
     res += right - left;
 
     is.erase(is.begin());
-    // is.pop_front();
-    // is.clear();
-    // is.push_back
   }
 
   cout << res << endl;
