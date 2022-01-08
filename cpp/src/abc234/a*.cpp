@@ -1,4 +1,4 @@
-/*
+/* @cpg_dirspec a
 Weird Function
 */
 #include <iostream>

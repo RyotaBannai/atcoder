@@ -1,5 +1,7 @@
-/*
+/* @cpg_dirspec b
 Longest Segment
+
+2 点間の距離だから、for loop 二重にして組み合わせるだけでいい
 */
 #include <cmath>
 #include <iomanip>

@@ -14,7 +14,7 @@ template <class T>
 void combination(const vector<T> &seed, int target_size, std::function<void(vector<T>)> f)
 {
   if (target_size == 0) {
-    f(vector<int>{});
+    f(vector<T>{});
     return;
   }
 
