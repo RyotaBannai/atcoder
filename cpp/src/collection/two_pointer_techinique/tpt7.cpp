@@ -8,29 +8,57 @@ https://beta.atcoder.jp/contests/abc017/tasks/abc017_4
 */
 #include <iostream>
 #include <vector>
+#define val_to_string(Variable) (#Variable)
+
 using namespace std;
 using ll = long long;
 
+template <class T> void show(vector<T> var)
+{
+  for (auto x : var)
+    cout << x << " ";
+  cout << endl;
+}
+
+const int MOD = 1000000007;
+int dp[110000];
+int sum[110000];
+
 auto main() -> int
 {
-  int n, m;
-  cin >> n >> m;
-  vector<ll> a(n);
-  for (int i = 0; i < n; i++) {
-    cin >> a[i];
+  int N, M;
+  cin >> N >> M;
+  // f=(1,2,1,2,2)
+  vector<int> f(N);
+  for (int i = 0; i < N; ++i)
+    cin >> f[i], --f[i];
+
+  /* しゃくとり法 */
+  vector<int> fnum(M, 0);  // 区間に種類 i が何個あるか
+  vector<int> L(N + 1, 0); // 各 i に対するしゃくとり法の区間
+  int left = 0;
+  for (int right = 0; right < N; ++right) {
+    fnum[f[right]]++;
+    // cout << val_to_string(fnum) << endl;
+    // show(fnum);
+
+    while (left < right && fnum[f[right]] > 1) {
+      --fnum[f[left]];
+      ++left;
+    }
+    L[right + 1] = left;
+    // cout << val_to_string(L) << endl;
+    // show(L);
   }
 
-  ll res = 0;
-  int right = 0;
-  vector<ll> is;
-  for (int left = 0; left < n; left++) {
-    while (right < n) {}
-
-    if (right == left)
-      right++;
-
-    res += right - left;
+  /* 累積和で高速化した DP */
+  dp[0] = 1;
+  sum[0] = 0;
+  sum[1] = 1;
+  for (int i = 1; i <= N; ++i) {
+    dp[i] = (sum[i] - sum[L[i]] + MOD) % MOD; // DP
+    sum[i + 1] = (sum[i] + dp[i]) % MOD;      // 累積
   }
 
-  cout << res << endl;
+  cout << dp[N] << endl;
 }
