@@ -14,16 +14,40 @@ https://beta.atcoder.jp/contests/abc017/tasks/abc017_4
 using namespace std;
 using ll = long long;
 
-template <class T> void show(vector<T> var)
+const int MOD = 1000000007;
+vector<int> dp(110000);
+vector<int> sum(110000);
+
+template <typename T> void show(vector<T> var)
 {
   for (auto x : var)
     cout << x << " ";
   cout << endl;
 }
 
-const int MOD = 1000000007;
-vector<int> dp(110000);
-vector<int> sum(110000);
+/**
+ * @brief return sliced vector from original vector
+ *
+ * @tparam T
+ * @param v          original vector
+ * @param start      0-indexed
+ * @param end        size + 1
+ * @return vector<T> new sliced vector
+ */
+template <typename T> auto slice(vector<T> v, int start, int end = -1) -> vector<T>
+{
+  if (end == -1) {
+    end = v.size();
+  }
+  auto it = v.begin();
+  advance(it, end);
+  if (it <= v.end()) { // end が範囲内
+    return vector<T>(v.begin() + start, v.begin() + end);
+  }
+  else { // end が範囲外の場合は、end
+    return vector<T>(v.begin() + start, v.end());
+  }
+}
 
 auto main() -> int
 {
@@ -40,6 +64,7 @@ auto main() -> int
   int left = 0;
   for (int right = 0; right < N; ++right) {
     fnum[f[right]]++;
+    // debug
     // cout << val_to_string(fnum) << endl;
     // show(fnum);
 
@@ -48,43 +73,43 @@ auto main() -> int
       ++left;
     }
     L[right + 1] = left;
+    // debug
     // cout << val_to_string(L) << endl;
     // show(L);
   }
 
   /*
+  累積和で高速化した DP → 「累積和」と言う手法を理解.
+
   dp[i] := 最初の i 個のサプリまで吸収する方法の数 (i 個目を吸収した段階で一旦区切る)
   dp[0] = 1
   dp[i] = 区間 [j, i) が「複数種類のサプリがない」という条件を満たすような j についての dp[j] の総和
   */
-  /* 累積和で高速化した DP */
   dp[0] = 1;
   sum[0] = 0;
   sum[1] = 1;
-  for (int i = 1; i <= N; ++i) {
+  int i = 1;
+  for (i = 1; i <= N; ++i) {
     dp[i] = (sum[i] - sum[L[i]] + MOD) % MOD; // DP
-    cout << "dp[" << i << "] " << dp[i] << " sum[" << i << "] " << sum[i] << " sum[" << L[i] << "] "
-         << sum[L[i]] << endl;
+    // debug
+    // cout << "dp[" << i << "] " << dp[i] << " = sum[" << i << "] (" << sum[i] << ") - sum[" <<
+    // L[i]
+    //      << "] (" << sum[L[i]] << ")" << endl;
 
-    sum[i + 1] = (sum[i] + dp[i]) % MOD; // 累積
-    cout << "sum[" << (i + 1) << "] " << sum[i + 1] << endl;
+    sum[i + 1] = (sum[i] + dp[i]) % MOD; // 累積和
+    // debug
+    // cout << "sum[" << (i + 1) << "] " << sum[i + 1] << " = sum[" << i << "] (" << sum[i]
+    //      << ") + dp[" << i << "] (" << dp[i] << ")" << endl
+    //      << endl;
   }
-  cout << val_to_string(sum) << endl;
-  show(sum);
-  cout << val_to_string(dp) << endl;
-  show(dp);
-  /*
-  dp[1] 1
-  sum[2] 2
-  dp[2] 2
-  sum[3] 4
-  dp[3] 3
-  sum[4] 7
-  dp[4] 5
-  sum[5] 12
-  dp[5] 5
-  sum[6] 17
-  */
+
+  // debug
+  // cout << val_to_string(L) << endl;
+  // show(slice(L, 0, i));
+  // cout << val_to_string(sum) << endl;
+  // show(slice(sum, 0, i));
+  // cout << val_to_string(dp) << endl;
+  // show(slice(dp, 0, i));
 
   cout << dp[N] << endl;
 }
