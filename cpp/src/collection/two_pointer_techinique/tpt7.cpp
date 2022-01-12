@@ -7,6 +7,7 @@ https://beta.atcoder.jp/contests/abc017/tasks/abc017_4
 そのような方法が何通りあるかを 1000000007 で割った余りで求めよ。
 */
 #include <iostream>
+#include <iterator>
 #include <vector>
 #define val_to_string(Variable) (#Variable)
 
@@ -21,8 +22,8 @@ template <class T> void show(vector<T> var)
 }
 
 const int MOD = 1000000007;
-int dp[110000];
-int sum[110000];
+vector<int> dp(110000);
+vector<int> sum(110000);
 
 auto main() -> int
 {
@@ -51,14 +52,39 @@ auto main() -> int
     // show(L);
   }
 
+  /*
+  dp[i] := 最初の i 個のサプリまで吸収する方法の数 (i 個目を吸収した段階で一旦区切る)
+  dp[0] = 1
+  dp[i] = 区間 [j, i) が「複数種類のサプリがない」という条件を満たすような j についての dp[j] の総和
+  */
   /* 累積和で高速化した DP */
   dp[0] = 1;
   sum[0] = 0;
   sum[1] = 1;
   for (int i = 1; i <= N; ++i) {
     dp[i] = (sum[i] - sum[L[i]] + MOD) % MOD; // DP
-    sum[i + 1] = (sum[i] + dp[i]) % MOD;      // 累積
+    cout << "dp[" << i << "] " << dp[i] << " sum[" << i << "] " << sum[i] << " sum[" << L[i] << "] "
+         << sum[L[i]] << endl;
+
+    sum[i + 1] = (sum[i] + dp[i]) % MOD; // 累積
+    cout << "sum[" << (i + 1) << "] " << sum[i + 1] << endl;
   }
+  cout << val_to_string(sum) << endl;
+  show(sum);
+  cout << val_to_string(dp) << endl;
+  show(dp);
+  /*
+  dp[1] 1
+  sum[2] 2
+  dp[2] 2
+  sum[3] 4
+  dp[3] 3
+  sum[4] 7
+  dp[4] 5
+  sum[5] 12
+  dp[5] 5
+  sum[6] 17
+  */
 
   cout << dp[N] << endl;
 }
