@@ -1,5 +1,6 @@
 /*
 AOJ 0516 - 最大の和 (JOI 2006 本選 A)
+http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0516
 
 N 個の整数 a0,a1,…,aN が与えられる。
 K 個の連続する整数の和の最大値を求めよ。
