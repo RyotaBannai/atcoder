@@ -9,7 +9,7 @@ auto main() -> int
   cin >> N >> Q; // 配列サイズ
   vector<int> a(N);
   for (int i = 0; i < N; ++i)
-    cin >> a[i]; // a の入力
+    cin >> a[i];
 
   // 累積和
   vector<int> s(N + 1, 0); // s[0] = 0 になる

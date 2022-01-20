@@ -12,7 +12,6 @@ const long long INF = 1LL << 60; // 仮想的な無限大の値
 
 auto main() -> int
 {
-  // 入力
   int N, K;
   while (cin >> N >> K) {
     if (N == 0)
@@ -29,7 +28,7 @@ auto main() -> int
     // 答えを求める
     long long res = -INF; // 最初は無限小の値に初期化しておく
     for (int i = 0; i <= N - K; ++i) {
-      long long val = s[K + i] - s[i];
+      long long val = s[K + i] - s[i]; // K 個連続 == (K - i) - i
       if (res < val)
         res = val;
     }

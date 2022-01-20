@@ -28,7 +28,7 @@ auto main() -> int
   // 2017-like 数かどうか
   vector<int> a(MAX, 0);
   for (int i = 0; i < MAX; ++i) {
-    if (i % 2 == 0)
+    if (i % 2 == 0) // 偶数だと +1 で /2 すると小数になるため
       continue;
     if (is_prime[i] && is_prime[(i + 1) / 2])
       a[i] = 1;
@@ -47,6 +47,6 @@ auto main() -> int
     cin >> l >> r;
     ++r;
 
-    cout << s[r] - s[l] << endl;
+    cout << s[r] - s[l] << endl; // 何個あるかはその区間の和
   }
 }
