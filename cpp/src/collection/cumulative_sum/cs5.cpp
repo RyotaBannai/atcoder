@@ -1,5 +1,7 @@
 /*
- */
+2D 累積和
+長方形の足し引き（包除原理）を用いる
+*/
 #include <iostream>
 #include <vector>
 using namespace std;
