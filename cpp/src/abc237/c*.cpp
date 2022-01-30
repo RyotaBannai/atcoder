@@ -1,4 +1,5 @@
 /* @cpg_dirspec c
+kasaka
  */
 #include <iostream>
 #include <string>
