@@ -15,13 +15,13 @@ auto main() -> int
     for (int j = 0; j < M; j++)
       cin >> B[i][j];
   }
-  vector<vector<int>> x(N, vector<int>(M));
+  vector<vector<int>> x(N, vector<int>(M)); // 切れ目のチェック用
   for (int i = 0; i < N; i++)
     for (int j = 0; j < M; j++)
       x[i][j] = (B[i][j] - 1) % 7 + 1;
 
   /*
-    y[i][j] を出力
+    x[i][j] を出力
     2 3
     1 2 3
     8 9 10
@@ -32,7 +32,7 @@ auto main() -> int
 
   // for (int i = 0; i < N; i++) {
   //   for (int j = 0; j < M; j++)
-  //     cout << y[i][j] << " ";
+  //     cout << x[i][j] << " ";
   //   cout << endl;
   // }
 
