@@ -31,6 +31,8 @@
 ・kirika_comp さんの資料の「3.1 モノイド的構造を見つけて二分累乗する (Lv. 2)」
 
 などの場面で活用することができる.
+
+https://qiita.com/drken/items/3b4fdf0a78e7a138cd9a
 */
 
 #include <iostream>

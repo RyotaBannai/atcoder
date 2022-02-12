@@ -53,7 +53,7 @@ auto main() -> int
     ll r = min(N, p10 - 1); // 入力の桁が扱う桁よりも小さい時 N を採用
     if (l <= r) {
       ans += f(r - l + 1);
-      ans %= mod; // ? さらに mod
+      ans %= mod; // 既存の ans に加えた結果 mod を超える可能性があるので、再度 mod
     }
     p10 *= 10;
   }
