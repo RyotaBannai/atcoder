@@ -19,7 +19,7 @@ auto main() -> int
   int n, A;
   cin >> n >> A;
 
-  int_least32_t dp[n + 1][A + 10]; // 多めにとる
+  int dp[n + 1][A + 10]; // 多めにとる
   memset(dp, false, sizeof(dp));
   dp[0][0] = true; // 忘れない
 
