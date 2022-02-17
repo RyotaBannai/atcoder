@@ -36,6 +36,12 @@ auto main() -> int
       s[i + 1] = s[i];
   }
 
+  // debug
+  // for (int i = 0; i < N; i++) {
+  //   cout << s[i] << " ";
+  // }
+  // cout << endl;
+
   while (Q--) {
     int l, r;
     cin >> l >> r;
