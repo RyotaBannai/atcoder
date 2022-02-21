@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-using ll = long long;
 
 int MAX = 210;
 vector<int> is_prime(MAX, 1);
