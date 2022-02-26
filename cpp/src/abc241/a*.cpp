@@ -1,4 +1,5 @@
 /* @cpg_dirspec a
+Digit Machine
  */
 #include <cmath>
 #include <iostream>

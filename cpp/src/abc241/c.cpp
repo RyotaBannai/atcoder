@@ -1,4 +1,8 @@
 /* @cpg_dirspec c
+Connect 6
+
+check for 累積和
+src/abc229/d*.cpp
  */
 #include <cmath>
 #include <iostream>
