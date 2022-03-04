@@ -1,5 +1,6 @@
 /* @cpg_dirspec d
 Sequence Query
+https://atcoder.jp/contests/abc241/tasks/abc241_d
 
 AC
 
@@ -19,10 +20,10 @@ A の x 以上の要素のうち、小さい方から k 番目の値を出力す
 ただし、A に x 以上の要素が k 個以上存在しないときは -1 と出力する。
 
 
-std::lower_bound 
+std::lower_bound
 - returns iterator to first element in the given range which is EQUAL_TO or Greater than val.
 
-std::upper_bound 
+std::upper_bound
 - returns iterator to first element in the given range which is Greater than val.
 
 https://stackoverflow.com/questions/41958581/difference-between-upper-bound-and-lower-bound-in-stl
@@ -80,7 +81,8 @@ auto main() -> int
           it++;
         }
       }
-      if (it == s.end()) { // 最後 while に入って末尾になる可能性があるため最後にも確認. end の位置は要素+1 の位置
+      if (it == s.end()) { // 最後 while に入って末尾になる可能性があるため最後にも確認. end
+                           // の位置は要素+1 の位置
         ok = false;
       }
       cout << (ok ? *it : -1) << endl;

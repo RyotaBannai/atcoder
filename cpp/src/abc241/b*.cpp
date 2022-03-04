@@ -1,5 +1,7 @@
 /* @cpg_dirspec b
 Pasta
+https://atcoder.jp/contests/abc241/tasks/abc241_b
+
  */
 #include <cmath>
 #include <iostream>

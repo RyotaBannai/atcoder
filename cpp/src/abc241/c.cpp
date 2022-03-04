@@ -1,5 +1,6 @@
 /* @cpg_dirspec c
 Connect 6
+https://atcoder.jp/contests/abc241/tasks/abc241_c
 
 check for 累積和
 src/abc229/d*.cpp

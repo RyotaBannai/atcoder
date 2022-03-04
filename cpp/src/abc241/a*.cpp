@@ -1,5 +1,7 @@
 /* @cpg_dirspec a
 Digit Machine
+https://atcoder.jp/contests/abc241/tasks/abc241_a
+
  */
 #include <cmath>
 #include <iostream>
