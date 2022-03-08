@@ -71,27 +71,29 @@ auto main() -> int
 
   // 単調減少
   // 斜め方向の累積和
-  vector<vector<int>> cnt(N + 1, vector<int>{N + 1, 0});
-  int i = 0; // i: 縦
-  int j = 0; // j: 横
-  while (true) {
-    if (i >= n && j >= n) {
-      break;
+  vector<vector<int>> cnt(N + 1, vector<int>(N + 1, 0));
+
+  for (int i = 0; i < N; ++i) {
+    cnt[1][i + 1] = S[0][i] == '.' ? 1 : 0;
+    cnt[i + 1][1] = S[i][0] == '.' ? 1 : 0;
+  }
+
+  for (int i = 1; i <= N; ++i) {   // i: 縦
+    for (int j = 1; j <= N; ++j) { // j: 横
+      if (i > 1 && j != 1) {       // i が 2 段目以降なら行方向には 1 回のみ移動
+        continue;
+      }
+      for (int m = i, k = j; m < N && k < N; ++m, ++k) {
+        cnt[m + 1][k + 1] = S[m][k] == '.' ? cnt[m][k] + 1 : cnt[m][k];
+      }
     }
-    if (i == 0) {
-
-      if (S[ii][j] == '.')
-        cnt[j + 1] = cnt[j] + 1;
-      else
-        cnt[j + 1] = cnt[j];
+  }
+  // debug
+  for (int i = 0; i <= N; ++i) {
+    for (int j = 0; j <= N; ++j) {
+      cout << cnt[i][j] << " ";
     }
-
-    // cout << endl;
-
-    // debug
-    // for (auto x : cnt)
-    //   cout << " " << x;
-    // cout << endl;
+    cout << endl;
   }
 
   // use
