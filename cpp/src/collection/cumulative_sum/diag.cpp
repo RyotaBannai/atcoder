@@ -70,31 +70,44 @@ auto main() -> int
   // }
 
   // 単調減少
-  for (int i = 0; i < N; ++i) {
-    int n = N;
-    vector<int> cnt(n + 1);
-    for (int j = N - 6 + 1, ii = 0; j < n && ii < n; j++, ii++) {
-      // cout << S[i][j] << " ";
+  // 斜め方向の累積和
+  vector<vector<int>> cnt(N + 1, vector<int>{N + 1, 0});
+  int i = 0; // i: 縦
+  int j = 0; // j: 横
+  while (true) {
+    if (i >= n && j >= n) {
+      break;
+    }
+    if (i == 0) {
+
       if (S[ii][j] == '.')
         cnt[j + 1] = cnt[j] + 1;
       else
         cnt[j + 1] = cnt[j];
     }
+
     // cout << endl;
 
     // debug
     // for (auto x : cnt)
     //   cout << " " << x;
     // cout << endl;
-
-    int ans = 0;
-    int r = 0;
-    for (int l = 0; l < n; l++) {
-      while (r < n && cnt[r + 1] - cnt[l] <= 2) {
-        r++;
-      }
-      ans = max(ans, r - l);
-    }
-    cout << ans << endl;
   }
+
+  // use
+  // for (int i = 0; i < N; ++i) {
+  //   int n = N;
+  //   vector<int> cnt(n + 1);
+  //   for (int j = N - 6 + 1, ii = 0; j < n && ii < n; j++, ii++) {
+  //     int ans = 0;
+  //     int r = 0;
+  //     for (int l = 0; l < n; l++) {
+  //       while (r < n && cnt[r + 1] - cnt[l] <= 2) {
+  //         r++;
+  //       }
+  //       ans = max(ans, r - l);
+  //     }
+  //     cout << ans << endl;
+  //   }
+  // }
 }
