@@ -5,12 +5,19 @@ https://atcoder.jp/contests/abc241/tasks/abc241_c
 check for 累積和
 src/abc229/d*.cpp
  */
-#include <cmath>
 #include <iostream>
 #include <string>
 #include <vector>
 using namespace std;
 using ll = long long;
+
+void check(int ans)
+{
+  if (ans >= 6) {
+    cout << "Yes" << endl;
+    exit(0);
+  }
+}
 
 auto main() -> int
 {
@@ -22,55 +29,57 @@ auto main() -> int
   for (int i = 0; i < N; ++i) {
     string s;
     cin >> s;
-    S.push_back(s);
+    if (s != "")
+      S.push_back(s);
   }
 
   // 行
-  // for (auto x : S) {
-  //   int n = N;
-  //   vector<int> cnt(n + 1);
-  //   for (int j = 0; j < n; j++) {
-  //     if (x[j] == '.')
-  //       cnt[j + 1] = cnt[j] + 1;
-  //     else
-  //       cnt[j + 1] = cnt[j];
-  //   }
+  for (auto x : S) {
+    int n = N;
+    vector<int> cnt(n + 1);
+    for (int j = 0; j < n; j++) {
+      if (x[j] == '.')
+        cnt[j + 1] = cnt[j] + 1;
+      else
+        cnt[j + 1] = cnt[j];
+    }
 
-  //   int ans = 0;
-  //   int r = 0;
-  //   for (int l = 0; l < n; l++) {
-  //     while (r < n && cnt[r + 1] - cnt[l] <= 2) {
-  //       r++;
-  //     }
-  //     ans = max(ans, r - l);
-  //   }
-  //   cout << ans << endl;
-  // }
+    int ans = 0;
+    int r = 0;
+    for (int l = 0; l < n; l++) {
+      while (r < n && cnt[r + 1] - cnt[l] <= 2) {
+        r++;
+      }
+      ans = max(ans, r - l);
+    }
+    // cout << "行" << endl;
+    check(ans);
+  }
 
   // 縦
-  // for (int i = 0; i < N; ++i) {
-  //   int n = N;
-  //   vector<int> cnt(n + 1);
-  //   for (int j = 0; j < n; j++) {
-  //     if (S[j][i] == '.')
-  //       cnt[j + 1] = cnt[j] + 1;
-  //     else
-  //       cnt[j + 1] = cnt[j];
-  //   }
+  for (int i = 0; i < N; ++i) {
+    int n = N;
+    vector<int> cnt(n + 1);
+    for (int j = 0; j < n; j++) {
+      if (S[j][i] == '.')
+        cnt[j + 1] = cnt[j] + 1;
+      else
+        cnt[j + 1] = cnt[j];
+    }
 
-  //   int ans = 0;
-  //   int r = 0;
-  //   for (int l = 0; l < n; l++) {
-  //     while (r < n && cnt[r + 1] - cnt[l] <= 2) {
-  //       r++;
-  //     }
-  //     ans = max(ans, r - l);
-  //   }
-  //   cout << ans << endl;
-  // }
+    int ans = 0;
+    int r = 0;
+    for (int l = 0; l < n; l++) {
+      while (r < n && cnt[r + 1] - cnt[l] <= 2) {
+        r++;
+      }
+      ans = max(ans, r - l);
+    }
+    // cout << "縦" << endl;
+    check(ans);
+  }
 
-  // 単調減少
-  // 斜め方向の累積和
+  // 斜め方向 - 単調減少
   {
     vector<vector<int>> cnt(N + 1, vector<int>(N + 1, 0));
 
@@ -96,10 +105,28 @@ auto main() -> int
     //   }
     //   cout << endl;
     // }
+
+    // しゃくとり法で 縦横に +1 or -1 を試すため、i,j の範囲は i<N, j >= 1 にする
+    int ans = 0;
+    for (int i = 0; i < N; ++i) {   // i: 縦
+      for (int j = 0; j < N; ++j) { // j: 横
+        if (i > 1 && j > 1) {       // i が 2 段目以降なら行方向には 1 回のみ移動
+          continue;
+        }
+        int mr = i, kr = j;
+        for (int ml = i, kl = j; ml < N && kl < N; ++ml, ++kl) {
+          while (mr < N && kr < N && cnt[mr + 1][kr + 1] - cnt[ml][kl] <= 2) {
+            ++mr, ++kr;
+          }
+          ans = max(ans, mr - ml);
+        }
+      }
+    }
+    // cout << "単調減少" << endl;
+    check(ans);
   }
 
-  // 単調増加
-  // 斜め方向の累積和
+  // 斜め方向 - 単調増加
   {
     vector<vector<int>> cnt(N + 1, vector<int>(N + 1, 0));
 
@@ -118,13 +145,34 @@ auto main() -> int
         }
       }
     }
-    // debug
+
     // for (int i = 0; i <= N; ++i) {
     //   for (int j = 0; j <= N; ++j) {
     //     cout << cnt[i][j] << " ";
     //   }
     //   cout << endl;
     // }
-    // exit(0);
+
+    // N-1 は 0 から N は本来のデータから始めるためどちらでも可
+    // しゃくとり法で 縦横に +1 or -1 を試すため、i,j の範囲は i<N, j >= 1 にする
+    int ans = 0;
+    for (int i = 0; i < N; ++i) {    // i: 縦
+      for (int j = N; j >= 1; --j) { // j: 横
+        if (i > 1 && j != N) {       // i が 2 段目以降なら行方向には 1 回のみ移動
+          continue;
+        }
+        int mr = i, kr = j;
+        for (int ml = i, kl = j; ml < N && kl >= 1; ++ml, --kl) {
+          // cout << mr << " " << kr << ", " << ml << " " << kl << ": " << ans << endl;
+          while (mr < N && kr >= 1 && cnt[mr + 1][kr - 1] - cnt[ml][kl] <= 2) {
+            ++mr, --kr;
+          }
+          ans = max(ans, mr - ml);
+        }
+      }
+    }
+    // cout << "単調増加 " << ans << endl;
+    check(ans);
   }
+  cout << "No" << endl;
 }
