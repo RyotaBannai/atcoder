@@ -51,9 +51,9 @@ auto main() -> int
         r++;
       }
       ans = max(ans, r - l);
+      // cout << "行" << endl;
+      check(ans);
     }
-    // cout << "行" << endl;
-    check(ans);
   }
 
   // 縦
@@ -74,9 +74,9 @@ auto main() -> int
         r++;
       }
       ans = max(ans, r - l);
+      // cout << "縦" << endl;
+      check(ans);
     }
-    // cout << "縦" << endl;
-    check(ans);
   }
 
   // 斜め方向 - 単調減少
@@ -107,6 +107,7 @@ auto main() -> int
     // }
 
     // しゃくとり法で 縦横に +1 or -1 を試すため、i,j の範囲は i<N, j >= 1 にする
+    // しゃくとり法の探索は idx = 0, N から始める
     int ans = 0;
     for (int i = 0; i < N; ++i) {   // i: 縦
       for (int j = 0; j < N; ++j) { // j: 横
@@ -119,11 +120,11 @@ auto main() -> int
             ++mr, ++kr;
           }
           ans = max(ans, mr - ml);
+          // cout << "単調減少" << endl;
+          check(ans);
         }
       }
     }
-    // cout << "単調減少" << endl;
-    check(ans);
   }
 
   // 斜め方向 - 単調増加
@@ -154,7 +155,8 @@ auto main() -> int
     // }
 
     // N-1 は 0 から N は本来のデータから始めるためどちらでも可
-    // しゃくとり法で 縦横に +1 or -1 を試すため、i,j の範囲は i<N, j >= 1 にする
+    // しゃくとり法で 縦横に +1 or -1 を試すため、i,j の範囲は i<N, j >= 1 にする.
+    // しゃくとり法の探索は idx = 0, N から始める
     int ans = 0;
     for (int i = 0; i < N; ++i) {    // i: 縦
       for (int j = N; j >= 1; --j) { // j: 横
@@ -168,11 +170,11 @@ auto main() -> int
             ++mr, --kr;
           }
           ans = max(ans, mr - ml);
+          // cout << "単調増加 " << ans << endl;
+          check(ans);
         }
       }
     }
-    // cout << "単調増加 " << ans << endl;
-    check(ans);
   }
   cout << "No" << endl;
 }
