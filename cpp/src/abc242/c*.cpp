@@ -5,7 +5,6 @@ https://atcoder.jp/contests/abc242/tasks/abc242_c
 ・全ての桁が 0 でない
 ・i と i+1 の差分の絶対値が 1 以下
 
-
 方針：
 3 桁の数値の数を求める時は、例えば
 7?? の ?? の部分はすでに計算済みであることを利用する
@@ -32,6 +31,7 @@ auto main() -> int
   for (int i = 1; i <= 9; i++) {
     dp[1][i] = 1;
   }
+
   for (int deg = 2; deg <= N; ++deg) {
     for (int i = 1; i <= 9; ++i) {
       for (int num = max(1, i - 1); num <= min(9, i + 1); ++num) {
