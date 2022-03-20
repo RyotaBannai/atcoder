@@ -65,9 +65,18 @@ auto main() -> int
     }
   }
 
+  // debug
+  // for (int k = 0; k < logK; ++k) {
+  //   for (int i = 0; i < N; ++i) {
+  //     cout << doubling[k][i] << " ";
+  //   }
+  //   cout << endl;
+  // }
+
   int now = 0;
   for (int k = 0; K > 0; k++) {
     if (K & 1) {
+      // cout << k << " " << now << endl;
       now = doubling[k][now];
     }
     K = K >> 1;
