@@ -4,6 +4,7 @@ King Bombee
 https://atcoder.jp/contests/abc244/tasks/abc244_e
 
  */
+#include <array>
 #include <atcoder/modint>
 #include <iomanip> // for std::setprecision()
 #include <iostream>
@@ -36,35 +37,27 @@ k-1 の項に X がどれくらい入るか確認
 
 */
 
-mint ans;         // 数列数
-int len;          // 数列大きさ
-vector<int> comb; // push_back で追加していく
-
-void dfs() {}
-
-auto main() -> int
+int main()
 {
-  int n, m, k, s, t, x;
-  cin >> n >> m >> k >> s >> t >> x;
-
-  vector<vector<int>> vec(n + 1, vector<int>(n + 1, 0));
-
-  for (int i = 0; i < n; i++) {
-    int f, t;
-    cin >> f >> t;
-    vec[f][t] = 1;
-    vec[t][f] = 1;
+  int N, M, K, S, T, X;
+  cin >> N >> M >> K >> S >> T >> X;
+  S--;
+  T--;
+  X--;
+  vector<pair<int, int>> edge(M);
+  for (auto &[U, V] : edge) {
+    cin >> U >> V;
+    U--;
+    V--;
   }
-
-  // debug
-  // for (int i = 0; i <= n; i++) {
-  //   for (int j = 0; j <= n; j++) {
-  //     cout << vec[i][j] << " ";
-  //   }
-  //   cout << endl;
-  // }
-
-  for (int i = 0; i * 2 < k; ++i) {
-    for (int j = 1; i <= n; j++) {}
+  vector dp(K + 1, vector(N, array<mint, 2>{0, 0}));
+  dp[0][S][0] = 1;
+  for (int i = 0; i < K; i++) {
+    for (auto [U, V] : edge)
+      for (int x : {0, 1}) {
+        dp[i + 1][V][x ^ (V == X)] += dp[i][U][x];
+        dp[i + 1][U][x ^ (U == X)] += dp[i][V][x];
+      }
   }
+  cout << dp[K][T][0].val() << endl;
 }
