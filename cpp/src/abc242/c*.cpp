@@ -1,4 +1,5 @@
 /* @cpg_dirspec c
+1111gal password
 
 https://atcoder.jp/contests/abc242/tasks/abc242_c
 

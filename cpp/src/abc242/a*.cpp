@@ -1,4 +1,5 @@
 /* @cpg_dirspec a
+T-shirt
 
 https://atcoder.jp/contests/abc242/tasks/abc242_a
 

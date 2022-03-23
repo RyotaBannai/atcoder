@@ -3,6 +3,10 @@ King Bombee
 
 https://atcoder.jp/contests/abc244/tasks/abc244_e
 
+方針：
+・1111gal password　src/abc242/c*.cpp と同様に DP で組合せを管理
+・無効グラフの n (1<=n<=K) ステップを DP の　dp[K+1] 部分にマップ
+・K 回のステップごとに組合せを数えていく
  */
 #include <array>
 #include <atcoder/modint>
