@@ -6,7 +6,10 @@ https://atcoder.jp/contests/abc244/tasks/abc244_e
 方針：
 ・1111gal password　src/abc242/c*.cpp と同様に DP で組合せを管理
 ・無効グラフの n (1<=n<=K) ステップを DP の　dp[K+1] 部分にマップ
-・K 回のステップごとに組合せを数えていく
+・K 回のステップごとに組合せを数えていくが、K の組合せ数は、K-1 からのみ数える　
+・今回は X を偶数回 （2N回）or 奇数回を管理したい.
+・X 番目を踏む際に, 偶奇が反転するため偶数なら、奇数から、奇数なら、偶数から組合せの数を作る
+・2N回を総合して答えるため、n ごとには管理しなくて良い.
  */
 #include <array>
 #include <atcoder/modint>
