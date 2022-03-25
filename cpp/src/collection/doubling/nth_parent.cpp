@@ -1,9 +1,21 @@
 /**
-ダブリングによるK個先の親を見つける：
-
+ダブリングによるK個先の親を見つける方法：
 https://satanic0258.hatenablog.com/entry/2017/02/23/222647
- */
 
+問題:
+0 番目は根となる根付き木がある.
+0~N 個のそれぞれのノードに一意の番号が付けられている.
+ノード C の K 個目の親を出力せよ.
+
+入力:
+N M C K (N:ノードの数 M:辺の数 C:ノード K:K 個上の親)
+P1 C1 (親 子)
+...
+Pm Cm (親 子)
+の形式で与えられる.
+*/
+
+#include <cstdio>
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -11,12 +23,20 @@ using ll = long long;
 
 auto main() -> int
 {
-  ll N, K;
-  cin >> N >> K;
-  vector<int> A(N);
-  for (int i = 0; i < N; ++i) {
-    cin >> A.at(i);
-    A[i]--; // 0-indexed
+  ll N, M, C, K;
+  cin >> N >> M >> C >> K;
+
+  // prev: key が子供で値が親
+  // next: key が親で値が子供
+  vector<int> prev(N); // 親は一人
+  prev.at(0) = -1;
+
+  // vector<vector<int>> next(N + 1, vector<int>(N + 1)); // 特に左右区別しない
+  for (int i = 0; i < M; ++i) {
+    int p, c;
+    cin >> p >> c;
+    prev.at(c) = p;
+    // next.at(p).push_back(c);
   }
 
   int logK = 1;
@@ -24,16 +44,10 @@ auto main() -> int
     logK++;
   }
 
-  /*
-  4 5 // N K
-  3 2 4 1
-  */
-  // cout << "logK: " << logK << endl; // logK = 3
-
-  // doubleing[k][i] : i 番目から 2^k 進んだ町
+  // doubling[k][i] : i 番目から 2^k 進んだ親
   vector<vector<int>> doubling(logK, vector<int>(N));
   for (int i = 0; i < N; ++i) {
-    doubling[0][i] = A[i];
+    doubling[0][i] = prev[i];
   }
 
   // 前処理
@@ -51,7 +65,7 @@ auto main() -> int
   //   cout << endl;
   // }
 
-  int now = 0;
+  int now = C;
   for (int k = 0; K > 0; k++) {
     if (K & 1) {
       // cout << k << " " << now << endl;
@@ -59,5 +73,5 @@ auto main() -> int
     }
     K = K >> 1;
   }
-  cout << now + 1 << endl;
+  cout << now << endl;
 }
