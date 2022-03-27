@@ -29,7 +29,7 @@ auto main() -> int
   // prev: key が子供で値が親
   // next: key が親で値が子供
   vector<int> prev(N); // 親は一人
-  prev.at(0) = -1;
+  prev.at(0) = 0;
 
   // vector<vector<int>> next(N + 1, vector<int>(N + 1)); // 特に左右区別しない
   for (int i = 0; i < M; ++i) {
