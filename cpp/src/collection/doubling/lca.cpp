@@ -2,6 +2,9 @@
 ダブリングによる最近共通祖先（LCA：Lowest Common Ancestor）を見つける方法：
 https://algo-logic.info/lca/#toc_id_2_2
 
+Euler Tour + Range Minimum Query
+https://ikatakos.com/pot/programming_algorithm/graph_theory/lowest_common_ancestor
+
 問題:
 木の２つのノードの一番近い共通の先祖を見つけよ.
 
@@ -46,7 +49,6 @@ void dfs(int v, int p, int d)
     }
   }
 };
-
 
 // 2 点間の距離 → dist(u) + dist(v) – 2 × dist(x)
 // int get_dist(int u, int v) { return dist[u] + dist[v] - 2 * dist[query(u, v)]; }
