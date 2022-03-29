@@ -15,6 +15,7 @@ https://webbibouroku.com/Blog/Article/suffix-array#outline__1
 */
 #include <iostream>
 #include <set>
+#include <string>
 #include <vector>
 #define ll long long
 using namespace std;
@@ -23,22 +24,53 @@ class SuffixArray {
 private:
   string S;
   int N;
-  void CreateSuffixArray()
-  {
-    for (int i = 0; i <= N; ++i;) {
-      SA[i] = i;
-    }
-  }
+  vector<int> SA; // suffix array の index
 
 public:
-  vector<int> SA; // suffix array の index
   SuffixArray(string s)
   {
-    this.S = s;
-    this.N = s.length;
-    this.SA.assign(N + 1, 0);
-    CreateSuffixArray();
+    S = s;
+    N = s.length();
+    SA.assign(N, 0);
+    for (int i = 0; i < N; ++i) {
+      SA[i] = i;
+    }
+    // sort by alphabetically
+    sort(SA.begin(), SA.end(), [this](int i, int j) { return S.substr(i) < S.substr(j); });
+
+    // debug
+    // for (auto x : SA) {
+    //   cout << S.substr(x) << endl;
+    // }
+    // cout << endl;
+  }
+
+  // 部分文字列にTが含まれるかどうかを判定（二分探索）
+  auto contains(string t) -> bool
+  {
+    int l = 0;
+    int r = N;
+    while (r - l > 1) {
+      int mid = l + (r - l) / 2;
+      int index = SA[mid];
+      int cmp = t < S.substr(index); // S.compare(index, t.size(), t);
+
+      // t の方が大きければ、最小を中央に更新　
+      if (!cmp) { // cmp < 0 t の方が大きい場合 -> S.compare は S 自身が対象に対してどうか.
+        l = mid;
+      }
+      else {
+        r = mid;
+      }
+    }
+    // cout << S.substr(SA[r]) << endl;
+    // mid ではなく、辞書的により大きい r を index とした部分文字列を使う.
+    return S.substr(SA[r]).find(t) != std::string::npos; // S.compare(SA[r], t.size(), t) == 0;
   }
 };
 
-auto main() -> int { SuffixArray sa{"abcabc"}; }
+auto main() -> int
+{
+  SuffixArray sa{"apobcabcmcsaidsfosijfa"};
+  cout << (sa.contains("fo") ? "Yes" : "No") << endl;
+}
