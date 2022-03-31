@@ -31,8 +31,8 @@ public:
   {
     S = s;
     N = s.length();
-    SA.assign(N, 0);
-    for (int i = 0; i < N; ++i) {
+    SA.assign(N + 1, 0); // 空も使う
+    for (int i = 0; i <= N; ++i) {
       SA[i] = i;
     }
     // sort by alphabetically
