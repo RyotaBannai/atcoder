@@ -2,9 +2,12 @@
 接尾辞配列（Suffix Array）
 Doubling を用いて Suffix Array をソート
 
+https://onlinejudge.u-aizu.ac.jp/problems/ALDS1_14_D
+
 参考
 https://webbibouroku.com/Blog/Article/suffix-array#outline__1
 */
+#include <algorithm>
 #include <iostream>
 #include <set>
 #include <string>
@@ -107,6 +110,14 @@ public:
 
 auto main() -> int
 {
-  SuffixArray sa{"abracadabra"};
-  cout << (sa.contains("abracadabra") ? "Yes" : "No") << endl;
+  string s;
+  cin >> s;
+  SuffixArray sa{s};
+  int N;
+  cin >> N;
+  while (N--) {
+    string t;
+    cin >> t;
+    cout << sa.contains(t) << endl;
+  }
 }
