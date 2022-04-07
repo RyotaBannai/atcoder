@@ -1,5 +1,7 @@
 /* @cpg_dirspec b
 Matrix Transposition
+
+https://atcoder.jp/contests/abc237/tasks/abc237_b
  */
 #include <iostream>
 #include <string>
