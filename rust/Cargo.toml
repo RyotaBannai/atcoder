@@ -6,10 +6,9 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-proconio = "0.4.3"
 # sub = {path = "./sub", version = "0.1.0"}
 
 # cargo run --bin main1
-[[bin]]
-name = "main1"
-path = "src/main.rs"
+# [[bin]]
+# name = "main1"
+# path = "src/main.rs"
