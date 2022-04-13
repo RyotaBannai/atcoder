@@ -4,9 +4,10 @@ pub fn main() {
     }
 
     let vec: Vec<char> = s.chars().collect();
-    if vec[0] == vec[1] && vec[1] == vec[2] && vec[2] == vec[0] {
-        println!("Won")
+    let ans = if vec[0] == vec[1] && vec[1] == vec[2] && vec[2] == vec[0] {
+        "Won"
     } else {
-        println!("Lost")
-    }
+        "Lost"
+    };
+    println!("{}", ans);
 }
