@@ -5,5 +5,9 @@
 - `cargo compete submit a` で提出
 - [参考](https://qiita.com/okaponta_/items/7e82de5d1f78f547fe4b)
 
+### Compro useful link
+- [Overflow など](https://qiita.com/garkimasera/items/c5e06de1a7c66aa7652a)
+- [Option](https://doc.rust-lang.org/std/option/) and [usecase](https://zenn.dev/toga/books/rust-atcoder/viewer/37-option)
+
 ### Check List
 - [itertools](https://docs.rs/itertools/0.10.3/itertools/)
