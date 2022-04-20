@@ -1,3 +1,4 @@
+use proconio::input;
 use std::collections::BTreeSet;
 
 /**
@@ -16,7 +17,6 @@ use std::collections::BTreeSet;
  * Set
  * ・https://atcoder.jp/contests/abc228/submissions/30610991
  */
-use proconio::input;
 
 fn main() {
     let mo = 1 << 20;

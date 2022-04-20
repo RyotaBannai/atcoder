@@ -26,6 +26,9 @@
 		},
 		{
 			"path": "abc239"
+		},
+		{
+			"path": "typical-algorithm"
 		}
 	],
 	"settings": {}
