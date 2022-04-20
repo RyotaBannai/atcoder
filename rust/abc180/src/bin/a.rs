@@ -1,9 +1,9 @@
 pub fn main() {
-  proconio::input! {
-    n: i32,
-    a: i32,
-    b: i32,
-  }
+    proconio::input! {
+      n: i32,
+      a: i32,
+      b: i32,
+    }
 
-  println!("{}", n - a + b)
+    println!("{}", n - a + b)
 }
