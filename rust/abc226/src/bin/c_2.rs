@@ -2,7 +2,7 @@
  * Martial arts
  *
  * https://atcoder.jp/contests/abc226/tasks/abc226_c
- * 
+ *
  * using refcell ver.
  */
 use proconio::input;
