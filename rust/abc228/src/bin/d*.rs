@@ -22,14 +22,11 @@ fn main() {
     let mo = 1 << 20;
     input! {
         n: usize,
+        qs: [(usize, usize); n]
     };
     let mut v: Vec<isize> = vec![-1; mo];
     let mut used = (0..mo).collect::<BTreeSet<_>>();
-    for _ in 0..n {
-        input! {
-            q: usize,
-            x: usize
-        }
+    for (q, x) in qs {
         let h = x % mo;
         if q == 1 {
             let pos = if let Some(&k) = used.range(h..).next() {

@@ -3,7 +3,7 @@
  *
  * https://atcoder.jp/contests/abc228/tasks/abc228_d
  *
- * WA, TLE
+ * WA
  */
 use itertools::Itertools;
 use proconio::input;

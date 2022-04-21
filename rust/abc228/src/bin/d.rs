@@ -1,6 +1,3 @@
-use proconio::input;
-use std::cell::RefCell;
-
 /**
  * Liner Probing
  *
@@ -8,10 +5,30 @@ use std::cell::RefCell;
  *
  * 経路圧縮
  *
- * ?
- *
+ * AC
  */
+use proconio::input;
 
+// クロージャでローカル変数をキャプチャしつつ再帰が難しいため、
+// キャプチャしたい変数はフィールドとして所有
+struct Rec {
+    parent: Vec<usize>,
+}
+impl Rec {
+    // x の最短の親を探す
+    fn find(&mut self, x: usize) -> usize {
+        if self.parent[x] == x {
+            x
+        } else {
+            self.parent[x] = self.find(self.parent[x]);
+            self.parent[x]
+        }
+    }
+    // x の最短の親を探して, index i にセット
+    fn find_set(&mut self, i: usize, x: usize) {
+        self.parent[i] = self.find(x);
+    }
+}
 fn main() {
     let mo = 1 << 20;
     input! {
@@ -19,31 +36,16 @@ fn main() {
         q: [(usize, usize); n]
     };
     let mut v: Vec<isize> = vec![-1; mo];
-    let parent = RefCell::new((0..mo).collect::<Vec<_>>());
-
-    struct Find<'s> {
-        f: &'s mut dyn FnMut(&RefCell<Find>, usize) -> usize,
-    }
-
-    let st = Find {
-        f: &mut |find, x| {
-            if parent.borrow()[x] == x {
-                x
-            } else {
-                parent.borrow_mut()[x] = (find.borrow_mut().f)(find, parent.borrow()[x]);
-                parent.borrow()[x]
-            }
-        },
+    let mut rec = Rec {
+        parent: (0..mo).collect(),
     };
-    let find = RefCell::new(st);
 
     for (num, x) in q {
         let h = x % mo;
         if num == 1 {
-            let borrowed = find.borrow();
-            let i = (borrowed.f)(&find, h);
+            let i = rec.find(h);
             v[i] = x as isize;
-            parent.borrow_mut()[h] = (borrowed.f)(&find, (x + 1) % mo);
+            rec.find_set(i, (i + 1) % mo);
         } else if num == 2 {
             println!("{}", v[h]);
         } else {
