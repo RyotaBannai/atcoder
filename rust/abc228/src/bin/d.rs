@@ -1,46 +1,50 @@
 use proconio::input;
-use std::collections::BTreeSet;
+use std::cell::RefCell;
 
 /**
  * Liner Probing
  *
  * https://atcoder.jp/contests/abc228/tasks/abc228_d
  *
- * AC
+ * 経路圧縮
  *
- * SegTree/UnionFind
- * ・https://atcoder.jp/contests/abc228/submissions/27367620
- * ・https://atcoder.jp/contests/abc228/submissions/27368971
- * ・https://atcoder.jp/contests/abc228/submissions/31085677
- * ・https://atcoder.jp/contests/abc228/submissions/31069281
+ * ?
  *
- * Set
- * ・https://atcoder.jp/contests/abc228/submissions/30610991
  */
 
 fn main() {
     let mo = 1 << 20;
     input! {
         n: usize,
+        q: [(usize, usize); n]
     };
     let mut v: Vec<isize> = vec![-1; mo];
-    let mut used = (0..mo).collect::<BTreeSet<_>>();
-    for _ in 0..n {
-        input! {
-            q: usize,
-            x: usize
-        }
-        let h = x % mo;
-        if q == 1 {
-            let pos = if let Some(&k) = used.range(h..).next() {
-                k
-            } else {
-                *used.range(..).next().unwrap()
-            };
+    let parent = RefCell::new((0..mo).collect::<Vec<_>>());
 
-            used.remove(&pos);
-            v[pos] = x as isize;
-        } else if q == 2 {
+    struct Find<'s> {
+        f: &'s mut dyn FnMut(&RefCell<Find>, usize) -> usize,
+    }
+
+    let st = Find {
+        f: &mut |find, x| {
+            if parent.borrow()[x] == x {
+                x
+            } else {
+                parent.borrow_mut()[x] = (find.borrow_mut().f)(find, parent.borrow()[x]);
+                parent.borrow()[x]
+            }
+        },
+    };
+    let find = RefCell::new(st);
+
+    for (num, x) in q {
+        let h = x % mo;
+        if num == 1 {
+            let borrowed = find.borrow();
+            let i = (borrowed.f)(&find, h);
+            v[i] = x as isize;
+            parent.borrow_mut()[h] = (borrowed.f)(&find, (x + 1) % mo);
+        } else if num == 2 {
             println!("{}", v[h]);
         } else {
             unimplemented!();
