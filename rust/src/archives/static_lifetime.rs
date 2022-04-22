@@ -1,5 +1,6 @@
 // Make a constant with `'static` lifetime.
 // `'static`ライフタイムを持つ定数を作成
+
 static NUM: i32 = 18;
 
 fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
