@@ -9,5 +9,10 @@
 - [Overflow など](https://qiita.com/garkimasera/items/c5e06de1a7c66aa7652a)
 - [Option](https://doc.rust-lang.org/std/option/) and [usecase](https://zenn.dev/toga/books/rust-atcoder/viewer/37-option)
 
+### Error
+- `Blocking waiting for file lock on package cache`(再コンパイルで辛いが)以下のコマンドを叩く:
+  - `$ cargo clean`
+  - `$ rm ~/.cargo/.package-cache`
+
 ### Check List
 - [itertools](https://docs.rs/itertools/0.10.3/itertools/)
