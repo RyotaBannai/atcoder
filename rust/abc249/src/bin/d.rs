@@ -1,53 +1,66 @@
+use std::cmp::max;
+// use std::collections::BTreeMap as Map;
+
 /**
  * Index Trio
  * https://atcoder.jp/contests/abc249/tasks/abc249_d
  *
- * WA
+ * AC
  * 解説 https://atcoder.jp/contests/abc249/editorial
  */
-use std::collections::BTreeMap as Map;
 
-type M = Map<usize, usize>;
 struct St {
-    m: M,
+    v: Vec<usize>,
 }
 impl St {
-    fn new(m: &M) -> Self {
-        Self { m: m.to_owned() }
+    fn new(v: &Vec<usize>) -> Self {
+        Self { v: v.to_owned() }
     }
     fn run(&self) -> usize {
-        let max_key = *self.m.keys().max().unwrap();
-        let mut used = (0..=max_key)
-            .map(|i| match self.m.get(&i) {
-                None => 0,
-                Some(x) => *x,
-            })
-            .collect::<Vec<_>>();
-        let mut ans = 0;
-        let keys = &self.m.keys().copied().collect::<Vec<_>>();
+        // create count Map by an unique number
+        // let m: &mut Map<usize, usize> = &mut Map::new();
+        // self.v.iter().for_each(|x| match m.get_mut(x) {
+        //     Some(v) => *v += 1,
+        //     None => {
+        //         m.insert(*x, 1);
+        //     }
+        // });
+        // let max_key = *m.keys().max().unwrap();
 
-        for &i in keys {
-            used[i] -= 1;
-            for &j in keys {
-                if used[j] == 0 {
-                    continue;
-                }
-                used[j] -= 1;
-                for &k in keys {
-                    if used[k] == 0 {
-                        continue;
-                    }
-                    if i / j == k && i % j == 0 {
-                        let add = self.m[&i] * self.m[&j] * self.m[&k];
-                        ans += add;
-                        dbg!(format!("{},{},{}", i, j, k));
-                        dbg!(add);
-                    }
-                }
-                used[j] += 1;
+        let mut max_key: usize = 0;
+        let mut a = [0; 200_005]; // 余分に用意
+        self.v.iter().for_each(|&x| {
+            a[x] += 1;
+            max_key = max(max_key, x);
+        });
+
+        // max_key までの vec を用意してから試す
+        // let a = (0..=max_key)
+        //     .map(|i| match m.get(&i) {
+        //         None => 0,
+        //         Some(x) => *x,
+        //     })
+        //     .collect::<Vec<_>>();
+
+        let mut ans = 0;
+        for i in 1..=max_key {
+            for j in 1..=(max_key / i) {
+                ans += a[i] * a[j] * a[i * j]
             }
-            used[i] += 1;
         }
+
+        // 存在する key だけで試す // TEL
+        // let keys = &m.keys().copied().collect::<Vec<_>>();
+        // for i in keys {
+        //     for j in keys.iter().filter(|&x| x <= &(max_key / i)) {
+        //         let k = i * j;
+        //         ans += if let Some(z) = m.get(&k) {
+        //             m[i] * m[j] * z
+        //         } else {
+        //             0
+        //         }
+        //     }
+        // }
 
         ans
     }
@@ -58,16 +71,7 @@ fn main() {
         n: usize,
         a: [usize; n],
     };
-    let m = &mut Map::new();
-    a.iter().for_each(|x| match m.get_mut(x) {
-        Some(v) => *v += 1,
-        None => {
-            m.insert(*x, 1);
-        }
-    });
 
-    let st = St::new(m);
-    let ans = st.run();
-
+    let ans = St::new(&a).run();
     println!("{}", ans);
 }
