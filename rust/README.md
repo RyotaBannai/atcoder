@@ -13,6 +13,7 @@
 - `Blocking waiting for file lock on package cache`(再コンパイルで辛いが)以下のコマンドを叩く:
   - `$ cargo clean`
   - `$ rm ~/.cargo/.package-cache`
+- Try this first: `$ sudo pkill rls cargo`
 
 ### Check List
 - [itertools](https://docs.rs/itertools/0.10.3/itertools/)

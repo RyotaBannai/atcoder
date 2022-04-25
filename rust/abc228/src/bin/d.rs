@@ -7,7 +7,7 @@
  *
  * AC
  */
-use proconio::input;
+use proconio::{fastout, input};
 
 // クロージャでローカル変数をキャプチャしつつ再帰が難しいため、
 // キャプチャしたい変数はフィールドとして所有
@@ -15,6 +15,9 @@ struct Rec {
     parent: Vec<usize>,
 }
 impl Rec {
+    fn new(parent: Vec<usize>) -> Self {
+        Self { parent }
+    }
     // x の最短の親を探す
     fn find(&mut self, x: usize) -> usize {
         if self.parent[x] == x {
@@ -29,6 +32,8 @@ impl Rec {
         self.parent[i] = self.find(x);
     }
 }
+
+#[fastout]
 fn main() {
     let mo = 1 << 20;
     input! {
@@ -36,9 +41,7 @@ fn main() {
         q: [(usize, usize); n]
     };
     let mut v: Vec<isize> = vec![-1; mo];
-    let mut rec = Rec {
-        parent: (0..mo).collect(),
-    };
+    let mut rec = Rec::new((0..mo).collect());
 
     for (num, x) in q {
         let h = x % mo;
