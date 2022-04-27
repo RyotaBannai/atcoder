@@ -1,0 +1,10 @@
+[alias] # command aliases
+b = "build"
+c = "check"
+t = "test"
+r = "run"
+rr = "run --release"
+
+[build]
+jobs = 2 # number of parallel jobs, defaults to # of CPUs 
+target-dir = "target"

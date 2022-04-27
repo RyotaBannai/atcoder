@@ -45,6 +45,22 @@ path = "src/bin/f.rs"
 name = "abc249-g"
 path = "src/bin/g.rs"
 
+[[bin]]
+name = "abc249-b_ac"
+path = "src/bin/b_ac.rs"
+
+[[bin]]
+name = "abc249-c_ac"
+path = "src/bin/c_ac.rs"
+
+[[bin]]
+name = "abc249-d_ac"
+path = "src/bin/d_ac.rs"
+
+[[bin]]
+name = "abc249-a_ac"
+path = "src/bin/a_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
