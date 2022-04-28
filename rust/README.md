@@ -17,3 +17,9 @@
 
 ### Check List
 - [itertools](https://docs.rs/itertools/0.10.3/itertools/)
+
+### AC library and cargo-equip
+
+- [AC library](https://github.com/rust-lang-ja/ac-library-rs)
+- [cargo-equip bundles AC library when submit via cargo-compete](https://github.com/qryxip/cargo-equip)
+- [cargo-compete how to set cargo-equip?](https://github.com/qryxip/cargo-compete#cargo-compete-submit)
