@@ -33,6 +33,6 @@ fn main() {
         }
         p10 *= 10;
     }
+
     println!("{}", ans);
-    dbg!("c");
 }

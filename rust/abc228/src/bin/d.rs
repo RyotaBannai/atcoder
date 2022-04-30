@@ -3,53 +3,36 @@
  *
  * https://atcoder.jp/contests/abc228/tasks/abc228_d
  *
- * 経路圧縮
- *
- * AC
+ * 二分探索
+ * WA
  */
-use proconio::{fastout, input};
+use itertools::Itertools;
+use proconio::input;
+use superslice::{self, Ext};
 
-// クロージャでローカル変数をキャプチャしつつ再帰が難しいため、
-// キャプチャしたい変数はフィールドとして所有
-struct Rec {
-    parent: Vec<usize>,
-}
-impl Rec {
-    fn new(parent: Vec<usize>) -> Self {
-        Self { parent }
-    }
-    // x の最短の親を探す
-    fn find(&mut self, x: usize) -> usize {
-        if self.parent[x] == x {
-            x
-        } else {
-            self.parent[x] = self.find(self.parent[x]);
-            self.parent[x]
-        }
-    }
-    // x の最短の親を探して, index i にセット
-    fn find_set(&mut self, i: usize, x: usize) {
-        self.parent[i] = self.find(x);
-    }
-}
-
-#[fastout]
 fn main() {
     let mo = 1 << 20;
     input! {
         n: usize,
-        q: [(usize, usize); n]
     };
-    let mut v: Vec<isize> = vec![-1; mo];
-    let mut rec = Rec::new((0..mo).collect());
-
-    for (num, x) in q {
+    let mut v: Vec<i32> = vec![-1; mo];
+    let mut used = (0..mo).collect_vec();
+    for _ in 0..n {
+        input! {
+            q: usize,
+            x: usize
+        }
         let h = x % mo;
-        if num == 1 {
-            let i = rec.find(h);
-            v[i] = x as isize;
-            rec.find_set(i, (i + 1) % mo);
-        } else if num == 2 {
+        if q == 1 {
+            let mut pos = used.lower_bound(&h);
+            // dbg!(&used[..10].to_owned().iter().take(5));
+            if pos >= used.len() {
+                // remove で減るため out-of-index になるかどうかをチェック
+                pos = used.lower_bound(&0);
+            }
+            v[used[pos]] = x as i32;
+            used.remove(pos); // 値に関係なく index を返すからその位置を削除
+        } else if q == 2 {
             println!("{}", v[h]);
         } else {
             unimplemented!();

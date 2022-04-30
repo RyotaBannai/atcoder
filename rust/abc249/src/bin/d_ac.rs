@@ -1,3 +1,4 @@
+use derive_new::new;
 use std::cmp::max;
 // use std::collections::BTreeMap as Map;
 
@@ -9,13 +10,11 @@ use std::cmp::max;
  * 解説 https://atcoder.jp/contests/abc249/editorial
  */
 
+#[derive(new)]
 struct St {
     v: Vec<usize>,
 }
 impl St {
-    fn new(v: &Vec<usize>) -> Self {
-        Self { v: v.to_owned() }
-    }
     fn run(&self) -> usize {
         // create count Map by an unique number
         // let m: &mut Map<usize, usize> = &mut Map::new();
@@ -70,7 +69,6 @@ fn main() {
         n: usize,
         a: [usize; n],
     };
-
-    let ans = St::new(&a).run();
+    let ans = St::new(a).run();
     println!("{}", ans);
 }

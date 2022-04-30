@@ -45,6 +45,22 @@ path = "src/bin/g.rs"
 name = "abc228-h"
 path = "src/bin/h.rs"
 
+[[bin]]
+name = "abc228-d_ac"
+path = "src/bin/d_ac.rs"
+
+[[bin]]
+name = "abc228-d_ac_2"
+path = "src/bin/d_ac_2.rs"
+
+[[bin]]
+name = "abc228-d_ac_3"
+path = "src/bin/d_ac_3.rs"
+
+[[bin]]
+name = "abc228-d_ac_4_seg_tree"
+path = "src/bin/d_ac_4_seg_tree.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
