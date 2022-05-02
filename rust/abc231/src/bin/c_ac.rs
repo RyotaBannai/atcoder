@@ -4,7 +4,7 @@ use superslice::*;
 /**
  * Couting 2
  *
- * https://atcoder.jp/contests/abc231/tasks/abc231_d
+ * https://atcoder.jp/contests/abc231/tasks/abc231_c
  */
 
 fn main() {

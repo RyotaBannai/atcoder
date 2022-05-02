@@ -33,7 +33,7 @@ fn main() {
         // dbg!(format!("{:#010b}", &x));
         let m = &mut Map::new();
         let mut i = 0;
-        while x >= 0 && i < n {
+        while i < n {
             if (x & 1) == 1 {
                 ss[i].chars().for_each(|x| match m.get_mut(&x) {
                     Some(v) => *v += 1,

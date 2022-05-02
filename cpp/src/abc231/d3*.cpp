@@ -1,4 +1,4 @@
-/*
+/* @cpg_dirspec d
 Neighbors
 
 Disjoint Set/Union Find
@@ -11,7 +11,6 @@ passed.
 #define lp(i, n) for (int i = 0; i < n; i++)
 using namespace std;
 static const int MAXN = 100100;
-vector<int> mat[MAXN + 1];
 int depth[MAXN + 1];
 
 class DisjointSet {
@@ -56,8 +55,6 @@ auto main() -> int
     cin >> a >> b;
     s[a]++;
     s[b]++;
-    mat[a].push_back(b);
-    mat[b].push_back(a);
 
     if (ds.same(a, b)) {
       cout << "No" << endl;

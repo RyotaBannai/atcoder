@@ -1,4 +1,4 @@
-/*
+/* @cpg_dirspec d
 Neighbors
 
 DFS rec
