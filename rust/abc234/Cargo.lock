@@ -11,6 +11,7 @@ dependencies = [
  "ascii",
  "bitset-fixed",
  "derive-new",
+ "easy-ext",
  "either",
  "fixedbitset",
  "getrandom",
@@ -126,6 +127,12 @@ dependencies = [
  "quote 1.0.3",
  "syn 1.0.17",
 ]
+
+[[package]]
+name = "easy-ext"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ed2ddb5d6d3904e83114add6bbadf2b8307b4ae9fb4b2202afde1fe7bf3b56c0"
 
 [[package]]
 name = "either"
