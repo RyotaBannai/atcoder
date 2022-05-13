@@ -49,6 +49,22 @@ path = "src/bin/g.rs"
 name = "abc237-d_ac_prev"
 path = "src/bin/d_ac_prev.rs"
 
+[[bin]]
+name = "abc237-d_ac_rlvs"
+path = "src/bin/d_ac_rlvs.rs"
+
+[[bin]]
+name = "abc237-a_ac"
+path = "src/bin/a_ac.rs"
+
+[[bin]]
+name = "abc237-c_ac"
+path = "src/bin/c_ac.rs"
+
+[[bin]]
+name = "abc237-d_at_rlvs"
+path = "src/bin/d_at_rlvs.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
