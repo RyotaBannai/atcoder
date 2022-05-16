@@ -45,6 +45,18 @@ path = "src/bin/f.rs"
 name = "abc241-g"
 path = "src/bin/g.rs"
 
+[[bin]]
+name = "abc241-c_ac"
+path = "src/bin/c_ac.rs"
+
+[[bin]]
+name = "abc241-c_two_pointers_diag"
+path = "src/bin/c_two_pointers_diag.rs"
+
+[[bin]]
+name = "abc241-d_ac"
+path = "src/bin/d_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
