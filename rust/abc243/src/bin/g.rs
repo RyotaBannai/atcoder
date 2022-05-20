@@ -7,7 +7,7 @@
 // use std::collections::{BTreeMap, BTreeSet};
 // type Map = BTreeMap<String, usize>;
 
-#[fastout]
+// #[fastout]
 fn main() {
     todo!();
 }
