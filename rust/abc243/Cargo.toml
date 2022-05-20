@@ -49,6 +49,10 @@ path = "src/bin/g.rs"
 name = "abc243-c_ac_dp"
 path = "src/bin/c_ac_dp.rs"
 
+[[bin]]
+name = "abc243-d_ac"
+path = "src/bin/d_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
@@ -92,5 +96,6 @@ smallvec = "=1.2.0"
 derive-new = "0.5.9"
 easy-ext = "1.0.0"
 ac-library-rs  = { git = "https://github.com/rust-lang-ja/ac-library-rs" }
+bit-set = "0.5.2"
 
 [dev-dependencies]

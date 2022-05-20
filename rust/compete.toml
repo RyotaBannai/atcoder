@@ -33,7 +33,7 @@ src = '''
 // type Map = BTreeMap<String, usize>;
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
-// use std::collections::BinaryHeap;
+// use std::collections::{BinaryHeap, VecDeque};
 
 // #[fastout]
 fn main() {
