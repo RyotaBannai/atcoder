@@ -25,6 +25,14 @@ path = "src/bin/e.rs"
 name = "arc084-f"
 path = "src/bin/f.rs"
 
+[[bin]]
+name = "arc084-c_ac"
+path = "src/bin/c_ac.rs"
+
+[[bin]]
+name = "arc084-c_re"
+path = "src/bin/c_re.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
