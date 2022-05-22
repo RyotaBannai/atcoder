@@ -16,7 +16,7 @@ use superslice::{self, Ext};
  *
  * https://atcoder.jp/contests/arc084/tasks/arc084_a
  *
- * tags: #中部全探索
+ * tags: #中部全探索 #Distinct Trio
  *
  * ・同じ数値は別物と考える（index が違う）
  * ・とりうる最大値が 10^9 くらいの場合は、二分探索を使う
