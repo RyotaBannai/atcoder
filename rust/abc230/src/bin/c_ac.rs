@@ -14,6 +14,10 @@ use std::cmp::{max, min};
 /**
  * X drawing
  *
+ * https://atcoder.jp/contests/abc230/tasks/abc230_c
+ *
+ * tags: #置き換え
+ *
  * max(1-A, 1-B) <= k <= min(N-A, N-B) を満たす、k について、(A+k, B+k) を黒く塗る
  * max(1-A, B-N) <= k <= min(N-A, B-1) を満たす、k について、(A+k, B-k) を黒く塗る
  *
