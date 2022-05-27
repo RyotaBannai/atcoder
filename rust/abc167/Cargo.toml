@@ -35,6 +35,10 @@ path = "src/bin/e.rs"
 name = "abc167-f"
 path = "src/bin/f.rs"
 
+[[bin]]
+name = "abc167-d_ac_period"
+path = "src/bin/d_ac_period.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
