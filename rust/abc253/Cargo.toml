@@ -45,6 +45,22 @@ path = "src/bin/f.rs"
 name = "abc253-g"
 path = "src/bin/g.rs"
 
+[[bin]]
+name = "abc253-b_ac"
+path = "src/bin/b_ac.rs"
+
+[[bin]]
+name = "abc253-a_ac"
+path = "src/bin/a_ac.rs"
+
+[[bin]]
+name = "abc253-c_ac"
+path = "src/bin/c_ac.rs"
+
+[[bin]]
+name = "abc253-d_ac"
+path = "src/bin/d_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
@@ -88,5 +104,6 @@ smallvec = "=1.2.0"
 derive-new = "0.5.9"
 easy-ext = "1.0.0"
 ac-library-rs  = { git = "https://github.com/rust-lang-ja/ac-library-rs" }
+multiset = "0.0.5"
 
 [dev-dependencies]

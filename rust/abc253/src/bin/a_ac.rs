@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{min, max};
 // use ac_library_rs::modint::ModInt998244353 as Mint;
 // use superslice::{self, Ext};
@@ -11,7 +11,26 @@
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
-// #[fastout]
+/**
+ * Median?
+ *
+ * https://atcoder.jp/contests/abc253/tasks/abc253_a
+ *
+ */
+
+#[fastout]
 fn main() {
-    todo!();
+    input! {
+        a: usize,
+        b: usize,
+        c: usize,
+    }
+    println!(
+        "{}",
+        if a <= b && b <= c || a >= b && b >= c {
+            "Yes"
+        } else {
+            "No"
+        }
+    );
 }
