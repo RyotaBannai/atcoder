@@ -14,10 +14,12 @@ use proconio::{fastout, input, marker::Chars};
 /**
  * FizzBuzz Sum Hard
  *
- * tags: #等差数列 #総和
+ * tags: #等差数列 #総和 #最小公倍数 #lcm
  *
  * https://atcoder.jp/contests/abc253/tasks/abc253_d
  *
+ * 参考
+ * https://www.suzu6.net/posts/292-rust-num-crates/#%E6%9C%80%E5%A4%A7%E5%85%AC%E7%B4%84%E6%95%B0%E3%81%A8%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B0
  */
 
 #[fastout]

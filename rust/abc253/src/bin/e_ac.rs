@@ -16,9 +16,20 @@ use std::cmp::{max, min};
  *
  * https://atcoder.jp/contests/abc253/tasks/abc253_e
  *
- * N: 回イテレート
+ * tags: #DP #累積和 #以外範囲
+ *
+ * N: 桁分イテレート
  * M: 最大値
  * K: +- K を新しく加える
+ *
+ *
+ * 問題点：
+ * ・各 index（j の loop）に対して、 1<=x<=j-k, j+k<=x<=M を回していたため、N^2 になってしまう
+ * → 累積和で n-1 の和を計算する
+ *
+ *
+ * 参考
+ * https://www.youtube.com/watch?v=Xy1o-33wDIk
  */
 
 #[fastout]
@@ -26,7 +37,7 @@ fn main() {
     input! {
         n: usize,
         m: usize,
-        k: isize,
+        k: usize,
     }
 
     let mut dp = vec![vec![Mint::new(0usize); m + 1]; n + 1]; // 1-index
@@ -34,23 +45,22 @@ fn main() {
         dp[1][i] = Mint::new(1usize); // 1 個使った時はそれぞれ１通り、m が最大値
     }
 
-    dbg!(&dp);
-
     for i in 1..n {
-        // n 回イテレート
-        for j in 1isize..=m as isize {
-            if m as isize - j >= k {
-                for x in j + k..=m as isize {
-                    // dbg!(x);
-                    let tmp = dp[i][x as usize];
-                    dp[i + 1][j as usize] += tmp;
-                }
-            }
-            if j > k {
-                for x in 1..=j - k as isize {
-                    let tmp = dp[i][x as usize];
-                    dp[i + 1][j as usize] += tmp;
-                }
+        // n 桁分イテレート
+
+        let mut cum_sum = dp[i].clone();
+        for j in 1..m {
+            let tmp = cum_sum[j];
+            cum_sum[j + 1] += tmp;
+        }
+
+        // それぞれの j について、(二桁目について、一桁目のパターン数を累積和から) 求める
+        for j in 1..=m {
+            // 0 === j-k ●== j ==● j+k ==● m
+            // j.checked_sub(k).unwrap_or(0) と等価！
+            dp[i + 1][j] += cum_sum[m];
+            if k != 0 {
+                dp[i + 1][j] -= cum_sum[(min(m, j + k - 1))] - cum_sum[j.saturating_sub(k)];
             }
         }
     }
