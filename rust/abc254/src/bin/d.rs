@@ -1,96 +1,54 @@
 use proconio::{fastout, input, marker::Chars};
-use std::cmp::{max, min};
+// use std::cmp::{max, min};
 // use ac_library_rs::modint::ModInt998244353 as Mint;
 // use superslice::{self, Ext};
 // use derive_new::new;
 // #[derive(new)]
 // use indexmap::indexmap;
-use std::collections::{BTreeMap, BTreeSet};
+// use std::collections::{BTreeMap, BTreeSet};
 // type Map = BTreeMap<String, usize>;
-type Set = BTreeSet<usize>;
+// type Set = BTreeSet<usize>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
 /**
- * Together Square
- *
- * https://atcoder.jp/contests/abc254/tasks/abc254_d
- *
- * TLE
- *
- */
+* Together Square
+*
+* https://atcoder.jp/contests/abc254/tasks/abc254_d
+*
+* 1<=N<=2*10^5
+* 1<=i<=j<=N であるような
+* i*j が平方数となる組みを求めよ
+*
+* 1~N * 1~N では制限時間内に間に合わない
+* → 平方数になる条件を利用
+* ・掛けて平方数になる時、標準化された数値同士が同じになる
+* ・標準化すると、数値を構成する素因数の肩が奇数になるため、掛けた時に平方数になる
+* ・例えば、12 と 3 は掛けて 36 になる. 12 = 2^2*3^1 であり、3 = 3^1. 12 を標準化すると素因数の肩の部分は偶数だから 0 で 12 = 2^0 * 3^1 になる
+* ・標準化する方法として、それぞれの数を素因数分解して、肩の MOD2 をとる方法と、2~N で平方数で割っていく方法がある
+*/
 
-fn divisors(n: usize, top: usize) -> (usize, usize, usize) {
-    let mut m = 0;
-    let mut count = 0;
-    let mut divisors = 0;
-    // n := i * x とおくと、 i が i > root(n) の時、　i はすでに ある x に探索されているから
-    // i <= root(n) まで探索すればよい
-    for i in 1..=(f64::sqrt(n as f64) + 1e-9) as usize {
-        // i で n が割り切れた場合
-        if n % i == 0 {
-            // 約数リストに格納
-            divisors += 1;
-            m = max(m, i);
-            if i <= top {
-                count += 1;
-            }
-
-            // n := i * x の x を格納。ただし x := i の時は除く
-            if i != n / i {
-                divisors += 1;
-                m = max(m, n / i);
-
-                if n / i <= top {
-                    count += 1;
-                }
-            }
-        }
-    }
-    (divisors, count, m)
-}
-
-/**
- *
- *[
-    1,
-    2,
-    4,
-    8,
-    16,
-]
-n=9?
-1,4,9,16,25,36,49,64,81
-[
-    1,
-    2,
-    4,
-    5,
-    10,
-    20,
-    25,
-    50,
-    100,
-]
- */
 #[fastout]
 fn main() {
-    input! {n:usize}
-    let mut ans = 0;
+    input! { n:usize }
+    let mut count = vec![0; n + 1];
 
-    for i in 1..=n {
-        let tar = i * i;
-        let (count, top, biggest) = divisors(tar, n);
-        if biggest <= n {
-            if tar == 1 {
-                ans += 1;
+    for mut x in 1..=n {
+        let mut d = 2;
+        while d * d <= x {
+            if x % (d * d) == 0 {
+                x /= d * d; // 平方数で割る
             } else {
-                ans += count;
+                d += 1;
             }
-        } else {
-            let ok = count - (count - top) * 2;
-            ans += ok;
         }
+
+        count[x] += 1;
+    }
+
+    let mut ans = 0;
+    for x in count {
+        ans += x * x;
     }
 
     println!("{}", ans)
