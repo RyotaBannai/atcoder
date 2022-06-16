@@ -6,13 +6,15 @@ match: Lines
 cases:
   - name: sample1
     in: |
-      5 3
+      5 4
       6 11 2 5 5
       5
+      4
       20
       0
     out: |
       10
+      13
       71
       29
   - name: sample2
