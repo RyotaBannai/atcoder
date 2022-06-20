@@ -15,17 +15,19 @@ use std::cmp::{
 // use std::collections::{BinaryHeap, VecDeque};
 
 /**
-* 001 - Yokan Party（★4）
-*
-* https://atcoder.jp/contests/typical90/tasks/typical90_a
-*
-* 7 45
-* 2
-* 7 11 16 20 28 34 38
-*
-* 0 7 11 16 20 28 34 38 45
-*
-*/
+ *
+ * 001 - Yokan Party（★4）
+ *
+ * https://atcoder.jp/contests/typical90/tasks/typical90_a
+ *
+ * tags: #二分探索 #最大値の最小化
+ *
+ * 7 45
+ * 2
+ * 7 11 16 20 28 34 38
+ * 0 7 11 16 20 28 34 38 45
+ *
+ */
 
 #[fastout]
 fn main() {
