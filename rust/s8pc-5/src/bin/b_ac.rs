@@ -140,9 +140,9 @@ fn main() {
         (ok, mi)
     };
 
-    let mut ma = check(0.0).1; // 0 から初めていて 0 に収束できないため、半径の最小が .5 の場合最適化できない. left を -1 にしてもいい
-    let mut left = 0;
-    let mut right = std::usize::MAX;
+    let mut ma = 0f64; // 0 から初めていて 0 に収束できないため、半径の最小が .5 の場合最適化できない. 初回に check を入れるか left を -1 にする
+    let mut left = -1isize;
+    let mut right = std::isize::MAX - 1;
     while right - left > 1 {
         let mid = (right + left) / 2;
         let (ok, mi) = check(mid as f64);
