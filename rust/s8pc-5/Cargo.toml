@@ -50,6 +50,10 @@ path = "src/bin/h.rs"
 name = "s8pc-5-i"
 path = "src/bin/i.rs"
 
+[[bin]]
+name = "s8pc-5-b_ac"
+path = "src/bin/b_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
