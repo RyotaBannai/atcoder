@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{min, max};
 // use ac_library_rs::modint::ModInt998244353 as Mint;
 // use superslice::{self, Ext};
@@ -11,7 +11,19 @@
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
-// #[fastout]
+/**
+ *
+ * 003 - Longest Circular Road（★4）
+ *
+ * https://atcoder.jp/contests/typical90/tasks/typical90_c
+ *
+ * tags: 
+ * 
+ * グラフの直径？
+ *
+ */
+
+#[fastout]
 fn main() {
     todo!();
 }
