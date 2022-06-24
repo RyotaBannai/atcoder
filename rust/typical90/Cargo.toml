@@ -463,6 +463,10 @@ path = "src/bin/001_ac.rs"
 name = "typical90-002_ac"
 path = "src/bin/002_ac.rs"
 
+[[bin]]
+name = "typical90-003_ac"
+path = "src/bin/003_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"

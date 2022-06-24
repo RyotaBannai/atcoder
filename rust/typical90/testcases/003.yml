@@ -73,5 +73,5 @@ cases:
 extend:
   - type: Text
     path: "./003"
-    in: /in/*.txt
-    out: /out/*.txt
+    in: /in/.txt
+    out: /out/.txt
