@@ -1,0 +1,46 @@
+---
+type: Batch
+timelimit: 2s
+match: Lines
+
+cases:
+  - name: sample1
+    in: |
+      11 11
+      mississippi
+      mississippi
+    out: |
+      1
+  - name: sample2
+    in: |
+      8 7
+      okayyama
+      okayama
+    out: |
+      2
+  - name: sample3
+    in: |
+      8 7
+      okayyamama
+      okayama
+    out: |
+      8
+  - name: sample4
+    in: |
+      10 9
+      ooookayama
+      oookayama
+    out: |
+      4
+  - name: sample5
+    in: |
+      10 4
+      todozzodoo
+      todo
+    out: |
+      10
+extend:
+  - type: Text
+    path: "./008alpha"
+    in: /in/*.txt
+    out: /out/*.txt

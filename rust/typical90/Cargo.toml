@@ -12,6 +12,7 @@ typical90-005 = { alias = "005", problem = "https://atcoder.jp/contests/typical9
 typical90-006 = { alias = "006", problem = "https://atcoder.jp/contests/typical90/tasks/typical90_f" }
 typical90-007 = { alias = "007", problem = "https://atcoder.jp/contests/typical90/tasks/typical90_g" }
 typical90-008 = { alias = "008", problem = "https://atcoder.jp/contests/typical90/tasks/typical90_h" }
+typical90-008alpha = { alias = "008alpha", problem = "https://atcoder.jp/contests/typical90/tasks/typical90_h" }
 typical90-009 = { alias = "009", problem = "https://atcoder.jp/contests/typical90/tasks/typical90_i" }
 typical90-010 = { alias = "010", problem = "https://atcoder.jp/contests/typical90/tasks/typical90_j" }
 typical90-011 = { alias = "011", problem = "https://atcoder.jp/contests/typical90/tasks/typical90_k" }
@@ -478,6 +479,10 @@ path = "src/bin/007_ac.rs"
 [[bin]]
 name = "typical90-008_ac"
 path = "src/bin/008_ac.rs"
+
+[[bin]]
+name = "typical90-008alpha"
+path = "src/bin/008alpha.rs"
 
 [dependencies]
 num = "=0.2.1"
