@@ -8,8 +8,12 @@ use std::cmp::{max, min};
 // use std::collections::{BTreeMap, BTreeSet};
 // type Map = BTreeMap<String, usize>;
 // type Set = BTreeSet<(usize, char)>;
-// use easy_ext::ext;
-use std::collections::{BinaryHeap, VecDeque};
+use easy_ext::ext;
+// use std::collections::{BinaryHeap, VecDeque};
+use std::{
+    cmp::Reverse,
+    collections::{BinaryHeap, VecDeque},
+};
 
 /**
  * 012 - Red Painting（★4）
@@ -30,7 +34,21 @@ use std::collections::{BinaryHeap, VecDeque};
  *      どの方向に向かうかがポイント
  *      r2,c2 を goal として迷路の全探索？　枠を決めるのがきも？
  *
+ * ・used で一度通った箇所 true
+ * ・priority queue で距離が短い順
+ *
+ * TLE
  */
+
+#[ext]
+impl<T: Ord> BinaryHeap<Reverse<T>> {
+    fn peek_rev(&self) -> Option<&T> {
+        self.peek().map(|Reverse(v)| v)
+    }
+    fn push_rev(&mut self, x: T) {
+        self.push(Reverse(x))
+    }
+}
 
 #[fastout]
 fn main() {
@@ -61,33 +79,40 @@ fn main() {
                 println!("No");
                 continue;
             }
-            // let r_mi = min(r1, r2);
-            // let r_ma = max(r1, r2);
-            // let c_mi = min(c1, c2);
-            // let c_ma = max(c1, c2);
+            let r_mi = min(r1, r2);
+            let r_ma = max(r1, r2);
+            let c_mi = min(c1, c2);
+            let c_ma = max(c1, c2);
             let moves: Vec<(isize, isize)> = vec![(-1, 0), (1, 0), (0, -1), (0, 1)]; // 上下左右 斜め移動はない
-            let mut qu = VecDeque::new();
-            qu.push_back((r1, c1));
+
+            // let mut qu = VecDeque::new();
+            let mut qu: BinaryHeap<Reverse<(usize, usize, usize)>> = BinaryHeap::new();
+            qu.push_rev((0, r1, c1));
+
+            let mut used = vec![vec![false; w + 1]; h + 1];
+            used[r1][c1] = true;
 
             let mut ok = false;
             while !qu.is_empty() {
-                let u = qu.pop_back().unwrap(); // dfs
-                if u.0 == r2 && u.1 == c2 {
+                let Reverse(u) = qu.pop().unwrap();
+                if u.1 == r2 && u.2 == c2 {
                     ok = true;
                     break;
                 }
 
                 for (dr, dc) in &moves {
-                    let nr = (u.0 as isize + dr) as usize;
-                    let nc = (u.1 as isize + dc) as usize;
+                    let nr = (u.1 as isize + dr) as usize;
+                    let nc = (u.2 as isize + dc) as usize;
 
-                    // let r_pred = nr >= r_mi && nr <= r_ma;
-                    // let c_pred = nc >= c_mi && nc <= c_ma;
-                    let r_pred = nr >= 1 && nr <= h;
-                    let c_pred = nc >= 1 && nc <= w;
-                    if r_pred && c_pred && t[nr][nc] == 1 {
-                        // 範囲内で
-                        qu.push_back((nr, nc));
+                    let r_pred = nr >= r_mi && nr <= r_ma;
+                    let c_pred = nc >= c_mi && nc <= c_ma;
+                    // let r_pred = nr >= 1 && nr <= h;
+                    // let c_pred = nc >= 1 && nc <= w;
+                    if r_pred && c_pred && t[nr][nc] == 1 && !used[nr][nc] {
+                        let prio =
+                            (nr as isize - r2 as isize).abs() + (nc as isize - c2 as isize).abs();
+                        qu.push_rev((prio as usize, nr, nc));
+                        used[nr][nc] == true;
                     }
                 }
             }
