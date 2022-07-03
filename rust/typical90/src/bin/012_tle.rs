@@ -48,6 +48,9 @@ impl<T: Ord> BinaryHeap<Reverse<T>> {
     fn push_rev(&mut self, x: T) {
         self.push(Reverse(x))
     }
+    fn pop_rev(&mut self) -> Option<T> {
+        self.pop().map(|Reverse(u)| u)
+    }
 }
 
 #[fastout]
@@ -60,7 +63,7 @@ fn main() {
 
     // 0: 白、1: 赤
     let mut t = vec![vec![0; w + 1]; h + 1];
-    for i in 0..q {
+    for _ in 0..q {
         input! { a: usize }
         if a == 1 {
             input! {
@@ -79,10 +82,6 @@ fn main() {
                 println!("No");
                 continue;
             }
-            let r_mi = min(r1, r2);
-            let r_ma = max(r1, r2);
-            let c_mi = min(c1, c2);
-            let c_ma = max(c1, c2);
             let moves: Vec<(isize, isize)> = vec![(-1, 0), (1, 0), (0, -1), (0, 1)]; // 上下左右 斜め移動はない
 
             // let mut qu = VecDeque::new();
@@ -94,7 +93,7 @@ fn main() {
 
             let mut ok = false;
             while !qu.is_empty() {
-                let Reverse(u) = qu.pop().unwrap();
+                let u = qu.pop_rev().unwrap();
                 if u.1 == r2 && u.2 == c2 {
                     ok = true;
                     break;
@@ -104,15 +103,13 @@ fn main() {
                     let nr = (u.1 as isize + dr) as usize;
                     let nc = (u.2 as isize + dc) as usize;
 
-                    let r_pred = nr >= r_mi && nr <= r_ma;
-                    let c_pred = nc >= c_mi && nc <= c_ma;
-                    // let r_pred = nr >= 1 && nr <= h;
-                    // let c_pred = nc >= 1 && nc <= w;
+                    let r_pred = nr >= 1 && nr <= h;
+                    let c_pred = nc >= 1 && nc <= w;
                     if r_pred && c_pred && t[nr][nc] == 1 && !used[nr][nc] {
                         let prio =
                             (nr as isize - r2 as isize).abs() + (nc as isize - c2 as isize).abs();
                         qu.push_rev((prio as usize, nr, nc));
-                        used[nr][nc] == true;
+                        used[nr][nc] = true;
                     }
                 }
             }
