@@ -1,11 +1,15 @@
 [package]
-name = "sample_playground"
+name = "collection"
 version = "0.1.0"
 edition = "2021"
 
 [[bin]]
 name = "c"
 path = "src/bin/c.rs"
+
+[[bin]]
+name = "max_flow"
+path = "src/bin/max_flow.rs"
 
 [dependencies]
 num = "=0.2.1"
