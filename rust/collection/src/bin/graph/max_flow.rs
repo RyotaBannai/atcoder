@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec max_flow
  *
- * cpg run -p src/bin/max_flow.rs
+ * cpg run -p src/bin/graph/max_flow.rs
  */
 use proconio::{fastout, input, marker::Chars};
 use std::cmp::{max, min};

@@ -9,7 +9,15 @@ path = "src/bin/c.rs"
 
 [[bin]]
 name = "max_flow"
-path = "src/bin/max_flow.rs"
+path = "src/bin/graph/max_flow.rs"
+
+[[bin]]
+name = "bipartite_graph"
+path = "src/bin/graph/bipartite_graph.rs"
+
+[[bin]]
+name = "max_matching"
+path = "src/bin/graph/max_matching.rs"
 
 [dependencies]
 num = "=0.2.1"
