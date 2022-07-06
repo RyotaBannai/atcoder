@@ -16,8 +16,8 @@ name = "bipartite_graph"
 path = "src/bin/graph/bipartite_graph.rs"
 
 [[bin]]
-name = "max_matching"
-path = "src/bin/graph/max_matching.rs"
+name = "maximum_matching"
+path = "src/bin/graph/maximum_matching.rs"
 
 [dependencies]
 num = "=0.2.1"
