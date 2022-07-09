@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
 //     Ordering::{Equal, Greater, Less},
@@ -14,7 +14,13 @@
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
-// #[fastout]
+/**
+ * 2^N
+ *
+ * https://atcoder.jp/contests/abc256/tasks/abc256_a
+ */
+#[fastout]
 fn main() {
-    todo!();
+    input! { n : usize }
+    println!("{}", 1 << n)
 }
