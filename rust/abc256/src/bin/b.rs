@@ -18,9 +18,30 @@ use proconio::{fastout, input, marker::Chars};
  * Batters
  *
  * https://atcoder.jp/contests/abc256/tasks/abc256_b
+ *
+ * 野球のヒットをシミュレーションする
  */
 
 #[fastout]
 fn main() {
-    todo!();
+    input! {
+        n: usize,
+        a: [usize; n]
+    }
+    let mut p = 0;
+    let mut v = vec![0; 4];
+    for x in a {
+        v[0] = 1;
+        for i in (0..=3).rev() {
+            if v[i] == 1 {
+                if i + x >= 4 {
+                    p += 1;
+                } else {
+                    v[i + x] = 1;
+                }
+                v[i] = 0;
+            }
+        }
+    }
+    println!("{}", p);
 }
