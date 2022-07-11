@@ -19,6 +19,10 @@ path = "src/bin/graph/bipartite_graph.rs"
 name = "maximum_matching"
 path = "src/bin/graph/maximum_matching.rs"
 
+[[bin]]
+name = "connected_components"
+path = "src/bin/graph/connected_components.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
