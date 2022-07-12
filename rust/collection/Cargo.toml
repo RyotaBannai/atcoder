@@ -23,6 +23,10 @@ path = "src/bin/graph/maximum_matching.rs"
 name = "connected_components"
 path = "src/bin/graph/connected_components.rs"
 
+[[bin]]
+name = "spanning_tree"
+path = "src/bin/graph/spanning_tree.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
