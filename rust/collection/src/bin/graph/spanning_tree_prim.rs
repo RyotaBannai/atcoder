@@ -4,7 +4,7 @@
  * cpg run -p src/bin/graph/spanning_tree_prim.rs
  */
 // use proconio::{fastout, input, marker::Chars};
-use std::cmp::{max, min};
+// use std::cmp::{max, min};
 // use superslice::Ext;
 // use ac_library_rs::modint::ModInt998244353 as Mint;
 // use superslice::{self, Ext};
@@ -39,6 +39,8 @@ type Set = BTreeSet<usize>;
  * ・処理した箇所は、通過済みとして印をして、二度処理しないようにする.
  * ・処理する順は、d[i] が小さい順！根から始めた時の次の探索対象の頂点は、根から一番近い頂点となる
  * ・各の頂点からの探索の際に、それまでに通過したときの d[i] より、短い距離で到達することができるたびに更新していく（探索済みだが、別のルートを通った場合の方が早い場合）
+ *
+ * ・隣接行列 (t) のメモリ量が大きくなる場合がある
  */
 use std::io;
 

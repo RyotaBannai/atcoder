@@ -1,18 +1,19 @@
 /**
- * @cpg_dirspec spanning_tree_kruskal
+ * @cpg_dirspec spanning_tree
  *
  * cpg run -p src/bin/graph/spanning_tree_kruskal.rs
  */
 // use proconio::{fastout, input, marker::Chars};
-use std::cmp::{max, min};
+// use std::cmp::{max, min};
+use std::io;
 // use superslice::Ext;
 // use ac_library_rs::modint::ModInt998244353 as Mint;
 // use superslice::{self, Ext};
 // use derive_new::new;
 // use indexmap::indexmap;
-use std::collections::{BTreeMap, BTreeSet};
+// use std::collections::{BTreeMap, BTreeSet};
 // type Map = BTreeMap<String, usize>;
-type Set = BTreeSet<usize>;
+// type Set = BTreeSet<usize>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
@@ -34,9 +35,56 @@ type Set = BTreeSet<usize>;
  *  単一始点最短経路（single source shortest path: SSSP）: 根からグラフ G の全ての頂点 d への最短経路
  *　全点対間最短経路（all pairs shortest path: APSP）: グラフ G の全ての頂点のペア間の最短経路
  *
+ * クラスカル法
+ * ・全辺を昇順ソートする
+ * ・ソート順に最小全域木 T にその頂点が含まれていない場合は T に新たに追加する
+ * ・含まれているかどうかの判定には、UninonFind を用いると高速
  *
+ *
+ * 参考
+ * https://algo-logic.info/kruskal-mst/
  */
-use std::io;
+
+struct DisjointSet {
+    rank: Vec<usize>,
+    p: Vec<usize>,
+}
+impl DisjointSet {
+    fn new(n: usize) -> Self {
+        let mut p = vec![0; n + 1];
+        let mut rank = vec![0; n + 1];
+        for i in 1..=n {
+            p[i] = i;
+            rank[i] = 0;
+        }
+        Self { rank, p }
+    }
+    fn same(&mut self, x: usize, y: usize) -> bool {
+        self.find(x) == self.find(y)
+    }
+    fn find(&mut self, x: usize) -> usize {
+        if x != self.p[x] {
+            self.p[x] = self.find(self.p[x]);
+        }
+        self.p[x]
+    }
+    fn unite(&mut self, x: usize, y: usize) {
+        let p1 = self.find(x);
+        let p2 = self.find(y);
+        self.link(p1, p2);
+    }
+    fn link(&mut self, x: usize, y: usize) {
+        if self.rank[x] > self.rank[y] {
+            self.p[y] = x; // ランクが大き方につける
+        } else {
+            self.p[x] = y;
+            if self.rank[x] == self.rank[y] {
+                // rank 更新前は同じ可能性がある
+                self.rank[y] += 1;
+            }
+        }
+    }
+}
 
 // aoj
 // １行読み込んで、空白区切りで vec にして返す
@@ -46,72 +94,33 @@ fn read<T: std::str::FromStr>() -> Vec<T> {
     buf.trim().split(' ').flat_map(str::parse).collect()
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
-enum Color {
-    White,
-    Grey,
-    Black,
-}
-
 // #[fastout]
 fn main() {
     let r = read::<usize>();
     let (v, e) = (r[0], r[1]);
-    let mut t = vec![vec![-1_isize; v]; v];
-    // 辺の重みも考慮したいため、隣接行列を作る
-    for i in 0..e {
+
+    let mut xs = vec![];
+    for _ in 0..e {
         let a = read::<usize>();
         let (a, b, w) = (a[0], a[1], a[2] as isize);
-        //（無向）
-        t[a][b] = w;
-        t[b][a] = w;
+        xs.push((w, a, b)); // 有効だけでok
     }
-    let inf = 2isize << 10;
-    let mut c = vec![Color::White; v];
-    let mut p = vec![-1; v];
-    let mut d = vec![inf; v];
-    d[0] = 0;
 
-    let mut u: isize;
-    let mut mi;
+    xs.sort_unstable_by(|(a, ..), (b, ..)| a.cmp(b)); // 重みでソート
 
-    let mut s = Set::new();
-    for i in 0..v {
-        s.insert(i);
-    }
-    loop {
-        mi = inf;
-        u = -1;
-
-        // d に対して最小を見つける
-        for &i in &s {
-            if c[i] != Color::Black && mi > d[i] {
-                u = i as isize;
-                mi = d[i];
-            }
-        }
-
-        if u == -1 {
-            break;
-        }
-
-        c[u as usize] = Color::Black;
-        s.remove(&(u as usize));
-
-        for j in 0..v {
-            let nd = t[u as usize][j];
-            if c[j] != Color::Black && nd != -1 && d[j] > nd {
-                d[j] = nd;
-                p[j] = u; // 通ってきた親の頂点番号
-                c[j] = Color::Grey; // 探索中として Grey にしておく
-            }
-        }
-    }
+    // let mut p = vec![-1isize; v];
+    let mut path = vec![];
 
     let mut sum = 0usize;
-    for i in 0..v {
-        if p[i] != -1 {
-            sum += t[i][p[i] as usize] as usize;
+    let mut ds = DisjointSet::new(v);
+    for x in xs {
+        let (w, a, b) = x;
+        if !ds.same(a, b) {
+            ds.unite(a, b);
+            sum += w as usize;
+            path.push(x);
+
+            // p[b] = a as isize; // prim のように通った親がわからないから、これができない（p の更新が被る）
         }
     }
 
