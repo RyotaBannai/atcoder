@@ -24,8 +24,12 @@ name = "connected_components"
 path = "src/bin/graph/connected_components.rs"
 
 [[bin]]
-name = "spanning_tree"
-path = "src/bin/graph/spanning_tree.rs"
+name = "spanning_tree_prim"
+path = "src/bin/graph/spanning_tree_prim.rs"
+
+[[bin]]
+name = "spanning_tree_kruskal"
+path = "src/bin/graph/spanning_tree_kruskal.rs"
 
 [dependencies]
 num = "=0.2.1"
