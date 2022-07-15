@@ -31,6 +31,10 @@ path = "src/bin/graph/spanning_tree_prim.rs"
 name = "spanning_tree_kruskal"
 path = "src/bin/graph/spanning_tree_kruskal.rs"
 
+[[bin]]
+name = "sssp"
+path = "src/bin/graph/sssp.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
