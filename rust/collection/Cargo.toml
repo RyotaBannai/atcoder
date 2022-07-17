@@ -35,6 +35,10 @@ path = "src/bin/graph/spanning_tree_kruskal.rs"
 name = "sssp"
 path = "src/bin/graph/sssp.rs"
 
+[[bin]]
+name = "sssp_heap"
+path = "src/bin/graph/sssp_heap.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
@@ -75,6 +79,7 @@ text_io = "=0.1.8"
 whiteread = "=0.5.0"
 rustc-hash = "=1.1.0"
 smallvec = "=1.2.0"
+easy-ext = "1.0.0"
 ac-library-rs  = { git = "https://github.com/rust-lang-ja/ac-library-rs.git" }
 
 [profile.release]

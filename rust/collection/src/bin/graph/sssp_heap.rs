@@ -4,23 +4,25 @@
  * cpg run -p src/bin/graph/sssp_heap.rs
  */
 // use proconio::{fastout, input, marker::Chars};
-// use std::cmp::{max, min};
 // use superslice::Ext;
 // use ac_library_rs::modint::ModInt998244353 as Mint;
 // use superslice::{self, Ext};
 // use derive_new::new;
 // use indexmap::indexmap;
-use std::collections::{BTreeMap, BTreeSet};
+// use std::collections::{BTreeMap, BTreeSet};
 // type Map = BTreeMap<String, usize>;
-type Set = BTreeSet<usize>;
-// use easy_ext::ext;
-// use std::collections::{BinaryHeap, VecDeque};
+// type Set = BTreeSet<usize>;
+// use std::cmp::{max, min};
+use std::{
+    cmp::{Ord, Reverse},
+    collections::BinaryHeap,
+};
 
 /**
  * 単一始点最短経路（single source shortest path: SSSP）
  * : 根 s から任意の目的地 t への最短距離
  *
- * https://onlinejudge.u-aizu.ac.jp/problems/ALDS1_12_B
+ * https://onlinejudge.u-aizu.ac.jp/problems/ALDS1_12_C
  *
  * 最小全域木 != SSSP
  * 最小全域木: グラフ全体の辺の最小を求めたい（全体の最小化）
@@ -45,6 +47,10 @@ type Set = BTreeSet<usize>;
  *    ダイクストラは通ってきた親までの重みに、自分の頂点へアクセスするために必要な重みを加えた時の最小の辺を採用する点
  * ・ダイクストラ法は、辺の重みが非負の場合のみ. 負値はある場合は、ベルマンフォード（Bellman Ford）/ ワーシャルフロイド（Warshall Floyd）を検討
  *
+ * ダイクストラ法を優先度付きキューで処理する
+ * ・アクセスしてる頂点から最短となる、かつ、まだアクセスしてない、かつ、移動できる頂点　を pq へ入れる
+ * ・次の loop の回で pq から先頭を取り出す
+ *
  */
 use std::io;
 use Color::*;
@@ -64,63 +70,64 @@ enum Color {
     Black,
 }
 
+trait ExtRev<T: Ord> {
+    fn peek_rev(&self) -> Option<&T>;
+    fn push_rev(&mut self, x: T);
+    fn pop_rev(&mut self) -> Option<T>;
+}
+impl<T: Ord> ExtRev<T> for BinaryHeap<Reverse<T>> {
+    fn peek_rev(&self) -> Option<&T> {
+        self.peek().map(|Reverse(v)| v)
+    }
+    fn push_rev(&mut self, x: T) {
+        self.push(Reverse(x))
+    }
+    fn pop_rev(&mut self) -> Option<T> {
+        self.pop().map(|Reverse(u)| u)
+    }
+}
+
 // #[fastout]
 fn main() {
     let v = read::<usize>()[0];
-    let mut t = vec![vec![-1_isize; v]; v]; // 0-index
+    let mut t = vec![vec![]; v]; // 0-index 連接リスト
     for a in 0..v {
         let line = read::<usize>();
         let e = line[1];
         if e != 0 {
             for j in 1..=e {
                 let (b, w) = (line[j * 2], line[j * 2 + 1]);
-                t[a][b] = w as isize; //（有向）
-
-                // t[b][a] = w as isize;
+                t[a].push((w, b)); //（有向）
             }
         }
     }
 
-    let inf = 1isize << 21;
+    let inf = 1 << 21;
     let mut c = vec![White; v];
     let mut d = vec![inf; v];
     d[0] = 0;
-    c[0] = Grey;
 
-    let mut u: isize;
-    let mut mi;
+    // priority queue は優先度が一番高い要素を先頭に持っているだけで、全要素がソートされている訳ではない
+    let mut x: BinaryHeap<Reverse<(usize, usize)>> = BinaryHeap::new();
+    x.push_rev((0, 0)); // (d, u)
 
-    let mut s = Set::new();
-    for i in 0..v {
-        s.insert(i);
-    }
     loop {
-        mi = inf;
-        u = -1;
+        // 候補の中から最小の辺を取り出す
+        let y = x.pop_rev();
 
-        // すでに通った Grey の中から最小の d を見つける(実際には Grey の判定はしていないが、White は Inf であり、最小の d にはならない)
-        for &i in &s {
-            if mi > d[i] {
-                u = i as isize;
-                mi = d[i];
-            }
-        }
-
-        if u == -1 {
+        if y.is_none() {
             // 全ての辺チェックした
             break;
         }
+        let (ud, u) = y.unwrap();
+        c[u as usize] = Black; // 今回で通過済み
 
-        c[u as usize] = Black;
-        s.remove(&(u as usize));
-
-        for j in 0..v {
-            // MST との違い MST は最小の辺(d[j] > nd, どの頂点からのアクセスでも良い)を見るが、SSSP は親からの距離で見る
-            let w = t[u as usize][j];
-            let nd = d[u as usize] + w;
-            if c[j] != Black && w != -1 && d[j] > nd {
+        // 連接リストから取り出す
+        for &(w, j) in &t[u] {
+            let nd = ud + w;
+            if c[j] != Black && d[j] > nd {
                 d[j] = nd;
-                // c[j] = Grey; // 探索中として Grey にしておいてもいい
+                x.push_rev((nd, j));
             }
         }
     }
