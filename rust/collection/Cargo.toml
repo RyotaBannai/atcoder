@@ -40,6 +40,10 @@ name = "sssp_heap"
 path = "src/bin/graph/sssp_heap.rs"
 
 [[bin]]
+name = "sssp_bf"
+path = "src/bin/graph/sssp_bf.rs"
+
+[[bin]]
 name = "apsp"
 path = "src/bin/graph/apsp.rs"
 
