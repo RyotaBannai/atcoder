@@ -39,6 +39,10 @@ path = "src/bin/graph/sssp.rs"
 name = "sssp_heap"
 path = "src/bin/graph/sssp_heap.rs"
 
+[[bin]]
+name = "apsp"
+path = "src/bin/graph/apsp.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
