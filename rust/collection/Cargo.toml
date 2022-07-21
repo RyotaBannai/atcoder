@@ -47,6 +47,10 @@ path = "src/bin/graph/sssp_bf.rs"
 name = "apsp"
 path = "src/bin/graph/apsp.rs"
 
+[[bin]]
+name = "dfs_timestamp"
+path = "src/bin/graph/dfs_timestamp.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
