@@ -55,6 +55,10 @@ path = "src/bin/graph/dfs_timestamp.rs"
 name = "articulation_point"
 path = "src/bin/graph/articulation_point.rs"
 
+[[bin]]
+name = "bridge"
+path = "src/bin/graph/bridge.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
