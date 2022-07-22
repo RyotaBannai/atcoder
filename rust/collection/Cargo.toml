@@ -51,6 +51,10 @@ path = "src/bin/graph/apsp.rs"
 name = "dfs_timestamp"
 path = "src/bin/graph/dfs_timestamp.rs"
 
+[[bin]]
+name = "articulation_point"
+path = "src/bin/graph/articulation_point.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
