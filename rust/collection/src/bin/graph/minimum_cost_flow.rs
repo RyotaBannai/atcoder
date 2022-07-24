@@ -81,11 +81,13 @@ fn main() {
     for _ in 0..e {
         let line = read::<usize>();
         let (from, to, cap, cost) = (line[0], line[1], line[2] as isize, line[3] as isize);
-        let to_idx = g[to].len();
-        let from_idx = g[from].len();
-        g[from].push(Edge::new(to_idx, from, to, cap, cost));
-        g[to].push(Edge::new(from_idx, to, from, 0, -cost));
+        let fe = Edge::new(g[to].len(), from, to, cap, cost);
+        let te = Edge::new(g[from].len(), to, from, 0, -cost);
+        g[from].push(fe);
+        g[to].push(te);
     }
+
+    // println!("{:?}", &g);
 
     let inf = 1 << 21;
     let mut d: Vec<isize>; // 最短距離（最小距離）
@@ -93,9 +95,7 @@ fn main() {
     let mut pree = vec![0; v]; // 直前の辺（親と子の辺）
 
     // ベルマンフォードで最短経路木を求める
-    // let mut f = 0;
     let mut res = 0;
-
     let t = v - 1; // 終点
     let s = 0;
 
@@ -107,21 +107,20 @@ fn main() {
         let mut update = true;
         while update {
             update = false;
-            for (i, xs) in g.iter().enumerate() {
-                if d[i] == inf {
+            for (from, xs) in g.iter().enumerate() {
+                if d[from] == inf {
                     continue;
                 }
-                for (j, e) in xs.iter().enumerate() {
+                for (i, e) in xs.iter().enumerate() {
                     if e.cap <= 0 {
                         continue;
                     }
-                    let nd = d[i] + e.cost;
-                    // e.to にはパスが存在すれば、inf 以外のコストが入っている.
+                    let nd = d[from] + e.cost;
                     if nd < d[e.to] {
                         // 残量があって最短経路
                         d[e.to] = nd;
-                        prev[e.to] = i;
-                        pree[e.to] = j;
+                        prev[e.to] = from;
+                        pree[e.to] = i;
                         update = true;
                     }
                 }
@@ -136,31 +135,22 @@ fn main() {
 
         // 現時点で残りの流したい流量 f を終点から始点まで通るパスのそれぞれの頂点の cap の最小をとる（それがソースから流せる最大量 f）
         let mut mi = f;
-        let mut p = t;
-        loop {
-            if p == s {
-                break;
-            }
-
-            mi = min(mi, g[prev[p]][pree[p]].cap);
-            p = prev[p];
+        let mut u = t;
+        while u != s {
+            mi = min(mi, g[prev[u]][pree[u]].cap);
+            u = prev[u];
         }
 
         f -= mi; // mi が今回流せる流量. 残りは次回
         res += mi * d[t]; // なんで t? 終端までのコスト d[t] * 流量
 
-        p = t;
-        loop {
-            if p == s {
-                break;
-            }
-
-            let mut e = g[prev[p]][pree[p]];
-            // let mut re = g[p][e.rev]; // 自己ループ考慮？
+        u = t;
+        while u != s {
+            let e = &mut g[prev[u]][pree[u]]; // Copy でなく可変参照. Copy trait がついてると Copy 代入されていることに気づかない..
+            let rev = e.rev;
             e.cap -= mi;
-            g[p][e.rev].cap += mi;
-
-            p = prev[p];
+            g[u][rev].cap += mi;
+            u = prev[u];
         }
     }
 
