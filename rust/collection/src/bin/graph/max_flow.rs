@@ -74,6 +74,8 @@ impl FordFulkerson {
     fn new(g: Graph) -> Self {
         Self { used: vec![], g }
     }
+    // dfs で終点 t まで到達した時の流量 f が再帰して s まで戻っていく
+    // t まで到達するが流量が 0 or t まで到達しない場合は、処理を行わないで 0 を返す
     fn dfs(&mut self, v: usize, t: usize, f: usize) -> usize {
         // 最後に到達
         if v == t {
