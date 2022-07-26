@@ -63,6 +63,10 @@ path = "src/bin/graph/bridge.rs"
 name = "minimum_cost_flow"
 path = "src/bin/graph/minimum_cost_flow.rs"
 
+[[bin]]
+name = "minimum_cost_flow_queue"
+path = "src/bin/graph/minimum_cost_flow_queue.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
