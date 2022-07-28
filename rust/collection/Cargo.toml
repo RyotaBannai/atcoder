@@ -71,6 +71,10 @@ path = "src/bin/graph/minimum_cost_flow_queue.rs"
 name = "range_query_1d"
 path = "src/bin/query/range_query_1d.rs"
 
+[[bin]]
+name = "range_query_2d"
+path = "src/bin/query/range_query_2d.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"

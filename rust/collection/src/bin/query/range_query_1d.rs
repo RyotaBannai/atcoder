@@ -73,6 +73,8 @@ impl Rec {
             // 葉
             return MAX;
         };
+
+        // TLE になる vec[began..end] のレンジソートを使う
         // [l,r) だけでソートしたい
         // [l,r) [2,4)
         // s [3,5,6,2,7]
