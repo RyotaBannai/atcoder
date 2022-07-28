@@ -1,7 +1,7 @@
 /**
- * @cpg_dirspec range_query_1
+ * @cpg_dirspec range_query_1d
  *
- * cpg run -p src/bin/query/range_query.rs
+ * cpg run -p src/bin/query/range_query_1d.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 use std::io;
@@ -74,7 +74,7 @@ impl Rec {
             return MAX;
         };
         // [l,r) だけでソートしたい
-        // [l,r) [2,5)
+        // [l,r) [2,4)
         // s [3,5,6,2,7]
         // v2 = [6,2,7] s = [3,5]
         // v3 = [7] v2 = [6,2]

@@ -68,8 +68,8 @@ name = "minimum_cost_flow_queue"
 path = "src/bin/graph/minimum_cost_flow_queue.rs"
 
 [[bin]]
-name = "range_query"
-path = "src/bin/query/range_query.rs"
+name = "range_query_1d"
+path = "src/bin/query/range_query_1d.rs"
 
 [dependencies]
 num = "=0.2.1"
