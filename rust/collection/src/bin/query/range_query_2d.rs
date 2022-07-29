@@ -89,13 +89,11 @@ impl Rec {
 
         // 平面上で見る
         // 偶数回 x 座標、奇数回 y 座標でソート
-        self.s[l..r].sort_unstable_by(|p1, p2| {
-            if depth % 2 == 0 {
-                p1.x.cmp(&p2.x)
-            } else {
-                p1.y.cmp(&p2.y)
-            }
-        });
+        if depth % 2 == 0 {
+            self.s[l..r].sort_by(|p1, p2| p1.x.cmp(&p2.x));
+        } else {
+            self.s[l..r].sort_by(|p1, p2| p1.y.cmp(&p2.y));
+        }
 
         let mid = (l + r) / 2;
         self.np += 1;
