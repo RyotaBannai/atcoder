@@ -29,32 +29,28 @@ use proconio::{fastout, input, marker::Chars};
 struct Rec {
     h: Vec<usize>,
     w: Vec<usize>,
-    v: Vec<Vec<usize>>,
-    ans: Vec<Vec<Vec<usize>>>,
+    v: Vec<(usize, usize, usize)>,
+    ans: Vec<Vec<(usize, usize, usize)>>,
 }
 impl Rec {
     fn new(h: Vec<usize>, w: Vec<usize>) -> Self {
         Self {
             h,
             w,
-            v: vec![vec![]; 3],
+            v: vec![(0, 0, 0); 3],
             ans: vec![],
         }
     }
     fn dfs(&mut self, x: usize) {
         if x >= 3 {
-            // 0 index
-            // h のチェックは済だから、w のチェック
+            // 0-index
+            // h1,h2,h3 のチェックは済だから、w1,w2,w3 のチェック
             let (mut a, mut b, mut c) = (0, 0, 0);
             for xs in &self.v {
-                for (i, x) in xs.iter().enumerate() {
-                    match i {
-                        0 => a += x,
-                        1 => b += x,
-                        2 => c += x,
-                        _ => unreachable!(),
-                    }
-                }
+                let (n, l, m) = xs;
+                a += n;
+                b += l;
+                c += m;
             }
             if a == self.w[0] && b == self.w[1] && c == self.w[2] {
                 self.ans.push(self.v.clone());
@@ -71,7 +67,7 @@ impl Rec {
 
                 let k = lim - (i + j); // 残り
 
-                self.v[x] = vec![i, j, k]; // 上書き
+                self.v[x] = (i, j, k); // 上書き
                 self.dfs(x + 1); // x=0 なら x=1 で二段目
             }
         }
