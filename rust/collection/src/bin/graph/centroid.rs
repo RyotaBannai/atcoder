@@ -28,6 +28,10 @@ use std::usize::MAX;
  *
  * https://codeforces.com/problemset/problem/321/C
  *
+ * 類題
+ * ・C - 木の問題　https://atcoder.jp/contests/yahoo-procon2018-final-open/tasks/yahoo_procon2018_final_c
+ * ・E - ニワンゴくんの家探し　https://atcoder.jp/contests/dwacon2018-prelims/tasks/dwacon2018_prelims_e
+ *
  *
  * 参考
  * https://qiita.com/drken/items/4b4c3f1824339b090202

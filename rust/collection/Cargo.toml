@@ -79,6 +79,10 @@ path = "src/bin/query/range_query_2d.rs"
 name = "centroid"
 path = "src/bin/graph/centroid.rs"
 
+[[bin]]
+name = "strongly_connected_components"
+path = "src/bin/graph/strongly_connected_components.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
