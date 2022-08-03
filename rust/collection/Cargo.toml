@@ -87,6 +87,10 @@ path = "src/bin/graph/strongly_connected_components.rs"
 name = "select_stages"
 path = "src/bin/yukicoder/select_stages.rs"
 
+[[bin]]
+name = "weighted_disjoint_set"
+path = "src/bin/query/weighted_disjoint_set.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
