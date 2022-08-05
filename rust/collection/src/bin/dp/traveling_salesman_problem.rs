@@ -1,7 +1,7 @@
 /**
- * @cpg_dirspec bit_dp
+ * @cpg_dirspec traveling_salesman_problem
  *
- * cpg run -p src/bin/dp/bit_dp.rs
+ * cpg run -p src/bin/dp/traveling_salesman_problem.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 use std::cmp::{max, min};
@@ -21,12 +21,16 @@ use std::isize::MAX;
 /**
  * BIT DP
  *
- * tags: #bit_dp
+ * https://onlinejudge.u-aizu.ac.jp/problems/DPL_2_A
+ *
+ * tags: #bit_dp #traveling_salesman_problem #hamiltonian_path
+ *
+ * ハミルトン閉路: 始点と終点を除いて、全ての頂点を1度ずつ通る閉路のこと
  *
  * 参考
  * https://qiita.com/drken/items/7c6ff2aa4d8fce1c9361#11-bit-dp
  * https://algo-logic.info/bit-dp/
- *
+ * src/bin/dp/bit_dp.rs
  *
  * フラグ操作
  * https://qiita.com/drken/items/7c6ff2aa4d8fce1c9361#3-%E3%83%93%E3%83%83%E3%83%88%E6%BC%94%E7%AE%97%E3%82%92%E7%94%A8%E3%81%84%E3%81%9F%E3%83%95%E3%83%A9%E3%82%B0%E7%AE%A1%E7%90%86
@@ -53,6 +57,7 @@ struct Rec {
     n: usize,
     dp: Vec<Vec<isize>>,
     list: Vec<Vec<isize>>,
+    begin: usize,
 }
 impl Rec {
     fn new(list: Vec<Vec<isize>>) -> Self {
@@ -61,37 +66,33 @@ impl Rec {
             n,
             dp: vec![vec![-1; n + 1]; 1 << n],
             list,
+            begin: std::usize::MAX,
         }
     }
     // メモ化再帰
-    // bit == 1 << v　となる末尾から、再帰を戻っていって、最小を計算する.
-    // 最終的に、ルートから始めてそれぞれの頂点にちょうど一回ずつ訪問した時の最短経路が求まる
     fn rec(&mut self, bit: usize, v: usize) -> isize {
-        // println!("{:#06b}, {}({:#06b})", bit, v, v);　// debug
         // すでに探索済
         if self.dp[bit][v] != -1 {
             return self.dp[bit][v];
         }
         // 初期値
+        // 一通り経路を使い切ったら、開始した頂点から、最後の頂点まで辺が伸びているかどうかチェックする
+        // MAX であれば、繋がっていないため、この経路は不採用
         if bit == 1 << v {
-            self.dp[bit][v] = 0;
-            return 0;
+            let d = self.list[self.begin][v];
+            self.dp[bit][v] = d;
+            return d;
         }
 
-        // 今回頂点 v を使うから、bit の v を除く. v=0 なら、0b1111 -> 0b1110
-        let prev_bit = bit & !(1 << v); // bitwise not. bit ^ (1 << v) でも ok
-
-        // ret に 頂点 v を除いた頂点の中から作れる、かつ v に到達できる経路の最小を入れる
+        let prev_bit = bit & !(1 << v);
         let mut ret = MAX;
         for u in 0..self.n {
-            // u が prev_bit になかったらだめ. prev_bit 集合 s
-            if prev_bit & (1 << u) == 0 {
+            if prev_bit & (1 << u) == 0 || self.list[u][v] == MAX {
                 continue;
             }
-            let b = self.rec(prev_bit, u) + self.list[u][v];
+            let b = self.rec(prev_bit, u).saturating_add(self.list[u][v]);
             ret = ret.min(b);
         }
-        // 自分を含めた集合で、最後に通った頂点が自分の場合の最小
         self.dp[bit][v] = ret;
         ret
     }
@@ -99,25 +100,27 @@ impl Rec {
 
 // #[fastout]
 fn main() {
-    let n = read::<usize>()[0];
+    let a = read::<usize>();
+    let (n, e) = (a[0], a[1]);
     let mut list = vec![vec![MAX; n]; n];
-    for i in 0..n {
+    for _ in 0..e {
         let b = read::<usize>();
-        for j in 0..n {
-            list[i][j] = b[j] as isize;
-        }
+        let (s, t, d) = (b[0], b[1], b[2] as isize);
+        list[s][t] = d;
     }
 
-    let bit = (1 << n) - 1; // 0b1111: 初期状態 0~n の全ての数を集合として持つ
-
+    let bit = (1 << n) - 1;
     let mut mi = MAX;
-    // 各頂点から始める
-    // 始点終点も含めてちょうど一回だけ通る
-    for i in 0..n {
+    // 「ある頂点から出発し、...」 どの頂点から始めてもちょうど一回通る最短経路だから、i=0 のチェックだけすれば ok. 頂点　0 を通らない == 経路がない
+    for i in 0..1 {
         let mut rec = Rec::new(list.clone());
+        rec.begin = i;
         let ans = rec.rec(bit, i);
         mi = mi.min(ans);
     }
-
-    println!("{}", mi);
+    if mi == MAX {
+        println!("-1");
+    } else {
+        println!("{}", mi);
+    }
 }

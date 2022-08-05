@@ -95,6 +95,10 @@ path = "src/bin/query/weighted_disjoint_set.rs"
 name = "bit_dp"
 path = "src/bin/dp/bit_dp.rs"
 
+[[bin]]
+name = "traveling_salesman_problem"
+path = "src/bin/dp/traveling_salesman_problem.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
