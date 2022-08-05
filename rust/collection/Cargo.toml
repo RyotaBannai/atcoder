@@ -91,6 +91,10 @@ path = "src/bin/yukicoder/select_stages.rs"
 name = "weighted_disjoint_set"
 path = "src/bin/query/weighted_disjoint_set.rs"
 
+[[bin]]
+name = "bit_dp"
+path = "src/bin/dp/bit_dp.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"

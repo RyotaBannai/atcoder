@@ -20,7 +20,7 @@ use std::usize::MAX;
  *
  * tags: #weighted_union_find #重み付きunion_find
  *
- * https://atcoder.jp/contests/abc087/submissions/merge
+ * https://atcoder.jp/contests/abc087/tasks/arc090_b
  *
  * 参考
  * https://qiita.com/drken/items/cce6fc5c579051e64fab
