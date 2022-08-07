@@ -4,6 +4,12 @@ timelimit: 2s
 match: Lines
 
 cases:
+  - name: sample0
+    in: |
+      5 3 4
+      3 6 0 5 5
+    out: |
+      14
   - name: sample1
     in: |
       5 4 3
