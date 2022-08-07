@@ -19,34 +19,12 @@ use proconio::{fastout, input, marker::Chars};
  *
  * https://atcoder.jp/contests/abc263/tasks/abc263_c
  *
- * ・数列の長さ n がわからない場合（ループ数がわからない場合） => 再帰
- * ・数列の長さ n がわからないため、struct だとフィールドとして管理しにくい..
+ * 参考
+ * https://www.youtube.com/watch?v=vGdgA5YdBho
+ *
+ *
+ * 2^m を作って、とりうる整数を全列挙. n 桁目に１が立っているかどうかを確認し、１が n 個立っているなら採用
  */
-
-struct Rec {
-    n: usize, // 数列の長さ
-    m: usize, // 整数の上限
-}
-impl Rec {
-    fn new(n: usize, m: usize) -> Self {
-        Self { n, m }
-    }
-
-    fn rec(&mut self, s: String, x: usize, dep: usize) {
-        // 数列の長さに到達した
-        if dep == self.n {
-            for c in s.split(' ') {
-                print!("{} ", c);
-            }
-            println!();
-            return;
-        }
-
-        for i in x + 1..=self.m {
-            self.rec(format!("{} {}", s, i), i, dep + 1);
-        }
-    }
-}
 
 #[fastout]
 fn main() {
@@ -55,8 +33,28 @@ fn main() {
         m: usize,
     }
 
-    let mut rec = Rec::new(n, m);
-    for i in 1..=m - n + 1 {
-        rec.rec(format!("{}", i), i, 1);
+    // 最大整数 m 使えるようにして、それぞれ一回ずつ使うと考える
+    let mut ans = vec![];
+    for bit in 0..(1 << m) - 1 {
+        // m 桁分 1 が立っているかどうか確認
+        let mut a = vec![];
+        // println!("{}, {:#06b}", bit, bit); // debug
+        for i in 0..m {
+            if (bit >> i) & 1 != 0 {
+                a.push(i + 1);
+            }
+        }
+        if a.len() == n {
+            ans.push(a);
+        }
+    }
+
+    ans.sort_unstable();
+
+    for xs in ans {
+        for x in xs {
+            print!("{} ", x);
+        }
+        println!();
     }
 }
