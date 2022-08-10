@@ -35,6 +35,10 @@ path = "src/bin/e.rs"
 name = "abc142-f"
 path = "src/bin/f.rs"
 
+[[bin]]
+name = "abc142-e_ac"
+path = "src/bin/e_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
