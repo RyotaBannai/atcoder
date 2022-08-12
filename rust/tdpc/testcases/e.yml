@@ -3,7 +3,13 @@ type: Batch
 timelimit: ~
 match: Lines
 
-cases: []
+cases:
+  - name: sample1
+    in: |
+      3
+      100
+    out: |
+      33
 
 extend:
   - type: Text
