@@ -67,7 +67,7 @@ fn main() {
             // ni: i+1 桁目の数（実際の文字列は i を見る）
             let ni = (s[i] as u8 - b'0') as usize;
 
-            // i 桁目まで n と同じで、i+1 桁目も n より小さい数の時
+            // i 桁目まで n と同じで、i+1 桁目は n より小さい数の時
             for k in 0..ni {
                 dp[i + 1][1][(j + k) % d] += dp[i][0][j];
                 dp[i + 1][1][(j + k) % d] %= mo;
