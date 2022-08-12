@@ -39,6 +39,12 @@ use std::isize::MAX;
  * ビット bit に何個のフラグが立っているか   　　　　 __builtin_popcount(bit)
  * ビット bit に i 番目のフラグを立てたもの          bit｜(1<<i)
  * ビット bit に i 番目のフラグを消したもの          bit & ~(1<<i)
+ *
+ *
+ * 関連問題一覧
+ * ・https://drken1215.hatenablog.com/archive/category/bitDP
+ * ・https://blog.hamayanhamayan.com/entry/2017/07/16/130151
+ *
  */
 
 // aoj
