@@ -109,6 +109,10 @@ path = "src/bin/t.rs"
 name = "tdpc-e_ac"
 path = "src/bin/e_ac.rs"
 
+[[bin]]
+name = "tdpc-i_ac"
+path = "src/bin/i_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"

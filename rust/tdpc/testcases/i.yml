@@ -1,9 +1,19 @@
 ---
 type: Batch
-timelimit: ~
+timelimit: 2s
 match: Lines
 
-cases: []
+cases:
+  - name: sample1
+    in: |
+      iwiwii
+    out: |
+      2
+  - name: sample2
+    in: |
+      iwiwwwiiiwiwiwiiwii
+    out: |
+      5
 
 extend:
   - type: Text

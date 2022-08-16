@@ -54,11 +54,14 @@ impl Rec {
     // dp は r の index 分も持っておく
     fn rec(&mut self, l: usize, r: usize) -> isize {
         if (r - l) <= 1 {
+            self.dp[l][r] = 0;
             return 0;
         } else if (r - l) == 2 {
             if (self.w[l] - self.w[l + 1]).abs() <= 1 {
+                self.dp[l][r] = 2;
                 return 2;
             } else {
+                self.dp[l][r] = 0;
                 return 0;
             }
         }
@@ -75,7 +78,7 @@ impl Rec {
         {
             self.dp[l][r] = self.dp[l][r].max((r - l) as isize);
         } else {
-            // そうでない場合　→ w[l] - w[r-1] <=1 だけど間に他の数が残る場合や、
+            // そうでない場合　→ w[l] - w[r-1] <=1 だけど間に他の数が残る場合や、 w[l] - w[r-1] >= 2 の場合
             // i を区間 [l+1,r-1) でずらながら l~i, i~r のそれぞれの区間の最大値を求めていく
             let mut ma = 0;
             for i in l + 1..r {
