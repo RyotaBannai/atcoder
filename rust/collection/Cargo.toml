@@ -99,6 +99,10 @@ path = "src/bin/dp/bit_dp.rs"
 name = "traveling_salesman_problem"
 path = "src/bin/dp/traveling_salesman_problem.rs"
 
+[[bin]]
+name = "range_dp"
+path = "src/bin/dp/range_dp.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
