@@ -135,6 +135,14 @@ path = "src/bin/y.rs"
 name = "dp-z"
 path = "src/bin/z.rs"
 
+[[bin]]
+name = "dp-n_ac"
+path = "src/bin/n_ac.rs"
+
+[[bin]]
+name = "dp-n_ac2"
+path = "src/bin/n_ac2.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
