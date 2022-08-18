@@ -143,6 +143,10 @@ path = "src/bin/n_ac.rs"
 name = "dp-n_ac2"
 path = "src/bin/n_ac2.rs"
 
+[[bin]]
+name = "dp-k_ac"
+path = "src/bin/k_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
