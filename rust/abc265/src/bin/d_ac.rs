@@ -4,7 +4,7 @@ use proconio::{fastout, input, marker::Chars};
 //     Ordering::{Equal, Greater, Less},
 // };
 // use ac_library_rs::modint::ModInt998244353 as Mint;
-// use superslice::{self, Ext};
+use superslice::{self, Ext};
 // use derive_new::new;
 // #[derive(new)]
 // use indexmap::indexmap;
@@ -16,10 +16,12 @@ use proconio::{fastout, input, marker::Chars};
 
 /**
  * Iroha and Haiku (New ABC Edition)
- * 
+ *
  * https://atcoder.jp/contests/abc265/tasks/abc265_d
- * 
- * 
+ *
+ * tags: #二分探索 #累積和
+ *
+ *
  * 数列 A が与えられる
  * A の元は全て正の整数
  *
@@ -31,18 +33,16 @@ use proconio::{fastout, input, marker::Chars};
  * [y,q)=Q
  * [q,r)=R
  * となる組みがある時を True とする
- * 
- * 
- * なぜ WA か
  *
- * p q r を全て足して判定すると
- * 9 100 101 100
- * 31 41 59 26 53 58 97 93 23
- * のケースで、
- * target = 301 で true 判定してしまう。
- * 41 59 = 100, だけど、その後の 26 53 58 でちょうど 101 にならなくても合計で 301 になるようなケース
+ * x 地点での累積和 sx として、
+ * sp - sx = p, sp = p + sx
+ * sq - sp = q, sq = q + sp
+ * sr - sq = r, sr = r + sq
  *
- */
+ * となるようなそれぞれの地点を二分探索で求める
+ *
+ * 式変形してターゲットを整数だけに直せば、累積和に対して条件を満たす範囲を二分探索を用いて高速に求められる
+*/
 
 #[fastout]
 fn main() {
@@ -50,7 +50,7 @@ fn main() {
         n: usize,
         p: usize,
         q: usize,
-        z: usize,
+        r: usize,
         a: [usize; n]
     }
 
@@ -60,30 +60,27 @@ fn main() {
         sum[i + 1] = sum[i] + a[i];
     }
 
-    let target = p + q + z; // 区間は繋がっているからまとめて考える
-    let mut l = 0;
-    let mut r = 1; // 幅を一つだけ大きくしておく
-
-    // 右を動かすかすのみ
-    loop {
-        let s = sum[r] - sum[l];
-        if s == target {
-            let mut flag = true;
-            if flag {
-                println!("Yes");
-                return;
-            }
-        } else if s < target {
-            // まだ小さい時は、右の幅を広げる
-            r += 1;
-        } else {
-            // 超えた時は、左幅を縮める
-            l += 1;
+    for start in 0..n - 1 {
+        let sp = p + sum[start];
+        let i = sum.lower_bound(&sp);
+        // 見つからない || greater or equal で ちょうどにならない
+        if i == sum.len() || sum[i] != sp {
+            continue;
+        }
+        let sq = q + sp;
+        let j = sum.lower_bound(&sq);
+        if j == sum.len() || sum[j] != sq {
+            continue;
+        }
+        let sr = r + sq;
+        let k = sum.lower_bound(&sr);
+        if k == sum.len() || sum[k] != sr {
+            continue;
         }
 
-        if r > n {
-            break;
-        }
+        // 見つかった
+        println!("Yes");
+        return;
     }
 
     println!("No");
