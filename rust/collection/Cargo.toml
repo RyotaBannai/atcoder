@@ -103,6 +103,10 @@ path = "src/bin/dp/traveling_salesman_problem.rs"
 name = "range_dp"
 path = "src/bin/dp/range_dp.rs"
 
+[[bin]]
+name = "all_directions_tree_dp"
+path = "src/bin/dp/all_directions_tree_dp.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
