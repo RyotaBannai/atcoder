@@ -32,6 +32,7 @@ use std::usize::MAX;
  * ・AOJ 提出結果　https://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=5023731#1
  *
  * 累積 MAX を使うパターン
+ * ・もうひとつの全方位木DP　https://ei1333.hateblo.jp/entry/2018/12/21/004022
  * ・【全方位木DP】明日使える便利な木構造のアルゴリズム　https://qiita.com/keymoon/items/2a52f1b0fb7ef67fb89e#step0-%E6%9C%A8%E6%A7%8B%E9%80%A0%E3%81%AE%E6%83%85%E5%A0%B1%E3%82%92%E8%A8%98%E9%8C%B2%E3%81%99%E3%82%8B
  * ・木DPと全方位木DPを基礎から抽象化まで解説【競技プログラミング】　https://algo-logic.info/tree-dp/#toc_id_2_1
  *
