@@ -115,6 +115,10 @@ path = "src/bin/dp/all_directions_tree_dp_merge.rs"
 name = "all_directions_tree_dp_merge_template"
 path = "src/bin/dp/all_directions_tree_dp_merge_template.rs"
 
+[[bin]]
+name = "aoj_traffic_tree"
+path = "src/bin/dp/aoj_traffic_tree.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
