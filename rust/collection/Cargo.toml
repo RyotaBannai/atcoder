@@ -119,6 +119,22 @@ path = "src/bin/dp/all_directions_tree_dp_merge_template.rs"
 name = "aoj_traffic_tree"
 path = "src/bin/dp/aoj_traffic_tree.rs"
 
+[[bin]]
+name = "utils"
+path = "src/bin/geometry/utils.rs"
+
+[[bin]]
+name = "parallel_orthogonal"
+path = "src/bin/geometry/parallel_orthogonal.rs"
+
+[[bin]]
+name = "projection"
+path = "src/bin/geometry/projection.rs"
+
+[[bin]]
+name = "reflection"
+path = "src/bin/geometry/reflection.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
