@@ -135,6 +135,18 @@ path = "src/bin/geometry/projection.rs"
 name = "reflection"
 path = "src/bin/geometry/reflection.rs"
 
+[[bin]]
+name = "placement"
+path = "src/bin/geometry/placement.rs"
+
+[[bin]]
+name = "intersect"
+path = "src/bin/geometry/intersect.rs"
+
+[[bin]]
+name = "distance"
+path = "src/bin/geometry/distance.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"

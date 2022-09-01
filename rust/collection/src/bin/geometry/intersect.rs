@@ -1,8 +1,15 @@
 /**
+ * @cpg_dirspec intersect
+ *
+ * cpg run -p src/bin/geometry/intersect.rs
+ */
+use std::io;
+
+/**
  * 計算幾何学パーツ
  */
 use std::cmp::{
-    Ordering,
+    max, min, Ordering,
     Ordering::{Equal, Greater, Less},
 };
 
@@ -124,8 +131,8 @@ impl VectorFns {
     }
     /*
     ベクトルと線分間の距離 p382
-    線分の端点 v1,v2 について、
-    v の位置が v1 からの角度が 90/-90 以上であれば、v1 より後退した場所に位置しているため、最短距離は v1 との距離になる
+    線分の単点 v1,v2 について、
+    v1 からの角度が 90/-90 以上であれば、v1 より後退した場所に位置しているため、最短距離は v1 との距離になる
     同様に v2
     それ以外は、ベクトル v は v1,v2 の間に位置しているため。これは線分とベクトルの距離
     なす角が 90/-90 の時、内積は負（cosθより）
@@ -133,38 +140,31 @@ impl VectorFns {
     fn distance_sv(v: Vector, v1: Vector, v2: Vector) -> f64 {
         if Self::dot(v2.sub(v1), v.sub(v1)) < 0.0 {
             // v1 を始点に試す
-            // 2点間の距離
-            Self::norm(v.sub(v1))
+            Self::abs(v, v1)
         } else if Self::dot(v1.sub(v2), v.sub(v2)) < 0.0 {
             // v2 を始点に試す
-            // 2点間の距離
-            Self::norm(v.sub(v2))
+            Self::abs(v, v2)
         } else {
             // 線分との距離
             Self::distance_lv(v, v1, v2)
         }
     }
     // 線分間の距離
-    fn distance_ss(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> f64 {
-        if Self::intersect(v1, v2, u1, u2) {
-            // 交差するなら距離 0
-            0.0
-        } else {
-            // 各線分に対して、一方の端点からの距離の最小が線分どうしの距離となる
-            let mut mi = std::f64::MAX;
-            for &d in &[
-                Self::distance_sv(u1, v1, v2),
-                Self::distance_sv(u2, v1, v2),
-                Self::distance_sv(v1, u1, u2),
-                Self::distance_sv(v2, u1, u2),
-            ] {
-                if d < mi {
-                    mi = d
-                }
-            }
-            mi
-        }
-    }
+    // fn distance_ss(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> f64 {
+    // if (Self::intersect(v1, v2, u1, u2)) {
+    //     0.0
+    // } else {
+    //     vec![
+    //         Self::distance_sv(u1, v1, v2),
+    //         Self::distance_sv(u2, v1, v2),
+    //         Self::distance_sv(v1, u1, u2),
+    //         Self::distance_sv(u2, u1, u2),
+    //     ]
+    //     .into_iter()
+    //     .sorted_by(|d1, d2| d1.partial_cmp(d2).unwrap()) // NaNが含まれていないことが事前にわかっている場合
+    //     .collect::<Vec<_>>()[0]
+    // }
+    // }
 
     fn intersect(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> bool {
         let place1 = Self::placement(u1, v1, v2);
@@ -236,9 +236,6 @@ impl Vector {
     fn mul(self, k: f64) -> Self {
         Self::new(self.x * k, self.y * k)
     }
-    fn div(self, k: f64) -> Self {
-        Self::new(self.x / k, self.y / k)
-    }
     fn dot(self, other: Vector) -> f64 {
         VectorFns::dot(self, other)
     }
@@ -256,6 +253,29 @@ impl Vector {
     }
 }
 
+fn read<T: std::str::FromStr>() -> Vec<T> {
+    let mut buf = String::new();
+    io::stdin().read_line(&mut buf).unwrap();
+    buf.trim().split(' ').flat_map(str::parse).collect()
+}
+
 fn main() {
-    todo!();
+    let n = read::<usize>()[0];
+    for _ in 0..n {
+        let a = read::<f64>();
+        let (v1, v2, u1, u2) = (
+            Vector::new(a[0], a[1]),
+            Vector::new(a[2], a[3]),
+            Vector::new(a[4], a[5]),
+            Vector::new(a[6], a[7]),
+        );
+        println!(
+            "{}",
+            if VectorFns::intersect(v1, v2, u1, u2) {
+                "1"
+            } else {
+                "0"
+            }
+        );
+    }
 }

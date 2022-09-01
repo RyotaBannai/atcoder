@@ -1,4 +1,11 @@
 /**
+ * @cpg_dirspec distance
+ *
+ * cpg run -p src/bin/geometry/distance.rs
+ */
+use std::io;
+
+/**
  * 計算幾何学パーツ
  */
 use std::cmp::{
@@ -236,9 +243,6 @@ impl Vector {
     fn mul(self, k: f64) -> Self {
         Self::new(self.x * k, self.y * k)
     }
-    fn div(self, k: f64) -> Self {
-        Self::new(self.x / k, self.y / k)
-    }
     fn dot(self, other: Vector) -> f64 {
         VectorFns::dot(self, other)
     }
@@ -256,6 +260,22 @@ impl Vector {
     }
 }
 
+fn read<T: std::str::FromStr>() -> Vec<T> {
+    let mut buf = String::new();
+    io::stdin().read_line(&mut buf).unwrap();
+    buf.trim().split(' ').flat_map(str::parse).collect()
+}
+
 fn main() {
-    todo!();
+    let n = read::<usize>()[0];
+    for _ in 0..n {
+        let a = read::<f64>();
+        let (v1, v2, u1, u2) = (
+            Vector::new(a[0], a[1]),
+            Vector::new(a[2], a[3]),
+            Vector::new(a[4], a[5]),
+            Vector::new(a[6], a[7]),
+        );
+        println!("{:.10}", VectorFns::distance_ss(v1, v2, u1, u2));
+    }
 }

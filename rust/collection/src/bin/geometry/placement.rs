@@ -1,8 +1,15 @@
 /**
+ * @cpg_dirspec placement
+ *
+ * cpg run -p src/bin/geometry/placement.rs
+ */
+use std::io;
+
+/**
  * 計算幾何学パーツ
  */
 use std::cmp::{
-    Ordering,
+    max, min, Ordering,
     Ordering::{Equal, Greater, Less},
 };
 
@@ -57,7 +64,6 @@ impl VectorFns {
     |axb|=|a||b|sinθ
     向きはベクトル a,b を含む平面上に垂直で、右ねじが進む向き
     大きさは、ベクトル a,b が作る平行四辺形の面積
-    a を始線とした時の b がなす角
     */
     fn cross(v1: Vector, v2: Vector) -> f64 {
         v1.x * v2.y - v1.y * v2.x
@@ -124,8 +130,8 @@ impl VectorFns {
     }
     /*
     ベクトルと線分間の距離 p382
-    線分の端点 v1,v2 について、
-    v の位置が v1 からの角度が 90/-90 以上であれば、v1 より後退した場所に位置しているため、最短距離は v1 との距離になる
+    線分の単点 v1,v2 について、
+    v1 からの角度が 90/-90 以上であれば、v1 より後退した場所に位置しているため、最短距離は v1 との距離になる
     同様に v2
     それ以外は、ベクトル v は v1,v2 の間に位置しているため。これは線分とベクトルの距離
     なす角が 90/-90 の時、内積は負（cosθより）
@@ -133,38 +139,31 @@ impl VectorFns {
     fn distance_sv(v: Vector, v1: Vector, v2: Vector) -> f64 {
         if Self::dot(v2.sub(v1), v.sub(v1)) < 0.0 {
             // v1 を始点に試す
-            // 2点間の距離
-            Self::norm(v.sub(v1))
+            Self::abs(v, v1)
         } else if Self::dot(v1.sub(v2), v.sub(v2)) < 0.0 {
             // v2 を始点に試す
-            // 2点間の距離
-            Self::norm(v.sub(v2))
+            Self::abs(v, v2)
         } else {
             // 線分との距離
             Self::distance_lv(v, v1, v2)
         }
     }
     // 線分間の距離
-    fn distance_ss(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> f64 {
-        if Self::intersect(v1, v2, u1, u2) {
-            // 交差するなら距離 0
-            0.0
-        } else {
-            // 各線分に対して、一方の端点からの距離の最小が線分どうしの距離となる
-            let mut mi = std::f64::MAX;
-            for &d in &[
-                Self::distance_sv(u1, v1, v2),
-                Self::distance_sv(u2, v1, v2),
-                Self::distance_sv(v1, u1, u2),
-                Self::distance_sv(v2, u1, u2),
-            ] {
-                if d < mi {
-                    mi = d
-                }
-            }
-            mi
-        }
-    }
+    // fn distance_ss(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> f64 {
+    // if (Self::intersect(v1, v2, u1, u2)) {
+    //     0.0
+    // } else {
+    //     vec![
+    //         Self::distance_sv(u1, v1, v2),
+    //         Self::distance_sv(u2, v1, v2),
+    //         Self::distance_sv(v1, u1, u2),
+    //         Self::distance_sv(u2, u1, u2),
+    //     ]
+    //     .into_iter()
+    //     .sorted_by(|d1, d2| d1.partial_cmp(d2).unwrap()) // NaNが含まれていないことが事前にわかっている場合
+    //     .collect::<Vec<_>>()[0]
+    // }
+    // }
 
     fn intersect(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> bool {
         let place1 = Self::placement(u1, v1, v2);
@@ -181,7 +180,6 @@ impl VectorFns {
         } else {
             // それぞれの端点が時計回りかつ反時計回りにある
             place1 * place2 == 3 && place3 * place4 == 3
-            // 1*1*3*3 の場合もあるから place1 * place2 * place3 * place4 == 9 とはしない
         }
     }
 
@@ -203,7 +201,7 @@ impl VectorFns {
        内積が正（cosθ=1）なら v,u は同じ向き
        内積が正（cosθ=-1）なら v,u は逆向き
      */
-    fn placement(v: Vector, v1: Vector, v2: Vector) -> usize {
+    fn placement(v: Vector, v1: Vector, v2: Vector) -> i64 {
         let eps = 0.000_000_000_1;
         let cross = Self::cross(v2.sub(v1), v.sub(v1)); //v1v2 を始軸にしたい
         let dot = Self::dot(v.sub(v1), v2.sub(v1)); // 角度は気しないからどっちが始軸でもok
@@ -236,9 +234,6 @@ impl Vector {
     fn mul(self, k: f64) -> Self {
         Self::new(self.x * k, self.y * k)
     }
-    fn div(self, k: f64) -> Self {
-        Self::new(self.x / k, self.y / k)
-    }
     fn dot(self, other: Vector) -> f64 {
         VectorFns::dot(self, other)
     }
@@ -256,6 +251,32 @@ impl Vector {
     }
 }
 
+fn read<T: std::str::FromStr>() -> Vec<T> {
+    let mut buf = String::new();
+    io::stdin().read_line(&mut buf).unwrap();
+    buf.trim().split(' ').flat_map(str::parse).collect()
+}
+
 fn main() {
-    todo!();
+    let a = read::<f64>();
+    let (v1, v2) = (Vector::new(a[0], a[1]), Vector::new(a[2], a[3]));
+
+    let n = read::<usize>()[0];
+    for _ in 0..n {
+        let b = read::<f64>();
+        let v = Vector::new(b[0], b[1]);
+        let ans = VectorFns::placement(v, v1, v2);
+        println!(
+            "{}",
+            match ans {
+                1 => "COUNTER_CLOCKWISE",
+                3 => "CLOCKWISE",
+                5 => "ONLINE_BACK",
+                7 => "ON_SEGMENT",
+                11 => "ON_SEGMENT", // 同じ位置は線分上とみる
+                13 => "ONLINE_FRONT",
+                _ => unreachable!(),
+            }
+        );
+    }
 }
