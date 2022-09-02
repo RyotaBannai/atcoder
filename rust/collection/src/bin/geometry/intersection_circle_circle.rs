@@ -1,4 +1,11 @@
 /**
+ * @cpg_dirspec intersection_circle_circle
+ *
+ * cpg run -p src/bin/geometry/intersection_circle_circle.rs
+ */
+use std::io;
+
+/**
  * 計算幾何学パーツ
  */
 use std::cmp::{
@@ -331,6 +338,26 @@ impl CircleFns {
     }
 }
 
+fn read<T: std::str::FromStr>() -> Vec<T> {
+    let mut buf = String::new();
+    io::stdin().read_line(&mut buf).unwrap();
+    buf.trim().split(' ').flat_map(str::parse).collect()
+}
+
 fn main() {
-    todo!();
+    let a = read::<f64>();
+    let b = read::<f64>();
+    let (c1, c2) = (
+        Circle::new(Vector::new(a[0], a[1]), a[2]),
+        Circle::new(Vector::new(b[0], b[1]), b[2]),
+    );
+    let (v1, v2) = CircleFns::points_at_intersection_circles(c1, c2);
+    let (a, b) = {
+        if v1.cmp(v2) == Less {
+            (v1, v2)
+        } else {
+            (v2, v1)
+        }
+    };
+    println!("{:.8} {:.8} {:.8} {:.8}", a.x, a.y, b.x, b.y);
 }

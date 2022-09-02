@@ -1,4 +1,11 @@
 /**
+ * @cpg_dirspec intersection_segment_segment
+ *
+ * cpg run -p src/bin/geometry/intersection_segment_segment.rs
+ */
+use std::io;
+
+/**
  * 計算幾何学パーツ
  */
 use std::cmp::{
@@ -92,11 +99,11 @@ impl VectorFns {
         v1.x * v2.y - v1.y * v2.x
     }
     fn equals(v1: Vector, v2: Vector) -> bool {
-        let eps = 1e-10;
+        let eps = 0.000_000_000_1;
         (v1.x - v2.x).abs() < eps && (v1.y - v2.y).abs() < eps
     }
     fn cmp(v1: Vector, v2: Vector) -> Ordering {
-        let eps = 1e-10;
+        let eps = 0.000_000_000_1;
         if (v1.x - v2.x).abs() < eps {
             if (v1.y - v2.y).abs() < eps {
                 Equal
@@ -116,13 +123,13 @@ impl VectorFns {
     ベクトル単体は原点をベースに考えているから、線分なら始点と終点の２点から計算する
     */
     fn is_orthogonal(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> bool {
-        let eps = 1e-10;
+        let eps = 0.000_000_000_1;
         let nv = v1.sub(v2);
         let nu = u1.sub(u2);
         (Self::dot(nv, nu) - 0.0).abs() < eps
     }
     fn is_parallel(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> bool {
-        let eps = 1e-10;
+        let eps = 0.000_000_000_1;
         let nv = v1.sub(v2);
         let nu = u1.sub(u2);
         (Self::cross(nv, nu) - 0.0).abs() < eps
@@ -233,7 +240,7 @@ impl VectorFns {
        内積が正（cosθ=-1）なら v,u は逆向き
      */
     fn placement(v: Vector, v1: Vector, v2: Vector) -> usize {
-        let eps = 1e-10;
+        let eps = 0.000_000_000_1;
         let cross = Self::cross(v2.sub(v1), v.sub(v1)); //v1v2 を始軸にしたい
         let dot = Self::dot(v.sub(v1), v2.sub(v1)); // 角度は気しないからどっちが始軸でもok
         if cross > 0.0 {
@@ -313,17 +320,17 @@ impl CircleFns {
     // 二つの円の交点座標
     // 交差しない場合は (Vector{NAN,NAN},Vector{NAN,NAN}) を返す
     fn points_at_intersection_circles(c1: Circle, c2: Circle) -> (Vector, Vector) {
-        let nv = c2.c.sub(c1.c); // c1 の中心から c2 の中心へのベクトル
-        let d = VectorFns::norm(nv);
-        if d > c1.r + c2.r {
+        if VectorFns::norm(c2.c.sub(c1.c)) > VectorFns::norm(c1.c) + VectorFns::norm(c2.c) {
             let nv = Vector::new(NAN, NAN);
             return (nv, nv);
         }
         // 余弦定理より半径 c1.r, c2.r, d(c2.c - c1.c)を用いて r1 と d がなす角 a を求める（ベクトル r は中心からのベクトルを意味する）
-        let a = ((c1.r * c1.r + d * d - c2.r * c2.r) / (2.0 * c1.r * d)).acos();
-        //  x 軸と d のなす角
-        let t = nv.y.atan2(nv.x);
-        // ここではベクトル{x,y} を回転した結果を c の中心に加えてるわけではない.
+        let nv = c2.c.sub(c1.c); // c1 の中心から c2 の中心へのベクトル
+        let d = VectorFns::norm(nv);
+        let a = (c1.r * c1.r + d * d - c2.r * c2.r) / (2.0 * c1.r * d).acos();
+        //  x 座標と d のなす角
+        let t = (nv.y / nv.x).atan();
+        // ここではベクトル{x,y} を回転した結果を c の中心に加えいるわけではない.
         (
             c1.c.add(VectorFns::polar_on_r(c1.r, t + a)), // 反時計回りに回転、正
             c1.c.add(VectorFns::polar_on_r(c1.r, t - a)), // 時計回りに回転したい、負
@@ -331,6 +338,23 @@ impl CircleFns {
     }
 }
 
+fn read<T: std::str::FromStr>() -> Vec<T> {
+    let mut buf = String::new();
+    io::stdin().read_line(&mut buf).unwrap();
+    buf.trim().split(' ').flat_map(str::parse).collect()
+}
+
 fn main() {
-    todo!();
+    let n = read::<usize>()[0];
+    for _ in 0..n {
+        let a = read::<f64>();
+        let (v1, v2, u1, u2) = (
+            Vector::new(a[0], a[1]),
+            Vector::new(a[2], a[3]),
+            Vector::new(a[4], a[5]),
+            Vector::new(a[6], a[7]),
+        );
+        let ans = VectorFns::point_at_intersection(v1, v2, u1, u2);
+        println!("{:.10} {:.10}", ans.x, ans.y);
+    }
 }

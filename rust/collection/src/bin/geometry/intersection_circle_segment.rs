@@ -1,11 +1,17 @@
 /**
+ * @cpg_dirspec intersection_circle_segment
+ *
+ * cpg run -p src/bin/geometry/intersection_circle_segment.rs
+ */
+use std::io;
+
+/**
  * 計算幾何学パーツ
  */
 use std::cmp::{
     Ordering,
     Ordering::{Equal, Greater, Less},
 };
-use std::f64::NAN;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 struct Vector {
@@ -78,8 +84,8 @@ impl VectorFns {
     a・b=|a||b|cosθ
     return はラジアン p363
     */
-    fn rad(v1: Vector, v2: Vector) -> f64 {
-        (Self::dot(v1, v2) / (Self::norm(v1) * Self::norm(v2))).acos()
+    fn cos(v1: Vector, v2: Vector) -> f64 {
+        Self::dot(v1, v2) / (Self::norm(v1) * Self::norm(v2))
     }
     /*
     外積 xy
@@ -92,11 +98,11 @@ impl VectorFns {
         v1.x * v2.y - v1.y * v2.x
     }
     fn equals(v1: Vector, v2: Vector) -> bool {
-        let eps = 1e-10;
+        let eps = 0.000_000_000_1;
         (v1.x - v2.x).abs() < eps && (v1.y - v2.y).abs() < eps
     }
     fn cmp(v1: Vector, v2: Vector) -> Ordering {
-        let eps = 1e-10;
+        let eps = 0.000_000_000_1;
         if (v1.x - v2.x).abs() < eps {
             if (v1.y - v2.y).abs() < eps {
                 Equal
@@ -116,13 +122,13 @@ impl VectorFns {
     ベクトル単体は原点をベースに考えているから、線分なら始点と終点の２点から計算する
     */
     fn is_orthogonal(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> bool {
-        let eps = 1e-10;
+        let eps = 0.000_000_000_1;
         let nv = v1.sub(v2);
         let nu = u1.sub(u2);
         (Self::dot(nv, nu) - 0.0).abs() < eps
     }
     fn is_parallel(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> bool {
-        let eps = 1e-10;
+        let eps = 0.000_000_000_1;
         let nv = v1.sub(v2);
         let nu = u1.sub(u2);
         (Self::cross(nv, nu) - 0.0).abs() < eps
@@ -233,7 +239,7 @@ impl VectorFns {
        内積が正（cosθ=-1）なら v,u は逆向き
      */
     fn placement(v: Vector, v1: Vector, v2: Vector) -> usize {
-        let eps = 1e-10;
+        let eps = 0.000_000_000_1;
         let cross = Self::cross(v2.sub(v1), v.sub(v1)); //v1v2 を始軸にしたい
         let dot = Self::dot(v.sub(v1), v2.sub(v1)); // 角度は気しないからどっちが始軸でもok
         if cross > 0.0 {
@@ -250,55 +256,20 @@ impl VectorFns {
             13
         }
     }
-    // ２つの線分の交点
-    // 交差しない場合は Vector{NAN,NAN} を返す
-    fn point_at_intersection(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> Vector {
-        if !Self::intersect(v1, v2, u1, u2) {
-            return Vector::new(NAN, NAN);
-        }
-        let base = v2.sub(v1);
-        // 高さ // 二つの平行四辺形を底辺 base で割る
-        let h1 = (Self::cross(base, u1.sub(v1)) / Self::norm(base)).abs(); // 絶対値 // |base| は t の計算で約分するから省略可
-        let h2 = (Self::cross(base, u2.sub(v1)) / Self::norm(base)).abs();
-        // base にならない方の線分の交点までの比は t: 1-t = h1: h2
-        let t = h1 / (h1 + h2);
-        let nv = u2.sub(u1).mul(t);
-        u1.add(nv)
-    }
     // 単位ベクトル ベクトルをノルムで割る
     fn unit(v1: Vector, v2: Vector) -> Vector {
         let nv = v2.sub(v1);
         nv.div(Self::norm(nv))
     }
-
-    // 半径 r はただの大きさで、大きさを１とした時に x=cosθ, y=sinθ で求められるのと同じ
-    // その場合は、X=xcosθ-ysinθ, Y=ycosθ+xsinθ (polar_on_v)
-    // https://mathwords.net/heimenkaiten
-    fn polar_on_r(r: f64, rad: f64) -> Vector {
-        Vector::new(r * rad.cos(), r * rad.sin())
-    }
-
-    fn polar_on_v(v: Vector, rad: f64) -> Vector {
-        Vector::new(
-            v.x * rad.cos() - v.y * rad.sin(),
-            v.y * rad.cos() + v.x * rad.sin(),
-        )
-    }
 }
 
 struct CircleFns {}
 impl CircleFns {
-    // 円と直線が交差するかどうか判定（線分で端点が円の中にある場合は考慮しない）
-    // ベクトルから円の中心までの距離が、円の半径より小さければok
-    fn is_intersect(c: Circle, v1: Vector, v2: Vector) -> bool {
-        let d = VectorFns::distance_lv(c.c, v1, v2);
-        // 接する場合も true
-        d <= c.r
-    }
     // 円と直線との交点座標
     // 交差しない場合は (Vector{NAN,NAN},Vector{NAN,NAN}) を返す
-    fn points_at_intersection_line(c: Circle, v1: Vector, v2: Vector) -> (Vector, Vector) {
+    fn points_at_intersection(c: Circle, v1: Vector, v2: Vector) -> (Vector, Vector) {
         if !Self::is_intersect(c, v1, v2) {
+            use std::f64::NAN;
             let nv = Vector::new(NAN, NAN);
             return (nv, nv);
         }
@@ -309,28 +280,37 @@ impl CircleFns {
         let nu = e.mul(base); // unit に大きさ base をかけると交点に向けたベクトルになる. それを、正射影のベクトルに加えると交点のベクトルになる
         (pr.add(nu), pr.sub(nu))
     }
-
-    // 二つの円の交点座標
-    // 交差しない場合は (Vector{NAN,NAN},Vector{NAN,NAN}) を返す
-    fn points_at_intersection_circles(c1: Circle, c2: Circle) -> (Vector, Vector) {
-        let nv = c2.c.sub(c1.c); // c1 の中心から c2 の中心へのベクトル
-        let d = VectorFns::norm(nv);
-        if d > c1.r + c2.r {
-            let nv = Vector::new(NAN, NAN);
-            return (nv, nv);
-        }
-        // 余弦定理より半径 c1.r, c2.r, d(c2.c - c1.c)を用いて r1 と d がなす角 a を求める（ベクトル r は中心からのベクトルを意味する）
-        let a = ((c1.r * c1.r + d * d - c2.r * c2.r) / (2.0 * c1.r * d)).acos();
-        //  x 軸と d のなす角
-        let t = nv.y.atan2(nv.x);
-        // ここではベクトル{x,y} を回転した結果を c の中心に加えてるわけではない.
-        (
-            c1.c.add(VectorFns::polar_on_r(c1.r, t + a)), // 反時計回りに回転、正
-            c1.c.add(VectorFns::polar_on_r(c1.r, t - a)), // 時計回りに回転したい、負
-        )
+    // 円と直線が交差するかどうか判定（線分で端点が円の中にある場合は考慮しない）
+    // ベクトルから円の中心までの距離が、円の半径より小さければok
+    fn is_intersect(c: Circle, v1: Vector, v2: Vector) -> bool {
+        let d = VectorFns::distance_lv(c.c, v1, v2);
+        // 接する場合も true
+        d <= c.r
     }
 }
 
+fn read<T: std::str::FromStr>() -> Vec<T> {
+    let mut buf = String::new();
+    io::stdin().read_line(&mut buf).unwrap();
+    buf.trim().split(' ').flat_map(str::parse).collect()
+}
+
 fn main() {
-    todo!();
+    let a = read::<f64>();
+    let c = Circle::new(Vector::new(a[0], a[1]), a[2]);
+
+    let q = read::<usize>()[0];
+    for _ in 0..q {
+        let a = read::<f64>();
+        let (v1, v2) =
+            CircleFns::points_at_intersection(c, Vector::new(a[0], a[1]), Vector::new(a[2], a[3]));
+        let (a, b) = {
+            if v1.cmp(v2) == Less {
+                (v1, v2)
+            } else {
+                (v2, v1)
+            }
+        };
+        println!("{:.8} {:.8} {:.8} {:.8}", a.x, a.y, b.x, b.y);
+    }
 }

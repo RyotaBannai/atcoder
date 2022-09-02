@@ -151,6 +151,18 @@ path = "src/bin/geometry/distance.rs"
 name = "is_convex"
 path = "src/bin/geometry/is_convex.rs"
 
+[[bin]]
+name = "intersection_circle_segment"
+path = "src/bin/geometry/intersection_circle_segment.rs"
+
+[[bin]]
+name = "intersection_segment_segment"
+path = "src/bin/geometry/intersection_segment_segment.rs"
+
+[[bin]]
+name = "intersection_circle_circle"
+path = "src/bin/geometry/intersection_circle_circle.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
