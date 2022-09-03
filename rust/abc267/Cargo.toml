@@ -47,7 +47,7 @@ path = "src/bin/g.rs"
 
 [[bin]]
 name = "abc267-c_ac"
-path = "src/bin/c_ac.rs"
+path = "src/bin/c_ac.rs" 
 
 [[bin]]
 name = "abc267-b_ac"
@@ -56,6 +56,10 @@ path = "src/bin/b_ac.rs"
 [[bin]]
 name = "abc267-a_ac"
 path = "src/bin/a_ac.rs"
+
+[[bin]]
+name = "abc267-d_ac"
+path = "src/bin/d_ac.rs"
 
 [dependencies]
 num = "=0.2.1"
