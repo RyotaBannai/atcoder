@@ -167,6 +167,10 @@ path = "src/bin/geometry/intersection_circle_circle.rs"
 name = "polygon_area"
 path = "src/bin/geometry/polygon_area.rs"
 
+[[bin]]
+name = "contain_point"
+path = "src/bin/geometry/contain_point.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
