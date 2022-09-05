@@ -1,4 +1,23 @@
 /**
+ * @cpg_dirspec polygon_area
+ *
+ * cpg run -p src/bin/geometry/polygon_area.rs
+ */
+use std::io;
+
+/**
+ * 面積
+ *
+ * tags: #area #polygon
+ *
+ * 多角形の各ベクトルを順に二つずつとって外積の 1/2 を求めてその総和が多角形の面積になる
+ * 余分な部分は内積のz成分が負となり、総和を求めることで相殺される
+ *
+ * 参考
+ * https://imagingsolution.net/math/calc_n_point_area/
+ */
+
+/**
  * 計算幾何学パーツ
  */
 use std::cmp::{
@@ -346,6 +365,20 @@ impl PolygonFns {
     }
 }
 
+fn read<T: std::str::FromStr>() -> Vec<T> {
+    let mut buf = String::new();
+    io::stdin().read_line(&mut buf).unwrap();
+    buf.trim().split(' ').flat_map(str::parse).collect()
+}
+
 fn main() {
-    todo!();
+    let n = read::<usize>()[0];
+    let mut p = vec![];
+
+    for _ in 0..n {
+        let a = read::<f64>();
+        p.push(Vector::new(a[0], a[1]));
+    }
+
+    println!("{:.1}", PolygonFns::area(p));
 }
