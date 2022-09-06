@@ -171,6 +171,10 @@ path = "src/bin/geometry/polygon_area.rs"
 name = "contain_point"
 path = "src/bin/geometry/contain_point.rs"
 
+[[bin]]
+name = "convex_hull"
+path = "src/bin/geometry/convex_hull.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"

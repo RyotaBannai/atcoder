@@ -1,4 +1,18 @@
 /**
+ * @cpg_dirspec convex_hull
+ *
+ * cpg run -p src/bin/geometry/convex_hull.rs
+ */
+use std::io;
+
+/**
+ * 多角形-点の包含
+ *
+ * tags: #convex_hull #凸包
+ *
+ */
+
+/**
  * 計算幾何学パーツ
  */
 use std::cmp::{
@@ -39,6 +53,9 @@ impl Vector {
     }
     fn cmp(self, other: Vector) -> Ordering {
         VectorFns::cmp(self, other)
+    }
+    fn cmp_y(self, other: Vector) -> Ordering {
+        VectorFns::cmp_y(self, other)
     }
     fn equals(self, other: Vector) -> bool {
         VectorFns::equals(self, other)
@@ -95,6 +112,23 @@ impl VectorFns {
                 Greater
             }
         } else if v1.x < v2.x {
+            Less
+        } else {
+            Greater
+        }
+    }
+    // y 成分優先に比較
+    fn cmp_y(v1: Vector, v2: Vector) -> Ordering {
+        let eps = 1e-10;
+        if (v1.y - v2.y).abs() < eps {
+            if (v1.x - v2.x).abs() < eps {
+                Equal
+            } else if v1.x < v2.x {
+                Less
+            } else {
+                Greater
+            }
+        } else if v1.y < v2.y {
             Less
         } else {
             Greater
@@ -443,32 +477,37 @@ impl PolygonFns {
 
     fn convex_hull(mut p: Polygon) -> (Vec<Vector>, Vec<Vector>) {
         p.sort_by(|&v1, &v2| v1.cmp(v2));
-
         let n = p.len();
         let mut up = vec![p[0], p[1]];
         let mut low = vec![p[n - 1], p[n - 2]];
 
-        for i in 2..n {
+        for &v in p[2..n].iter() {
             let mut k = up.len();
             while k >= 2 {
-                if VectorFns::placement(p[i], up[k - 2], up[k - 1]) == 1 {
+                if VectorFns::placement(v, up[k - 2], up[k - 1]) == 1 {
                     up.pop();
                     k -= 1;
+                    if k < 2 {
+                        up.push(v);
+                    }
                 } else {
-                    up.push(p[i]);
+                    up.push(v);
                     break;
                 }
             }
         }
 
-        for i in n - 3..0 {
+        for &v in p[0..n - 2].iter().rev() {
             let mut k = low.len();
             while k >= 2 {
-                if VectorFns::placement(p[i], up[k - 2], up[k - 1]) == 1 {
+                if VectorFns::placement(v, low[k - 2], low[k - 1]) == 1 {
                     low.pop();
                     k -= 1;
+                    if k < 2 {
+                        low.push(v);
+                    }
                 } else {
-                    up.push(p[i]);
+                    low.push(v);
                     break;
                 }
             }
@@ -477,6 +516,51 @@ impl PolygonFns {
     }
 }
 
+fn read<T: std::str::FromStr>() -> Vec<T> {
+    let mut buf = String::new();
+    io::stdin().read_line(&mut buf).unwrap();
+    buf.trim().split(' ').flat_map(str::parse).collect()
+}
+
 fn main() {
-    todo!();
+    let n = read::<usize>()[0];
+    let mut p = vec![];
+    for _ in 0..n {
+        let a = read::<f64>();
+        p.push(Vector::new(a[0], a[1]));
+    }
+
+    let (mut up, mut low) = PolygonFns::convex_hull(p);
+    let mut vs = up;
+    let wl = low.len();
+    vs.append(&mut low[1..wl - 1].to_vec());
+
+    let mut s = vs[0];
+    let mut k = 0;
+    for (i, &v) in vs.iter().enumerate() {
+        if v.cmp_y(s) == Less {
+            s = v;
+            k = i;
+        }
+    }
+
+    /*
+    vs が 開始地点から最後までの上半分の点と、終了地点から開始地点までの下半分（開始地点と終了地点の重複分は省く）
+    で構成されている.
+    最小の y の中で最小の x となる頂点から初めて、反時計回りに出力したいため
+    vs に vs を加えて、開始地点 s + vs.len() 地点から -1 した位置を順に出力
+    */
+    println!("{}", vs.len());
+
+    k += vs.len();
+    let mut other = vs.clone();
+    vs.append(&mut other);
+
+    loop {
+        println!("{} {}", vs[k].x, vs[k].y);
+        k -= 1;
+        if vs[k] == s {
+            break;
+        }
+    }
 }
