@@ -7,11 +7,28 @@ use std::cmp::{
 };
 use std::f64::NAN;
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug)]
 struct Vector {
     x: f64,
     y: f64,
 }
+impl PartialEq for Vector {
+    fn eq(&self, other: &Self) -> bool {
+        VectorFns::eq(self, other)
+    }
+}
+impl Ord for Vector {
+    fn cmp(&self, other: &Self) -> Ordering {
+        VectorFns::cmp(self, other)
+    }
+}
+impl PartialOrd for Vector {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+impl Eq for Vector {}
+
 impl Vector {
     fn new(x: f64, y: f64) -> Self {
         Self { x, y }
@@ -37,14 +54,8 @@ impl Vector {
     fn norm(self) -> f64 {
         VectorFns::norm(self)
     }
-    fn cmp(self, other: Vector) -> Ordering {
-        VectorFns::cmp(self, other)
-    }
     fn cmp_y(self, other: Vector) -> Ordering {
         VectorFns::cmp_y(self, other)
-    }
-    fn equals(self, other: Vector) -> bool {
-        VectorFns::equals(self, other)
     }
     fn unit(self) -> Self {
         VectorFns::unit(Vector::new(0.0, 0.0), self)
@@ -83,11 +94,11 @@ impl VectorFns {
     fn cross(v1: Vector, v2: Vector) -> f64 {
         v1.x * v2.y - v1.y * v2.x
     }
-    fn equals(v1: Vector, v2: Vector) -> bool {
+    fn eq(v1: &Vector, v2: &Vector) -> bool {
         let eps = 1e-10;
         (v1.x - v2.x).abs() < eps && (v1.y - v2.y).abs() < eps
     }
-    fn cmp(v1: Vector, v2: Vector) -> Ordering {
+    fn cmp(v1: &Vector, v2: &Vector) -> Ordering {
         let eps = 1e-10;
         if (v1.x - v2.x).abs() < eps {
             if (v1.y - v2.y).abs() < eps {
@@ -463,7 +474,7 @@ impl PolygonFns {
 
     // 0~n 区間と n~0 区間をそれぞれ調べる
     fn convex_hull(mut p: Polygon) -> (Vec<Vector>, Vec<Vector>) {
-        p.sort_by(|&v1, &v2| v1.cmp(v2)); // x、y の昇順にする
+        p.sort(); // x、y の昇順にする
         let n = p.len();
         let mut up = vec![p[0], p[1]];
         let mut low = vec![p[n - 1], p[n - 2]];
@@ -486,6 +497,114 @@ impl PolygonFns {
             low.push(v);
         }
         (up, low)
+    }
+}
+
+mod ManhattanGeo {
+    use crate::Vector;
+    use std::cmp::{
+        Ordering,
+        Ordering::{Equal, Greater, Less},
+    };
+    use std::collections::{BTreeMap, BTreeSet};
+    type Set<T> = BTreeSet<T>;
+
+    type Point = Vector;
+
+    struct Num(f64);
+    impl Num {
+        fn new(num: f64) -> Self {
+            Self(num)
+        }
+        fn eq(num1: &Num, num2: &Num) -> bool {
+            let eps = 1e-10;
+            (num1.0 - num2.0).abs() < eps
+        }
+        fn cmp(num1: &Num, num2: &Num) -> Ordering {
+            if Num::eq(num1, num2) {
+                Equal
+            } else if num1.0 < num2.0 {
+                Less
+            } else {
+                Greater
+            }
+        }
+    }
+    impl Eq for Num {}
+    impl PartialEq for Num {
+        fn eq(&self, other: &Self) -> bool {
+            Num::eq(self, other)
+        }
+    }
+    impl Ord for Num {
+        fn cmp(&self, other: &Self) -> Ordering {
+            Num::cmp(self, other)
+        }
+    }
+    impl PartialOrd for Num {
+        fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+            Some(self.cmp(other))
+        }
+    }
+
+    #[derive(Clone, Copy, Debug, PartialEq)]
+    enum TYPE {
+        BOTTOM,
+        LEFT,
+        RIGHT,
+        TOP,
+    }
+    #[derive(Clone, Copy, Debug, PartialEq)]
+    struct EndPoint {
+        p: Point,
+        pos: usize, // 入力線分の ID // 元々の線分の配列の index
+        t: TYPE,    // 端点の種類
+    }
+    impl EndPoint {
+        fn new(p: Point, pos: usize, t: TYPE) -> Self {
+            Self { p, pos, t }
+        }
+    }
+
+    fn plane_sweep(mut segs: Vec<(Point, Point)>) -> usize {
+        use crate::ManhattanGeo::TYPE::*;
+        // まずは端点の整理
+        // 線分であることだけが保証されているから、座標点から点の種類を判別する
+        let mut eps = vec![];
+        for (i, (p1, p2)) in segs.iter_mut().enumerate() {
+            if p1.cmp(&p2) == Greater {
+                std::mem::swap(p1, p2);
+            }
+            if p1.x == p2.x {
+                // 水平線
+                eps.push(EndPoint::new(*p1, i, LEFT));
+                eps.push(EndPoint::new(*p2, i, RIGHT)); // 後の処理には使わない
+            } else {
+                // 垂直線
+                eps.push(EndPoint::new(*p1, i, BOTTOM));
+                eps.push(EndPoint::new(*p2, i, TOP));
+            }
+        }
+
+        eps.sort_by(|p1, p2| p1.p.cmp_y(p2.p));
+        let mut bt = Set::new(); // 二分探索木
+        let mut cnt = 0; // 番兵
+
+        for ep in eps {
+            let (t, pos, p) = (ep.t, ep.pos, ep.p);
+            if t == TOP {
+                bt.remove(&Num::new(p.x));
+            } else if t == BOTTOM {
+                bt.insert(Num::new(p.x));
+            } else if t == LEFT {
+                let begin = segs[pos].0.x;
+                let end = segs[pos].1.x;
+                let a = bt.range(Num::new(begin)..=Num::new(end));
+                cnt += a.count();
+            }
+        }
+
+        cnt
     }
 }
 

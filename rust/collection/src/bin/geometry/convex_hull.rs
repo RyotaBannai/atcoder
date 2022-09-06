@@ -21,11 +21,28 @@ use std::cmp::{
 };
 use std::f64::NAN;
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug)]
 struct Vector {
     x: f64,
     y: f64,
 }
+impl PartialEq for Vector {
+    fn eq(&self, other: &Self) -> bool {
+        VectorFns::eq(self, other)
+    }
+}
+impl Ord for Vector {
+    fn cmp(&self, other: &Self) -> Ordering {
+        VectorFns::cmp(self, other)
+    }
+}
+impl PartialOrd for Vector {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+impl Eq for Vector {}
+
 impl Vector {
     fn new(x: f64, y: f64) -> Self {
         Self { x, y }
@@ -51,14 +68,8 @@ impl Vector {
     fn norm(self) -> f64 {
         VectorFns::norm(self)
     }
-    fn cmp(self, other: Vector) -> Ordering {
-        VectorFns::cmp(self, other)
-    }
     fn cmp_y(self, other: Vector) -> Ordering {
         VectorFns::cmp_y(self, other)
-    }
-    fn equals(self, other: Vector) -> bool {
-        VectorFns::equals(self, other)
     }
     fn unit(self) -> Self {
         VectorFns::unit(Vector::new(0.0, 0.0), self)
@@ -97,11 +108,11 @@ impl VectorFns {
     fn cross(v1: Vector, v2: Vector) -> f64 {
         v1.x * v2.y - v1.y * v2.x
     }
-    fn equals(v1: Vector, v2: Vector) -> bool {
+    fn eq(v1: &Vector, v2: &Vector) -> bool {
         let eps = 1e-10;
         (v1.x - v2.x).abs() < eps && (v1.y - v2.y).abs() < eps
     }
-    fn cmp(v1: Vector, v2: Vector) -> Ordering {
+    fn cmp(v1: &Vector, v2: &Vector) -> Ordering {
         let eps = 1e-10;
         if (v1.x - v2.x).abs() < eps {
             if (v1.y - v2.y).abs() < eps {
@@ -475,8 +486,9 @@ impl PolygonFns {
         }
     }
 
+    // 0~n 区間と n~0 区間をそれぞれ調べる
     fn convex_hull(mut p: Polygon) -> (Vec<Vector>, Vec<Vector>) {
-        p.sort_by(|&v1, &v2| v1.cmp(v2)); // x、y の昇順にする
+        p.sort(); // x、y の昇順にする
         let n = p.len();
         let mut up = vec![p[0], p[1]];
         let mut low = vec![p[n - 1], p[n - 2]];
