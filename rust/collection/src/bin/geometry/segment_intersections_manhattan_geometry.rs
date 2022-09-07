@@ -1,4 +1,21 @@
 /**
+ * @cpg_dirspec segment_intersections_manhattan_geometry
+ *
+ * cpg run -p src/bin/geometry/segment_intersections_manhattan_geometry.rs
+ */
+use std::io;
+
+/**
+ * 線分交差問題
+ *
+ * tags: #線分交差問題 #マンハッタン幾何
+ *
+ * マンハッタン幾何：線分が軸に平行な線分交差問題, 平面走査（sweep）で解く
+ * 平面走査：x軸（またはy軸）に並行な直線（走査線）を上へ（右へ）向かって並行移動させながら、交点を見つけていく,
+ *
+ */
+
+/**
  * 計算幾何学パーツ
  */
 use std::cmp::{
@@ -607,6 +624,20 @@ mod ManhattanGeo {
     }
 }
 
+fn read<T: std::str::FromStr>() -> Vec<T> {
+    let mut buf = String::new();
+    io::stdin().read_line(&mut buf).unwrap();
+    buf.trim().split(' ').flat_map(str::parse).collect()
+}
+
 fn main() {
-    todo!();
+    let n = read::<usize>()[0];
+    let mut segs = vec![];
+    for _ in 0..n {
+        let a = read::<f64>();
+        segs.push((Vector::new(a[0], a[1]), Vector::new(a[2], a[3])));
+    }
+
+    let ans = ManhattanGeo::plane_sweep(segs);
+    println!("{}", ans);
 }

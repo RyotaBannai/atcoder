@@ -175,6 +175,10 @@ path = "src/bin/geometry/contain_point.rs"
 name = "convex_hull"
 path = "src/bin/geometry/convex_hull.rs"
 
+[[bin]]
+name = "segment_intersections_manhattan_geometry"
+path = "src/bin/geometry/segment_intersections_manhattan_geometry.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
