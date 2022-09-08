@@ -78,6 +78,11 @@ impl Vector {
 
 struct VectorFns {}
 impl VectorFns {
+    // 単位ベクトル ベクトルをノルムで割る
+    fn unit(v1: Vector, v2: Vector) -> Vector {
+        let nv = v2.sub(v1);
+        nv.div(Self::norm(nv))
+    }
     // ノルム ベクトル v の内積を (v,v) とする時の、(v,v)^1/2
     fn norm(v: Vector) -> f64 {
         Self::dot(v, v).sqrt()
@@ -210,10 +215,10 @@ impl VectorFns {
     }
     // ２つの線分が交差するかどうか判定
     fn intersect(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> bool {
-        let place1 = Self::placement(u1, v1, v2);
-        let place2 = Self::placement(u2, v1, v2);
-        let place3 = Self::placement(v1, u1, u2);
-        let place4 = Self::placement(v2, u1, u2);
+        let place1 = Self::place(u1, v1, v2);
+        let place2 = Self::place(u2, v1, v2);
+        let place3 = Self::place(v1, u1, u2);
+        let place4 = Self::place(v2, u1, u2);
 
         if vec![place1, place2, place3, place4]
             .iter()
@@ -249,7 +254,7 @@ impl VectorFns {
        内積が正（cosθ=1）なら v,u は同じ向き
        内積が正（cosθ=-1）なら v,u は逆向き
      */
-    fn placement(v: Vector, v1: Vector, v2: Vector) -> usize {
+    fn place(v: Vector, v1: Vector, v2: Vector) -> usize {
         let eps = 1e-10;
         let cross = Self::cross(v2.sub(v1), v.sub(v1)); //v1v2 を始軸にしたい
         let dot = Self::dot(v.sub(v1), v2.sub(v1)); // 角度は気しないからどっちが始軸でもok
@@ -277,12 +282,18 @@ impl VectorFns {
             13
         }
     }
+
     // ２つの線分の交点
     // 交差しない場合は Vector{NAN,NAN} を返す
-    fn point_at_intersection(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> Vector {
+    fn point_at_intersection_on_ss(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> Vector {
         if !Self::intersect(v1, v2, u1, u2) {
             return Vector::new(NAN, NAN);
         }
+        Self::point_at_intersection_on_ll(v1, v2, u1, u2)
+    }
+
+    // ２つの直線の交点
+    fn point_at_intersection_on_ll(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> Vector {
         let base = v2.sub(v1);
         // 高さ // 二つの平行四辺形を底辺 base で割る
         let h1 = (Self::cross(base, u1.sub(v1)) / Self::norm(base)).abs(); // 絶対値 // |base| は t の計算で約分するから省略可
@@ -291,11 +302,6 @@ impl VectorFns {
         let t = h1 / (h1 + h2);
         let nv = u2.sub(u1).mul(t);
         u1.add(nv)
-    }
-    // 単位ベクトル ベクトルをノルムで割る
-    fn unit(v1: Vector, v2: Vector) -> Vector {
-        let nv = v2.sub(v1);
-        nv.div(Self::norm(nv))
     }
 
     // 半径 r はただの大きさで、大きさを１とした時に x=cosθ, y=sinθ で求められるのと同じ
@@ -444,7 +450,7 @@ impl PolygonFns {
             let mut v2 = p[i];
             let mut v = p[(i + 1) % n];
 
-            if [5, 17, 19, 23].contains(&VectorFns::placement(v, v1, v2)) {
+            if [5, 17, 19, 23].contains(&VectorFns::place(v, v1, v2)) {
                 return 5;
             }
             // 動軸の方を常に上になるようにしたい
@@ -452,7 +458,7 @@ impl PolygonFns {
                 std::mem::swap(&mut v, &mut v2);
             }
             // 反時計回り　かつ　水平線 R の別々の領域にある(交差する)　内側の点から2つのベクトルを引く
-            if VectorFns::placement(v, v1, v2) == 1 && (v2.sub(v1).y < eps && eps < v.sub(v1).y) {
+            if VectorFns::place(v, v1, v2) == 1 && (v2.sub(v1).y < eps && eps < v.sub(v1).y) {
                 cn += 1;
             }
         }
@@ -475,7 +481,7 @@ impl PolygonFns {
 
         for &v in p[2..n].iter() {
             let mut k = up.len();
-            while k >= 2 && VectorFns::placement(v, up[k - 2], up[k - 1]) == 1 {
+            while k >= 2 && VectorFns::place(v, up[k - 2], up[k - 1]) == 1 {
                 up.pop();
                 k -= 1;
             }
@@ -484,7 +490,7 @@ impl PolygonFns {
 
         for &v in p[0..n - 2].iter().rev() {
             let mut k = low.len();
-            while k >= 2 && VectorFns::placement(v, low[k - 2], low[k - 1]) == 1 {
+            while k >= 2 && VectorFns::place(v, low[k - 2], low[k - 1]) == 1 {
                 low.pop();
                 k -= 1;
             }
@@ -498,7 +504,7 @@ impl PolygonFns {
      */
     fn diameter(p: Polygon) -> f64 {
         // 凸包
-        let (up, mut low) = PolygonFns::convex_hull(p);
+        let (up, mut low) = Self::convex_hull(p);
         let mut vs = up;
         let wl = low.len();
         vs.append(&mut low[1..wl - 1].to_vec());
@@ -530,6 +536,88 @@ impl PolygonFns {
             }
         }
         ma
+    }
+
+    /**
+     * 凸多角形を２つにカットしたときのそれぞれの面積を求める
+     * 与える点は反時計回りになっていること
+     */
+    fn convex_cut(p: Polygon, v1: Vector, v2: Vector) -> f64 {
+        // 初めに凸多角形を cut するときの線分の端点が凸多角形の内側に入っていないことを保証する（直線にする）
+        let nv1 = v1.add(v1.sub(v2).mul(10000.));
+        let nv2 = v2.add(v2.sub(v1).mul(10000.));
+
+        let n = p.len();
+        let mut cc = 0; // 交差回数
+        let mut vs = vec![p[0]]; // 半時計回りに探索した時にキープする多角形の頂点
+        let mut edge = 0; // cut が凸多角形の頂点一点で交わる時の頂点
+
+        for i in 0..n {
+            let cur = p[i];
+            let next = p[(i + 1) % n];
+
+            // 1. 辺が cut 上にある時(=辺の両端点が直線上にある時)は、多角形を分割できないから、面積か 0. を返す
+            let dist1 = VectorFns::distance_lv(cur, nv1, nv2);
+            let dist2 = VectorFns::distance_lv(next, nv1, nv2);
+            if dist1 == 0. && dist2 == 0. {
+                // 頂点が半時計回りに振られているから、内積<0. なら左手に面積は無いから 0., 内積>0. なら全ての面積を返す
+                let cos = VectorFns::dot(next.sub(cur), nv2.sub(nv1));
+                if cos < 0. {
+                    return 0.;
+                } else {
+                    return Self::area(p);
+                }
+            }
+
+            // 2. 辺と cut が交わる時
+            if VectorFns::intersect(nv1, nv2, cur, next) {
+                let cross_point = VectorFns::point_at_intersection_on_ll(nv1, nv2, cur, next);
+
+                // cut と線分の頂点で交わる時に、その頂点において、2回 push しないようにしたい
+                // 交点が端点の前にある時のみ push することで後ろにある時はすでに対応済みとする
+                // cut と頂点が交わらない場合は、普通の線分と直線の交点として push できる
+                if cross_point != p[i] {
+                    vs.push(cross_point);
+                    cc += 1;
+                }
+
+                // cut が頂点と１回だけ交わる場合に対応したい
+                // 2回目の線分と交わった時に頂点番号を記憶
+                if cross_point == p[i] && cc % 2 == 1 {
+                    edge = i;
+                }
+            }
+
+            // 管理してる多角形を分割している時は追加しない（凸多角形と cut はちょうど２点で交わる）
+            if cc % 2 == 0 {
+                vs.push(p[(i + 1) % n]);
+            }
+        }
+
+        // 頂点と一回だけ交わるときは、多角形を分割できていない
+        // 頂点から辺が出て行く時に、cut を始軸として
+        // 時計回りにベクトルが出て行く時は、左手に面積が無い
+        // 半時計回りにベクトルが出て行く時は、左手に面積がある
+        if cc % 2 == 1 {
+            let cur = p[edge];
+            let next = p[(edge + 1) % n];
+            let sin = VectorFns::cross(nv2.sub(nv1), next.sub(cur)); // v1,v2 の配置に注意
+            if sin < 0. {
+                return 0.;
+            } else {
+                return Self::area(p);
+            }
+        }
+
+        let place = VectorFns::place(p[0], nv1, nv2);
+        let area = Self::area(p);
+        let part = Self::area(vs);
+        // カットした面積が左側なら、そのまま返してそうでなければ右側を返す
+        if place == 1 {
+            part
+        } else {
+            area - part
+        }
     }
 }
 

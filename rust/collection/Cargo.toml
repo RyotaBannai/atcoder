@@ -183,6 +183,10 @@ path = "src/bin/geometry/segment_intersections_manhattan_geometry.rs"
 name = "diameter_convex"
 path = "src/bin/geometry/diameter_convex.rs"
 
+[[bin]]
+name = "convex_cut"
+path = "src/bin/geometry/convex_cut.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"

@@ -259,10 +259,15 @@ impl VectorFns {
     }
     // ２つの線分の交点
     // 交差しない場合は Vector{NAN,NAN} を返す
-    fn point_at_intersection(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> Vector {
+    fn point_at_intersection_on_ss(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> Vector {
         if !Self::intersect(v1, v2, u1, u2) {
             return Vector::new(NAN, NAN);
         }
+        Self::point_at_intersection_on_ll(v1, v2, u1, u2)
+    }
+
+    // ２つの直線の交点
+    fn point_at_intersection_on_ll(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> Vector {
         let base = v2.sub(v1);
         // 高さ // 二つの平行四辺形を底辺 base で割る
         let h1 = (Self::cross(base, u1.sub(v1)) / Self::norm(base)).abs(); // 絶対値 // |base| は t の計算で約分するから省略可
@@ -272,6 +277,7 @@ impl VectorFns {
         let nv = u2.sub(u1).mul(t);
         u1.add(nv)
     }
+
     // 単位ベクトル ベクトルをノルムで割る
     fn unit(v1: Vector, v2: Vector) -> Vector {
         let nv = v2.sub(v1);
@@ -354,7 +360,7 @@ fn main() {
             Vector::new(a[4], a[5]),
             Vector::new(a[6], a[7]),
         );
-        let ans = VectorFns::point_at_intersection(v1, v2, u1, u2);
+        let ans = VectorFns::point_at_intersection_on_ss(v1, v2, u1, u2);
         println!("{:.10} {:.10}", ans.x, ans.y);
     }
 }
