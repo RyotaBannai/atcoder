@@ -191,6 +191,10 @@ path = "src/bin/geometry/convex_cut.rs"
 name = "bubble_sort"
 path = "src/bin/sort/bubble_sort.rs"
 
+[[bin]]
+name = "closest_pair"
+path = "src/bin/geometry/closest_pair.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
