@@ -187,6 +187,10 @@ path = "src/bin/geometry/diameter_convex.rs"
 name = "convex_cut"
 path = "src/bin/geometry/convex_cut.rs"
 
+[[bin]]
+name = "bubble_sort"
+path = "src/bin/sort/bubble_sort.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
