@@ -7,6 +7,9 @@ use collection::{geo_lib::*, utils::read};
 
 /**
  * 円の交差判定
+ *
+ * https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/7/CGL_7_A
+ *
  */
 
 fn main() {

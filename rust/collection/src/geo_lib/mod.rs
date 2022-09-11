@@ -55,25 +55,25 @@ impl PartialOrd for Vector {
 }
 impl Eq for Vector {}
 
-impl std::ops::Sub for Vector {
+impl Sub for Vector {
     type Output = Self;
     fn sub(self, other: Vector) -> Self {
         Self::new(self.x - other.x, self.y - other.y)
     }
 }
-impl std::ops::Add for Vector {
+impl Add for Vector {
     type Output = Self;
     fn add(self, other: Self) -> Self {
         Self::new(self.x + other.x, self.y + other.y)
     }
 }
-impl std::ops::Mul<f64> for Vector {
+impl Mul<f64> for Vector {
     type Output = Self;
     fn mul(self, k: f64) -> Self {
         Self::new(self.x * k, self.y * k)
     }
 }
-impl std::ops::Div<f64> for Vector {
+impl Div<f64> for Vector {
     type Output = Self;
     fn div(self, k: f64) -> Self {
         Self::new(self.x / k, self.y / k)
@@ -101,7 +101,7 @@ impl Vector {
     }
 }
 
-struct VectorFns {}
+pub struct VectorFns {}
 impl VectorFns {
     // 単位ベクトル ベクトルをノルムで割る
     pub fn unit(v1: Vector, v2: Vector) -> Vector {
@@ -163,13 +163,13 @@ impl VectorFns {
         let eps = 1e-10;
         let nv = v1.sub(v2);
         let nu = u1.sub(u2);
-        (Self::dot(nv, nu) - 0.0).abs() < eps
+        Self::dot(nv, nu).abs() < eps
     }
     pub fn is_parallel(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> bool {
         let eps = 1e-10;
         let nv = v1.sub(v2);
         let nu = u1.sub(u2);
-        (Self::cross(nv, nu) - 0.0).abs() < eps
+        Self::cross(nv, nu).abs() < eps
     }
     pub fn projection(v: Vector, v1: Vector, v2: Vector) -> Vector {
         let base = v2.sub(v1);
@@ -247,7 +247,7 @@ impl VectorFns {
 
         if vec![place1, place2, place3, place4]
             .iter()
-            .any(|&p| p == 7 || p == 11)
+            .any(|&p| p == 7 || p == 11 || p == 17 || p == 19 || p == 23)
         {
             // いずれかの点が一方の線分上にある
             true
