@@ -195,6 +195,14 @@ path = "src/bin/sort/bubble_sort.rs"
 name = "closest_pair"
 path = "src/bin/geometry/closest_pair.rs"
 
+[[bin]]
+name = "intersect_circles"
+path = "src/bin/geometry/intersect_circles.rs"
+
+[[bin]]
+name = "incircle"
+path = "src/bin/geometry/incircle.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"

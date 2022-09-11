@@ -346,27 +346,57 @@ impl VectorFns {
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Circle {
-    c: Vector,
-    r: f64,
+    pub c: Vector,
+    pub r: f64,
 }
 impl Circle {
     pub fn new(c: Vector, r: f64) -> Self {
         Self { c, r }
     }
 }
-struct CircleFns {}
+pub struct CircleFns {}
 impl CircleFns {
     // 円と直線が交差するかどうか判定（線分で端点が円の中にある場合は考慮しない）
     // ベクトルから円の中心までの距離が、円の半径より小さければok
-    pub fn is_intersect(c: Circle, v1: Vector, v2: Vector) -> bool {
+    pub fn is_intersect_line(c: Circle, v1: Vector, v2: Vector) -> bool {
         let d = VectorFns::distance_lv(c.c, v1, v2);
         // 接する場合も true
         d <= c.r
     }
+    /**
+     * 二つの円が交差するかどうか判定
+     *
+     * 0: 一方がもう一方を内包する場合（共通接線がない場合）
+     * 1: それらが内接する場合（共通接線の数が 1 の場合）
+     * 2: それらが交わる場合（共通接線の数が 2 の場合）
+     * 3: それらが外接する場合（共通接線の数が 3 の場合）
+     * 4: それらが離れている場合（共通接線の数が 4 の場合）
+     */
+    pub fn is_intersect_circles(c1: Circle, c2: Circle) -> usize {
+        let eps = 1e-10;
+        let nv = c2.c.sub(c1.c); // c1 の中心から c2 の中心へのベクトル
+        let d = VectorFns::norm(nv);
+        if (d - (c1.r + c2.r)).abs() < eps {
+            // 外接
+            3
+        } else if ((d + c1.r) - c2.r).abs() < eps || ((d + c2.r) - c1.r).abs() < eps {
+            // いずれかが、内接
+            1
+        } else if d + c1.r < c2.r || d + c2.r < c1.r {
+            // 内包
+            0
+        } else if d > c1.r + c2.r {
+            // 離れている
+            4
+        } else {
+            // 交わる
+            2
+        }
+    }
     // 円と直線との交点座標
     // 交差しない場合は (Vector{NAN,NAN},Vector{NAN,NAN}) を返す
     pub fn points_at_intersection_line(c: Circle, v1: Vector, v2: Vector) -> (Vector, Vector) {
-        if !Self::is_intersect(c, v1, v2) {
+        if !Self::is_intersect_line(c, v1, v2) {
             let nv = Vector::new(NAN, NAN);
             return (nv, nv);
         }
@@ -397,10 +427,29 @@ impl CircleFns {
             c1.c.add(VectorFns::polar_on_r(c1.r, t - a)), // 時計回りに回転したい、負
         )
     }
+    // 三角形の内接円
+    pub fn incircle(v1: Vector, v2: Vector, v3: Vector) -> Circle {
+        let nv1 = v1.sub(v2);
+        let nv2 = v2.sub(v3);
+        let nv3 = v3.sub(v1);
+        // ３点から三角形を求める
+        // 二つのベクトルの内積は平行四辺形の面積, また三角形の面積は、(各辺の大きさ*内接円の半径rを高さ)/2
+        let r =
+            VectorFns::cross(v1.sub(v3), v2.sub(v3)).abs() / (nv1.norm() + nv2.norm() + nv3.norm());
+
+        // 頂点 A,B,C, 頂点Aから内心Iを通って辺BC に下ろした直線と線分CB の交点をD, 各頂点の対辺を,a,b,c とする
+        let k = nv3.norm() / (nv1.norm() + nv3.norm()); // 大きさの比　CD
+        let j = k * nv2.norm(); // 大きさ |CD|
+        let v4 = v3.add(nv2.mul(j / nv2.norm())); // ベクトル CD
+        let m = nv3.norm() / (j + nv3.norm()); // 頂点 A から内心 I に伸びるベクトルの大きさの比（AI）
+        let center = v1.add(v4.sub(v1).mul(m)); // ベクトル AI
+
+        Circle::new(center, r)
+    }
 }
 
 pub type Polygon = Vec<Vector>;
-struct PolygonFns {}
+pub struct PolygonFns {}
 impl PolygonFns {
     // それぞれのベクトルは先頭から順に並んでいるもとのする（p1,p2,...,pn-1,pn）
     pub fn area(p: Polygon) -> f64 {
