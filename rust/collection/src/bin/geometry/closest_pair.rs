@@ -3,7 +3,8 @@
  *
  * cpg run -p src/bin/geometry/closest_pair.rs
  */
-use std::io;
+use collection::{geo_lib::*, utils::read};
+use std::ops::Sub;
 
 /**
  * 最近点対
@@ -11,106 +12,6 @@ use std::io;
  * tags: #closest_pair #最近点対
  *
  */
-
-/**
- * 計算幾何学パーツ
- */
-use std::cmp::{
-    Ordering,
-    Ordering::{Equal, Greater, Less},
-};
-
-#[derive(Clone, Copy, Debug)]
-pub struct Vector {
-    x: f64,
-    y: f64,
-}
-impl PartialEq for Vector {
-    fn eq(&self, other: &Self) -> bool {
-        let eps = 1e-10;
-        (self.x - other.x).abs() < eps && (self.y - other.y).abs() < eps
-    }
-}
-impl Ord for Vector {
-    fn cmp(&self, other: &Self) -> Ordering {
-        let eps = 1e-10;
-        if (self.x - other.x).abs() < eps {
-            if (self.y - other.y).abs() < eps {
-                Equal
-            } else if self.y < other.y {
-                Less
-            } else {
-                Greater
-            }
-        } else if self.x < other.x {
-            Less
-        } else {
-            Greater
-        }
-    }
-}
-impl PartialOrd for Vector {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(self.cmp(other))
-    }
-}
-impl Eq for Vector {}
-
-impl Vector {
-    fn new(x: f64, y: f64) -> Self {
-        Self { x, y }
-    }
-    fn add(self, other: Vector) -> Self {
-        Self::new(self.x + other.x, self.y + other.y)
-    }
-    fn sub(self, other: Vector) -> Self {
-        Self::new(self.x - other.x, self.y - other.y)
-    }
-    fn mul(self, k: f64) -> Self {
-        Self::new(self.x * k, self.y * k)
-    }
-    fn div(self, k: f64) -> Self {
-        Self::new(self.x / k, self.y / k)
-    }
-    fn norm(self) -> f64 {
-        VectorFns::norm(self)
-    }
-    fn cmp_y(self, other: Vector) -> Ordering {
-        VectorFns::cmp_y(self, other)
-    }
-}
-struct VectorFns {}
-impl VectorFns {
-    // ノルム ベクトル v の内積を (v,v) とする時の、(v,v)^1/2
-    fn norm(v: Vector) -> f64 {
-        Self::dot(v, v).sqrt()
-    }
-    // ２つのベクトルの距離
-    fn abs(v1: Vector, v2: Vector) -> f64 {
-        Self::dot(v1, v2).sqrt()
-    }
-    // ベクトルの内積
-    fn dot(v1: Vector, v2: Vector) -> f64 {
-        v1.x * v2.x + v1.y * v2.y
-    }
-    // y 成分優先に比較
-    fn cmp_y(v1: Vector, v2: Vector) -> Ordering {
-        let eps = 1e-10;
-        if (v1.y - v2.y).abs() < eps {
-            if (v1.x - v2.x).abs() < eps {
-                Equal
-            } else if v1.x < v2.x {
-                Less
-            } else {
-                Greater
-            }
-        } else if v1.y < v2.y {
-            Less
-        } else {
-            Greater
-        }
-    }
-}
 
 struct Rec {
     a: Vec<Vector>,
@@ -155,12 +56,6 @@ impl Rec {
 
         d
     }
-}
-
-fn read<T: std::str::FromStr>() -> Vec<T> {
-    let mut buf = String::new();
-    io::stdin().read_line(&mut buf).unwrap();
-    buf.trim().split(' ').flat_map(str::parse).collect()
 }
 
 fn main() {

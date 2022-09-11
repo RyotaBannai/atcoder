@@ -1,16 +1,28 @@
 /**
  * 計算幾何学パーツ
+ *
+ * 単一ファイルで使うときは、以下の変更を行う
+ * ・全　geo_lib を消す e.g. use crate::geo_lib::... -> use crate::...
+ *
+ *
+ * AOJ 提出時
+ * ・このライブラリを入れて単一ファイルにする（AtCoder で使っているライブラリは使わないため取り除く（まずファイルサイズが大きくて通らない））
+ * e.g. cargo equip --bin [bin_name] --remove docs --minify libs --exclude-atcoder-crates --exclude easy-ext ac-library-rs | pbcopy
+ *
  */
-use std::cmp::{
-    Ordering,
-    Ordering::{Equal, Greater, Less},
+use std::{
+    cmp::{
+        Ordering,
+        Ordering::{Equal, Greater, Less},
+    },
+    f64::NAN,
+    ops::{Add, Div, Mul, Sub},
 };
-use std::f64::NAN;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Vector {
-    x: f64,
-    y: f64,
+    pub x: f64,
+    pub y: f64,
 }
 impl PartialEq for Vector {
     fn eq(&self, other: &Self) -> bool {
@@ -43,35 +55,48 @@ impl PartialOrd for Vector {
 }
 impl Eq for Vector {}
 
-impl Vector {
-    fn new(x: f64, y: f64) -> Self {
-        Self { x, y }
-    }
-    fn add(self, other: Vector) -> Self {
-        Self::new(self.x + other.x, self.y + other.y)
-    }
+impl std::ops::Sub for Vector {
+    type Output = Self;
     fn sub(self, other: Vector) -> Self {
         Self::new(self.x - other.x, self.y - other.y)
     }
+}
+impl std::ops::Add for Vector {
+    type Output = Self;
+    fn add(self, other: Self) -> Self {
+        Self::new(self.x + other.x, self.y + other.y)
+    }
+}
+impl std::ops::Mul<f64> for Vector {
+    type Output = Self;
     fn mul(self, k: f64) -> Self {
         Self::new(self.x * k, self.y * k)
     }
+}
+impl std::ops::Div<f64> for Vector {
+    type Output = Self;
     fn div(self, k: f64) -> Self {
         Self::new(self.x / k, self.y / k)
     }
-    fn dot(self, other: Vector) -> f64 {
+}
+
+impl Vector {
+    pub fn new(x: f64, y: f64) -> Self {
+        Self { x, y }
+    }
+    pub fn dot(self, other: Vector) -> f64 {
         VectorFns::dot(self, other)
     }
-    fn cross(self, other: Vector) -> f64 {
+    pub fn cross(self, other: Vector) -> f64 {
         VectorFns::cross(self, other)
     }
-    fn norm(self) -> f64 {
+    pub fn norm(self) -> f64 {
         VectorFns::norm(self)
     }
-    fn cmp_y(self, other: Vector) -> Ordering {
+    pub fn cmp_y(self, other: Vector) -> Ordering {
         VectorFns::cmp_y(self, other)
     }
-    fn unit(self) -> Self {
+    pub fn unit(self) -> Self {
         VectorFns::unit(Vector::new(0.0, 0.0), self)
     }
 }
@@ -79,20 +104,20 @@ impl Vector {
 struct VectorFns {}
 impl VectorFns {
     // 単位ベクトル ベクトルをノルムで割る
-    fn unit(v1: Vector, v2: Vector) -> Vector {
+    pub fn unit(v1: Vector, v2: Vector) -> Vector {
         let nv = v2.sub(v1);
         nv.div(Self::norm(nv))
     }
     // ノルム ベクトル v の内積を (v,v) とする時の、(v,v)^1/2
-    fn norm(v: Vector) -> f64 {
+    pub fn norm(v: Vector) -> f64 {
         Self::dot(v, v).sqrt()
     }
     // ２つのベクトルの距離
-    fn abs(v1: Vector, v2: Vector) -> f64 {
+    pub fn abs(v1: Vector, v2: Vector) -> f64 {
         Self::dot(v1, v2).sqrt()
     }
     // ベクトルの内積
-    fn dot(v1: Vector, v2: Vector) -> f64 {
+    pub fn dot(v1: Vector, v2: Vector) -> f64 {
         v1.x * v2.x + v1.y * v2.y
     }
     /*
@@ -100,7 +125,7 @@ impl VectorFns {
     a・b=|a||b|cosθ
     return はラジアン p363
     */
-    fn rad(v1: Vector, v2: Vector) -> f64 {
+    pub fn rad(v1: Vector, v2: Vector) -> f64 {
         (Self::dot(v1, v2) / (Self::norm(v1) * Self::norm(v2))).acos()
     }
     /*
@@ -110,11 +135,11 @@ impl VectorFns {
     大きさは、ベクトル a,b が作る平行四辺形の面積
     a を始線とした時の b がなす角
     */
-    fn cross(v1: Vector, v2: Vector) -> f64 {
+    pub fn cross(v1: Vector, v2: Vector) -> f64 {
         v1.x * v2.y - v1.y * v2.x
     }
     // y 成分優先に比較
-    fn cmp_y(v1: Vector, v2: Vector) -> Ordering {
+    pub fn cmp_y(v1: Vector, v2: Vector) -> Ordering {
         let eps = 1e-10;
         if (v1.y - v2.y).abs() < eps {
             if (v1.x - v2.x).abs() < eps {
@@ -134,30 +159,30 @@ impl VectorFns {
     直行する時、内積は 0
     ベクトル単体は原点をベースに考えているから、線分なら始点と終点の２点から計算する
     */
-    fn is_orthogonal(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> bool {
+    pub fn is_orthogonal(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> bool {
         let eps = 1e-10;
         let nv = v1.sub(v2);
         let nu = u1.sub(u2);
         (Self::dot(nv, nu) - 0.0).abs() < eps
     }
-    fn is_parallel(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> bool {
+    pub fn is_parallel(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> bool {
         let eps = 1e-10;
         let nv = v1.sub(v2);
         let nu = u1.sub(u2);
         (Self::cross(nv, nu) - 0.0).abs() < eps
     }
-    fn projection(v: Vector, v1: Vector, v2: Vector) -> Vector {
+    pub fn projection(v: Vector, v1: Vector, v2: Vector) -> Vector {
         let base = v2.sub(v1);
         let hypo = v.sub(v1);
         let t = Self::dot(hypo, base) / Self::norm(base); // 正射影のノルム
         let r = t / Self::norm(base); // 正射影のノルムと base の比を取って、それを v1 から伸ばす
         v1.add(base.mul(r))
     }
-    fn reflection(v: Vector, v1: Vector, v2: Vector) -> Vector {
+    pub fn reflection(v: Vector, v1: Vector, v2: Vector) -> Vector {
         v.add((Self::projection(v, v1, v2).sub(v)).mul(2.0))
     }
     // ベクトル間の距離
-    fn distance_vv(v1: Vector, v2: Vector) -> f64 {
+    pub fn distance_vv(v1: Vector, v2: Vector) -> f64 {
         Self::abs(v1, v2)
     }
     /*
@@ -165,7 +190,7 @@ impl VectorFns {
     直線の場合、線分と違って交わるかどうかは気にしなくて良いため、平行四辺形を作って垂直線を下ろした時の距離（最短距離）がベクトルと直線間の距離になる
     線分の場合、交わるかどうかはわからないため追加の処理がいる
      */
-    fn distance_lv(v: Vector, v1: Vector, v2: Vector) -> f64 {
+    pub fn distance_lv(v: Vector, v1: Vector, v2: Vector) -> f64 {
         let nv = v2.sub(v1);
         let nu = v.sub(v1);
         (Self::cross(nv, nu) / Self::norm(nv)).abs() // 絶対値の abs
@@ -178,7 +203,7 @@ impl VectorFns {
     それ以外は、ベクトル v は v1,v2 の間に位置しているため。これは線分とベクトルの距離
     なす角が 90/-90 の時、内積は負（cosθより）
     */
-    fn distance_sv(v: Vector, v1: Vector, v2: Vector) -> f64 {
+    pub fn distance_sv(v: Vector, v1: Vector, v2: Vector) -> f64 {
         if Self::dot(v2.sub(v1), v.sub(v1)) < 0.0 {
             // v1 を始点に試す
             // 2点間の距離
@@ -193,7 +218,7 @@ impl VectorFns {
         }
     }
     // 線分間の距離
-    fn distance_ss(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> f64 {
+    pub fn distance_ss(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> f64 {
         if Self::intersect(v1, v2, u1, u2) {
             // 交差するなら距離 0
             0.0
@@ -214,7 +239,7 @@ impl VectorFns {
         }
     }
     // ２つの線分が交差するかどうか判定
-    fn intersect(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> bool {
+    pub fn intersect(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> bool {
         let place1 = Self::place(u1, v1, v2);
         let place2 = Self::place(u2, v1, v2);
         let place3 = Self::place(v1, u1, u2);
@@ -254,7 +279,7 @@ impl VectorFns {
        内積が正（cosθ=1）なら v,u は同じ向き
        内積が正（cosθ=-1）なら v,u は逆向き
      */
-    fn place(v: Vector, v1: Vector, v2: Vector) -> usize {
+    pub fn place(v: Vector, v1: Vector, v2: Vector) -> usize {
         let eps = 1e-10;
         let cross = Self::cross(v2.sub(v1), v.sub(v1)); //v1v2 を始軸にしたい
         let dot = Self::dot(v.sub(v1), v2.sub(v1)); // 角度は気しないからどっちが始軸でもok
@@ -285,7 +310,7 @@ impl VectorFns {
 
     // ２つの線分の交点
     // 交差しない場合は Vector{NAN,NAN} を返す
-    fn point_at_intersection_on_ss(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> Vector {
+    pub fn point_at_intersection_on_ss(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> Vector {
         if !Self::intersect(v1, v2, u1, u2) {
             return Vector::new(NAN, NAN);
         }
@@ -293,7 +318,7 @@ impl VectorFns {
     }
 
     // ２つの直線の交点
-    fn point_at_intersection_on_ll(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> Vector {
+    pub fn point_at_intersection_on_ll(v1: Vector, v2: Vector, u1: Vector, u2: Vector) -> Vector {
         let base = v2.sub(v1);
         // 高さ // 二つの平行四辺形を底辺 base で割る
         let h1 = (Self::cross(base, u1.sub(v1)) / Self::norm(base)).abs(); // 絶対値 // |base| は t の計算で約分するから省略可
@@ -307,11 +332,11 @@ impl VectorFns {
     // 半径 r はただの大きさで、大きさを１とした時に x=cosθ, y=sinθ で求められるのと同じ
     // その場合は、X=xcosθ-ysinθ, Y=ycosθ+xsinθ (polar_on_v)
     // https://mathwords.net/heimenkaiten
-    fn polar_on_r(r: f64, rad: f64) -> Vector {
+    pub fn polar_on_r(r: f64, rad: f64) -> Vector {
         Vector::new(r * rad.cos(), r * rad.sin())
     }
 
-    fn polar_on_v(v: Vector, rad: f64) -> Vector {
+    pub fn polar_on_v(v: Vector, rad: f64) -> Vector {
         Vector::new(
             v.x * rad.cos() - v.y * rad.sin(),
             v.y * rad.cos() + v.x * rad.sin(),
@@ -325,7 +350,7 @@ pub struct Circle {
     r: f64,
 }
 impl Circle {
-    fn new(c: Vector, r: f64) -> Self {
+    pub fn new(c: Vector, r: f64) -> Self {
         Self { c, r }
     }
 }
@@ -333,14 +358,14 @@ struct CircleFns {}
 impl CircleFns {
     // 円と直線が交差するかどうか判定（線分で端点が円の中にある場合は考慮しない）
     // ベクトルから円の中心までの距離が、円の半径より小さければok
-    fn is_intersect(c: Circle, v1: Vector, v2: Vector) -> bool {
+    pub fn is_intersect(c: Circle, v1: Vector, v2: Vector) -> bool {
         let d = VectorFns::distance_lv(c.c, v1, v2);
         // 接する場合も true
         d <= c.r
     }
     // 円と直線との交点座標
     // 交差しない場合は (Vector{NAN,NAN},Vector{NAN,NAN}) を返す
-    fn points_at_intersection_line(c: Circle, v1: Vector, v2: Vector) -> (Vector, Vector) {
+    pub fn points_at_intersection_line(c: Circle, v1: Vector, v2: Vector) -> (Vector, Vector) {
         if !Self::is_intersect(c, v1, v2) {
             let nv = Vector::new(NAN, NAN);
             return (nv, nv);
@@ -355,7 +380,7 @@ impl CircleFns {
 
     // 二つの円の交点座標
     // 交差しない場合は (Vector{NAN,NAN},Vector{NAN,NAN}) を返す
-    fn points_at_intersection_circles(c1: Circle, c2: Circle) -> (Vector, Vector) {
+    pub fn points_at_intersection_circles(c1: Circle, c2: Circle) -> (Vector, Vector) {
         let nv = c2.c.sub(c1.c); // c1 の中心から c2 の中心へのベクトル
         let d = VectorFns::norm(nv);
         if d > c1.r + c2.r {
@@ -378,7 +403,7 @@ pub type Polygon = Vec<Vector>;
 struct PolygonFns {}
 impl PolygonFns {
     // それぞれのベクトルは先頭から順に並んでいるもとのする（p1,p2,...,pn-1,pn）
-    fn area(p: Polygon) -> f64 {
+    pub fn area(p: Polygon) -> f64 {
         let n = p.len();
         let mut area = 0.0;
         // 順に二つずつとって外積の 1/2 を求めてその総和が多角形の面積になる
@@ -400,7 +425,7 @@ impl PolygonFns {
      *
      * https://www.nttpc.co.jp/technology/number_algorithm.html
      */
-    fn contain_point_opt(p: Polygon, v: Vector) -> usize {
+    pub fn contain_point_opt(p: Polygon, v: Vector) -> usize {
         let eps = 1e-10;
         let n = p.len();
         let mut cn = 0;
@@ -442,7 +467,7 @@ impl PolygonFns {
      * 3 多角形内に点を含まない
      * 5 多角形の辺上
      */
-    fn contain_point(p: Polygon, v1: Vector) -> usize {
+    pub fn contain_point(p: Polygon, v1: Vector) -> usize {
         let eps = 1e-10;
         let n = p.len();
         let mut cn = 0;
@@ -473,7 +498,7 @@ impl PolygonFns {
     }
 
     // 0~n 区間と n~0 区間をそれぞれ調べる
-    fn convex_hull(mut p: Polygon) -> (Vec<Vector>, Vec<Vector>) {
+    pub fn convex_hull(mut p: Polygon) -> (Vec<Vector>, Vec<Vector>) {
         p.sort(); // x、y の昇順にする
         let n = p.len();
         let mut up = vec![p[0], p[1]];
@@ -502,7 +527,7 @@ impl PolygonFns {
     /**
      * 多角形から直径を求める
      */
-    fn diameter(p: Polygon) -> f64 {
+    pub fn diameter(p: Polygon) -> f64 {
         // 凸包
         let (up, mut low) = Self::convex_hull(p);
         let mut vs = up;
@@ -542,7 +567,7 @@ impl PolygonFns {
      * 凸多角形を２つにカットしたときのそれぞれの面積を求める
      * 与える点は反時計回りになっていること
      */
-    fn convex_cut(p: Polygon, v1: Vector, v2: Vector) -> f64 {
+    pub fn convex_cut(p: Polygon, v1: Vector, v2: Vector) -> f64 {
         // 初めに凸多角形を cut するときの線分の端点が凸多角形の内側に入っていないことを保証する（直線にする）
         let nv1 = v1.add(v1.sub(v2).mul(10000.));
         let nv2 = v2.add(v2.sub(v1).mul(10000.));
@@ -621,8 +646,8 @@ impl PolygonFns {
     }
 }
 
-mod ManhattanGeo {
-    use crate::Vector;
+mod manhattan_geo {
+    use crate::geo_lib::Vector;
     use std::cmp::{
         Ordering,
         Ordering::{Equal, Greater, Less},
@@ -635,7 +660,7 @@ mod ManhattanGeo {
     #[derive(Clone, Copy, Debug)]
     struct Num(f64);
     impl Num {
-        fn new(num: f64) -> Self {
+        pub fn new(num: f64) -> Self {
             Self(num)
         }
     }
@@ -677,13 +702,13 @@ mod ManhattanGeo {
         t: TYPE,    // 端点の種類
     }
     impl EndPoint {
-        fn new(p: Point, pos: usize, t: TYPE) -> Self {
+        pub fn new(p: Point, pos: usize, t: TYPE) -> Self {
             Self { p, pos, t }
         }
     }
 
     pub fn plane_sweep(mut segs: Vec<(Point, Point)>) -> usize {
-        use crate::ManhattanGeo::TYPE::*;
+        use crate::geo_lib::manhattan_geo::TYPE::*;
         // まずは端点の整理
         // 線分であることだけが保証されているから、座標点から点の種類を判別する
         let mut eps = vec![];
@@ -732,8 +757,4 @@ mod ManhattanGeo {
 
         cnt
     }
-}
-
-fn main() {
-    todo!();
 }
