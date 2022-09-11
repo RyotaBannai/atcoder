@@ -695,7 +695,7 @@ impl PolygonFns {
     }
 }
 
-mod manhattan_geo {
+pub mod manhattan_geo {
     use crate::geo_lib::Vector;
     use std::cmp::{
         Ordering,
