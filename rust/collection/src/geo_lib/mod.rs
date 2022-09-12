@@ -427,7 +427,9 @@ impl CircleFns {
             c1.c.add(VectorFns::polar_on_r(c1.r, t - a)), // 時計回りに回転したい、負
         )
     }
-    // 三角形の内接円
+    /**
+     * 三角形の内接円
+     */
     pub fn incircle(v1: Vector, v2: Vector, v3: Vector) -> Circle {
         let nv1 = v1.sub(v2);
         let nv2 = v2.sub(v3);
@@ -445,6 +447,23 @@ impl CircleFns {
         let center = v1.add(v4.sub(v1).mul(m)); // ベクトル AI
 
         Circle::new(center, r)
+    }
+
+    /**
+     * 三角形の外接円
+     */
+    // 円の中心(p,q)、半径R とおいた時に各頂点と中心までの距離が R に等しいことを用いる
+    // 三つの方程式から、２つの差分の方程式がもとまるから、それぞれ p=... とした時それぞれ等しい.
+    // p=... とした時は右辺に q があるから、q について解くことができる. 同様にして qも解く
+    pub fn outcircle(v1: Vector, v2: Vector, v3: Vector) -> Circle {
+        let (x1, x2, x3, y1, y2, y3) = (v1.x, v2.x, v3.x, v1.y, v2.y, v3.y);
+        let cmn1 = x2 * x2 + y2 * y2 - x1 * x1 - y1 * y1;
+        let cmn2 = x2 * x2 + y2 * y2 - x3 * x3 - y3 * y3;
+        let q = (cmn1 * (x2 - x3) - cmn2 * (x2 - x1))
+            / (2. * ((y2 - y1) * (x2 - x3) - (y2 - y3) * (x2 - x1)));
+        let p = (cmn1 * (y2 - y3) - cmn2 * (y2 - y1))
+            / (2. * ((y2 - y3) * (x2 - x1) - (y2 - y1) * (x2 - x3)));
+        Circle::new(Vector::new(p, q), v1.sub(Vector::new(p, q)).norm())
     }
 }
 
@@ -805,5 +824,102 @@ pub mod manhattan_geo {
         }
 
         cnt
+    }
+}
+
+/**
+ * ay+bx+c=0 の一次方程式
+ */
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct LinearEquation {
+    y: f64,
+    x: f64,
+    k: f64,
+}
+
+impl LinearEquation {
+    pub fn new(y: f64, x: f64, k: f64) -> Self {
+        Self { y, x, k }
+    }
+    /**
+     * y の係数を 1 に一次方程式を返す
+     * y が 0. なら panic!()
+     */
+    pub fn one_y(&self) -> Self {
+        let eps = 1e-10;
+        if self.y.abs() < eps {
+            panic!("can't devide by 0.")
+        }
+        Self::new(1., self.x / self.y, self.k / self.y)
+    }
+    /**
+     * x の係数を 1 に一次方程式を返す
+     * x が 0. なら panic!()
+     */
+    pub fn one_x(&self) -> Self {
+        let eps = 1e-10;
+        if self.x.abs() < eps {
+            panic!("can't devide by 0.")
+        }
+        Self::new(self.y / self.x, 1., self.k / self.x)
+    }
+    /**
+     * 二直線の交点を求める
+     * 並行の場合は Vector{NAN, NAN}を返す
+     */
+    pub fn solve(self, other: LinearEquation) -> Vector {
+        let eps = 1e-10;
+        if (self.y.abs() < eps && other.y.abs() < eps)
+            || (self.x.abs() < eps && other.x.abs() < eps)
+        {
+            // 並行
+            Vector::new(NAN, NAN)
+        } else if self.y.abs() < eps && other.x.abs() < eps {
+            // それぞれの軸に並行
+            Vector::new(-self.k / self.x, -other.k / other.y)
+        } else if self.x.abs() < eps && other.y.abs() < eps {
+            Vector::new(-other.k / other.x, -self.k / self.y)
+        } else if self.x.abs() < eps {
+            let y = -self.k / self.y;
+            let a = other.one_x();
+            let x = -(a.k + a.y * y);
+            Vector::new(x, y)
+        } else if self.y.abs() < eps {
+            let x = -self.k / self.x;
+            let a = other.one_y();
+            let y = -(a.k + a.x * x);
+            Vector::new(x, y)
+        } else if other.x.abs() < eps {
+            let y = -other.k / other.y;
+            let a = self.one_x();
+            let x = -(a.k + a.y * y);
+            Vector::new(x, y)
+        } else if other.y.abs() < eps {
+            let x = -other.k / other.x;
+            let a = self.one_y();
+            let y = -(a.k + a.x * x);
+            Vector::new(x, y)
+        } else {
+            // 直線同士が交わる
+            let a = self.one_y();
+            let b = other.one_y();
+            let x = -(a.k - b.k) / (a.x - b.x);
+            let y = -(a.x * x + a.k);
+            Vector::new(x, y)
+        }
+    }
+}
+
+pub struct LinearEquationFns {}
+
+impl LinearEquationFns {
+    pub fn slope(v1: Vector, v2: Vector) -> f64 {
+        let eps = 1e-10;
+        let dx = v2.x - v1.x;
+        if dx.abs() < eps {
+            0.
+        } else {
+            (v2.y - v1.y) / dx
+        }
     }
 }
