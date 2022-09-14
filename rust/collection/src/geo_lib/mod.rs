@@ -356,8 +356,10 @@ impl Circle {
 }
 pub struct CircleFns {}
 impl CircleFns {
-    // 円と直線が交差するかどうか判定（線分で端点が円の中にある場合は考慮しない）
-    // ベクトルから円の中心までの距離が、円の半径より小さければok
+    /**
+     * 円と直線が交差するかどうか判定（線分で端点が円の中にある場合は考慮しない）
+     * ベクトルから円の中心までの距離が、円の半径より小さければok
+     */
     pub fn is_intersect_line(c: Circle, v1: Vector, v2: Vector) -> bool {
         let d = VectorFns::distance_lv(c.c, v1, v2);
         // 接する場合も true
@@ -393,9 +395,16 @@ impl CircleFns {
             2
         }
     }
-    // 円と直線との交点座標
-    // 交差しない場合は (Vector{NAN,NAN},Vector{NAN,NAN}) を返す
-    pub fn points_at_intersection_line(c: Circle, v1: Vector, v2: Vector) -> (Vector, Vector) {
+    /**
+     * 円と直線との交点座標
+     * 直線は二つのベクトルとして与える
+     * 交差しない場合は (Vector{NAN,NAN},Vector{NAN,NAN}) を返す
+     */
+    pub fn points_at_intersection_line_from_two_vectors(
+        c: Circle,
+        v1: Vector,
+        v2: Vector,
+    ) -> (Vector, Vector) {
         if !Self::is_intersect_line(c, v1, v2) {
             let nv = Vector::new(NAN, NAN);
             return (nv, nv);
@@ -407,9 +416,45 @@ impl CircleFns {
         let nu = e.mul(base); // unit に大きさ base をかけると交点に向けたベクトルになる. それを、正射影のベクトルに加えると交点のベクトルになる
         (pr.add(nu), pr.sub(nu))
     }
-
-    // 二つの円の交点座標
-    // 交差しない場合は (Vector{NAN,NAN},Vector{NAN,NAN}) を返す
+    /**
+     * 円と直線との交点座標
+     * 直線は一時関数として与える
+     * 交差しない場合は (Vector{NAN,NAN},Vector{NAN,NAN}) を返す
+     */
+    pub fn points_at_intersection_line_from_le(
+        c: Circle,
+        mut le: LinearEquation,
+    ) -> (Vector, Vector) {
+        le = le.normalize().unwrap();
+        let (a, b, k, x0, y0, r) = (le.a, le.b, le.k, c.c.x, c.c.y, c.r);
+        let d = (a * x0 + b * y0 + k).abs(); // 正規化したから、分母は 1.
+        if d > r {
+            let nv = Vector::new(NAN, NAN);
+            return (nv, nv);
+        }
+        let cmn = (c.r * c.r - d * d).sqrt();
+        (
+            Vector::new(a * d - b * cmn + x0, b * d + a * cmn + y0),
+            Vector::new(a * d + b * cmn + x0, b * d - a * cmn + y0),
+        )
+    }
+    /**
+     * 円と直線との交点座標
+     * v は「極」
+     */
+    pub fn points_at_intersection_line_from_polar(c: Circle, v: Vector) -> (Vector, Vector) {
+        let (x0, y0, r, x1, y1) = (c.c.x, c.c.y, c.r, v.x, v.y);
+        // a,b,k は、極線が (x1-x0)(x-x0)+(y1-y0)(y-y0) = r*r で表されるから、x,yについて整理すると得られる
+        let a = x1 - x0;
+        let b = y1 - y0;
+        let k = x0 * x0 + y0 * y0 - x1 * x0 - y1 * y0 - r * r;
+        let le = LinearEquation::new(a, b, k); // 極線
+        Self::points_at_intersection_line_from_le(c, le)
+    }
+    /**
+     * 二つの円の交点座標
+     * 交差しない場合は (Vector{NAN,NAN},Vector{NAN,NAN}) を返す
+     */
     pub fn points_at_intersection_circles(c1: Circle, c2: Circle) -> (Vector, Vector) {
         let nv = c2.c.sub(c1.c); // c1 の中心から c2 の中心へのベクトル
         let d = VectorFns::norm(nv);
@@ -832,87 +877,57 @@ pub mod manhattan_geo {
  */
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct LinearEquation {
-    y: f64,
-    x: f64,
+    a: f64,
+    b: f64,
     k: f64,
 }
 
 impl LinearEquation {
-    pub fn new(y: f64, x: f64, k: f64) -> Self {
-        Self { y, x, k }
+    pub fn new(a: f64, b: f64, k: f64) -> Self {
+        Self { a, b, k }
     }
     /**
      * y の係数を 1 に一次方程式を返す
-     * y が 0. なら panic!()
+     * b が 0. なら None
      */
-    pub fn one_y(&self) -> Self {
+    pub fn one_y(&self) -> Option<Self> {
         let eps = 1e-10;
-        if self.y.abs() < eps {
-            panic!("can't devide by 0.")
+        if self.b.abs() < eps {
+            return None;
         }
-        Self::new(1., self.x / self.y, self.k / self.y)
+        Some(Self::new(self.a / self.b, 1., self.k / self.b))
     }
     /**
      * x の係数を 1 に一次方程式を返す
-     * x が 0. なら panic!()
+     * a が 0. なら None
      */
-    pub fn one_x(&self) -> Self {
+    pub fn one_x(&self) -> Option<Self> {
         let eps = 1e-10;
-        if self.x.abs() < eps {
-            panic!("can't devide by 0.")
+        if self.a.abs() < eps {
+            return None;
         }
-        Self::new(self.y / self.x, 1., self.k / self.x)
+        Some(Self::new(1., self.b / self.a, self.k / self.a))
     }
     /**
-     * 二直線の交点を求める
-     * 並行の場合は Vector{NAN, NAN}を返す
+     * 正規化する
+     * a, yの係数が a^2+b^2 = 1 になるようにする
+     * 係数がいずれも 0. なら None
      */
-    pub fn solve(self, other: LinearEquation) -> Vector {
+    pub fn normalize(&self) -> Option<Self> {
         let eps = 1e-10;
-        if (self.y.abs() < eps && other.y.abs() < eps)
-            || (self.x.abs() < eps && other.x.abs() < eps)
-        {
-            // 並行
-            Vector::new(NAN, NAN)
-        } else if self.y.abs() < eps && other.x.abs() < eps {
-            // それぞれの軸に並行
-            Vector::new(-self.k / self.x, -other.k / other.y)
-        } else if self.x.abs() < eps && other.y.abs() < eps {
-            Vector::new(-other.k / other.x, -self.k / self.y)
-        } else if self.x.abs() < eps {
-            let y = -self.k / self.y;
-            let a = other.one_x();
-            let x = -(a.k + a.y * y);
-            Vector::new(x, y)
-        } else if self.y.abs() < eps {
-            let x = -self.k / self.x;
-            let a = other.one_y();
-            let y = -(a.k + a.x * x);
-            Vector::new(x, y)
-        } else if other.x.abs() < eps {
-            let y = -other.k / other.y;
-            let a = self.one_x();
-            let x = -(a.k + a.y * y);
-            Vector::new(x, y)
-        } else if other.y.abs() < eps {
-            let x = -other.k / other.x;
-            let a = self.one_y();
-            let y = -(a.k + a.x * x);
-            Vector::new(x, y)
-        } else {
-            // 直線同士が交わる
-            let a = self.one_y();
-            let b = other.one_y();
-            let x = -(a.k - b.k) / (a.x - b.x);
-            let y = -(a.x * x + a.k);
-            Vector::new(x, y)
+        let n = (self.a * self.a + self.b * self.b).sqrt();
+        if n < eps {
+            return None;
         }
+        Some(Self::new(self.a / n, self.b / n, self.k / n))
     }
 }
 
 pub struct LinearEquationFns {}
-
 impl LinearEquationFns {
+    /**
+     * 二つのベクトルから傾きを求める
+     */
     pub fn slope(v1: Vector, v2: Vector) -> f64 {
         let eps = 1e-10;
         let dx = v2.x - v1.x;
@@ -920,6 +935,50 @@ impl LinearEquationFns {
             0.
         } else {
             (v2.y - v1.y) / dx
+        }
+    }
+    /**
+     * 二直線の交点を求める
+     * 並行の場合は Vector{NAN, NAN}を返す
+     */
+    pub fn solve(le1: LinearEquation, le2: LinearEquation) -> Vector {
+        let eps = 1e-10;
+        if (le1.b.abs() < eps && le2.b.abs() < eps) || (le1.a.abs() < eps && le2.a.abs() < eps) {
+            // 並行
+            Vector::new(NAN, NAN)
+        } else if le1.b.abs() < eps && le2.a.abs() < eps {
+            // それぞれの軸に並行
+            Vector::new(-le1.k / le1.a, -le2.k / le2.b)
+        } else if le1.a.abs() < eps && le2.b.abs() < eps {
+            // それぞれの軸に並行
+            Vector::new(-le2.k / le2.a, -le1.k / le1.b)
+        } else if le1.a.abs() < eps {
+            let y = -le1.k / le1.b;
+            let nle = le2.one_x().unwrap();
+            let x = -(nle.k + nle.b * y);
+            Vector::new(x, y)
+        } else if le1.b.abs() < eps {
+            let x = -le1.k / le1.a;
+            let nle = le2.one_y().unwrap();
+            let y = -(nle.k + nle.a * x);
+            Vector::new(x, y)
+        } else if le2.a.abs() < eps {
+            let y = -le2.k / le2.b;
+            let nle = le1.one_x().unwrap();
+            let x = -(nle.k + nle.b * y);
+            Vector::new(x, y)
+        } else if le2.b.abs() < eps {
+            let x = -le2.k / le2.a;
+            let nle = le1.one_y().unwrap();
+            let y = -(nle.k + nle.a * x);
+            Vector::new(x, y)
+        } else {
+            // 直線同士が交わる
+            let nle1 = le1.one_y().unwrap();
+            let nle2 = le2.one_y().unwrap();
+            let x = -(nle1.k - nle2.k) / (nle1.a - nle2.a);
+            let y = -(nle1.a * x + nle1.k);
+            Vector::new(x, y)
         }
     }
 }
