@@ -19,10 +19,9 @@ fn main() {
     let b = read::<f64>();
     let v = Vector::new(a[0], a[1]);
     let c = Circle::new(Vector::new(b[0], b[1]), b[2]);
-    let (mut t1, mut t2) = CircleFns::points_at_intersection_line_from_polar(c, v);
-    if t1 > t2 {
-        std::mem::swap(&mut t1, &mut t2);
-    }
-    println!("{:.10} {:.10}", t1.x, t1.y);
-    println!("{:.10} {:.10}", t2.x, t2.y);
+    let mut pt = CircleFns::tangent_point_from_polar(c, v);
+    pt.sort();
+    let (v1, v2) = (pt[0], pt[1]);
+    println!("{:.10} {:.10}", v1.x, v1.y);
+    println!("{:.10} {:.10}", v2.x, v2.y);
 }

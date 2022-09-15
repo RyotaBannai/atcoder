@@ -19,14 +19,13 @@ fn main() {
     let q = read::<usize>()[0];
     for _ in 0..q {
         let a = read::<f64>();
-        let (mut v1, mut v2) = CircleFns::points_at_intersection_line_from_two_vectors(
+        let mut pt = CircleFns::points_at_intersection_line_from_two_vectors(
             c,
             Vector::new(a[0], a[1]),
             Vector::new(a[2], a[3]),
         );
-        if v1 > v2 {
-            std::mem::swap(&mut v1, &mut v2);
-        }
+        pt.sort();
+        let (v1, v2) = (pt[0], pt[1]);
         println!("{:.8} {:.8} {:.8} {:.8}", v1.x, v1.y, v2.x, v2.y);
     }
 }

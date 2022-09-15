@@ -84,6 +84,9 @@ impl Vector {
     pub fn new(x: f64, y: f64) -> Self {
         Self { x, y }
     }
+    pub fn from((x, y): (f64, f64)) -> Self {
+        Self { x, y }
+    }
     pub fn dot(self, other: Vector) -> f64 {
         VectorFns::dot(self, other)
     }
@@ -398,51 +401,68 @@ impl CircleFns {
     /**
      * 円と直線との交点座標
      * 直線は二つのベクトルとして与える
-     * 交差しない場合は (Vector{NAN,NAN},Vector{NAN,NAN}) を返す
+     * 交差しない場合は vec![Vector{NAN,NAN}] を返す
      */
     pub fn points_at_intersection_line_from_two_vectors(
         c: Circle,
         v1: Vector,
         v2: Vector,
-    ) -> (Vector, Vector) {
+    ) -> Vec<Vector> {
         if !Self::is_intersect_line(c, v1, v2) {
-            let nv = Vector::new(NAN, NAN);
-            return (nv, nv);
+            return vec![Vector::new(NAN, NAN)];
         }
         let pr = VectorFns::projection(c.c, v1, v2);
         let e = VectorFns::unit(v1, v2);
         let nv = pr.sub(c.c);
         let base = (c.r * c.r - VectorFns::dot(nv, nv)).sqrt(); // base: 直線の円の内部における長さの1/2点間の距離
         let nu = e.mul(base); // unit に大きさ base をかけると交点に向けたベクトルになる. それを、正射影のベクトルに加えると交点のベクトルになる
-        (pr.add(nu), pr.sub(nu))
+        vec![pr.add(nu), pr.sub(nu)]
     }
     /**
      * 円と直線との交点座標
      * 直線は一時関数として与える
-     * 交差しない場合は (Vector{NAN,NAN},Vector{NAN,NAN}) を返す
+     * 交差しない場合は vec![Vector{NAN,NAN}] を返す
      */
-    pub fn points_at_intersection_line_from_le(
-        c: Circle,
-        mut le: LinearEquation,
-    ) -> (Vector, Vector) {
+    pub fn points_at_intersection_line_from_le(c: Circle, mut le: LinearEquation) -> Vec<Vector> {
         le = le.normalize().unwrap();
         let (a, b, k, x0, y0, r) = (le.a, le.b, le.k, c.c.x, c.c.y, c.r);
         let d = (a * x0 + b * y0 + k).abs(); // 正規化したから、分母は 1.
         if d > r {
-            let nv = Vector::new(NAN, NAN);
-            return (nv, nv);
+            return vec![Vector::new(NAN, NAN)];
         }
         let cmn = (c.r * c.r - d * d).sqrt();
-        (
+        vec![
             Vector::new(a * d - b * cmn + x0, b * d + a * cmn + y0),
             Vector::new(a * d + b * cmn + x0, b * d - a * cmn + y0),
-        )
+        ]
     }
     /**
      * 円と直線との交点座標
+     * 直線は一時関数として与える
+     * 交差しない場合は vec![Vector{NAN,NAN}] を返す
+     *
+     * points_at_intersection_line_from_le と同様の結果を期待できる
+     */
+    fn points_at_intersection_line_from_le_2(c: Circle, le: LinearEquation) -> Vec<Vector> {
+        let mut res = Vec::with_capacity(2);
+        // 単位ベクトルとベクトルの内積をすれば、|base|=1 となって計算が楽
+        let r = le.e.dot(c.c - le.v);
+        let p_mid = le.v + le.e * r;
+        let d = (c.r * c.r - VectorFns::dot(p_mid - c.c, p_mid - c.c)).sqrt();
+        if d > 0. {
+            // d == 0. の場合（点で交わる場合）は二つとも同じ点になるが二つ入れる
+            res.push(p_mid + le.e * d);
+            res.push(p_mid - le.e * d);
+        } else {
+            res.push(Vector::new(NAN, NAN));
+        }
+        res
+    }
+    /**
+     * 円と円の外にある点からの接線の接点を求める
      * v は「極」
      */
-    pub fn points_at_intersection_line_from_polar(c: Circle, v: Vector) -> (Vector, Vector) {
+    pub fn tangent_point_from_polar(c: Circle, v: Vector) -> Vec<Vector> {
         let (x0, y0, r, x1, y1) = (c.c.x, c.c.y, c.r, v.x, v.y);
         // a,b,k は、極線が (x1-x0)(x-x0)+(y1-y0)(y-y0) = r*r で表されるから、x,yについて整理すると得られる
         let a = x1 - x0;
@@ -453,24 +473,23 @@ impl CircleFns {
     }
     /**
      * 二つの円の交点座標
-     * 交差しない場合は (Vector{NAN,NAN},Vector{NAN,NAN}) を返す
+     * 交差しない場合は vec![Vector{NAN,NAN}] を返す
      */
-    pub fn points_at_intersection_circles(c1: Circle, c2: Circle) -> (Vector, Vector) {
+    pub fn points_at_intersection_circles(c1: Circle, c2: Circle) -> Vec<Vector> {
         let nv = c2.c.sub(c1.c); // c1 の中心から c2 の中心へのベクトル
         let d = VectorFns::norm(nv);
         if d > c1.r + c2.r {
-            let nv = Vector::new(NAN, NAN);
-            return (nv, nv);
+            return vec![Vector::new(NAN, NAN)];
         }
-        // 余弦定理より半径 c1.r, c2.r, d(c2.c - c1.c)を用いて r1 と d がなす角 a を求める（ベクトル r は中心からのベクトルを意味する）
+        // 余弦定理より半径 c1.r, c2.r, d(c2.c - c1.c)を用いて r1 と d がなす角 a を求める（ベクトル r は中心からのベクトルを意味する）(接する時は cosθ=0 )
         let a = ((c1.r * c1.r + d * d - c2.r * c2.r) / (2.0 * c1.r * d)).acos();
         //  x 軸と d のなす角
         let t = nv.y.atan2(nv.x);
         // ここではベクトル{x,y} を回転した結果を c の中心に加えてるわけではない.
-        (
+        vec![
             c1.c.add(VectorFns::polar_on_r(c1.r, t + a)), // 反時計回りに回転、正
             c1.c.add(VectorFns::polar_on_r(c1.r, t - a)), // 時計回りに回転したい、負
-        )
+        ]
     }
     /**
      * 三角形の内接円
@@ -509,6 +528,73 @@ impl CircleFns {
         let p = (cmn1 * (y2 - y3) - cmn2 * (y2 - y1))
             / (2. * ((y2 - y3) * (x2 - x1) - (y2 - y1) * (x2 - x3)));
         Circle::new(Vector::new(p, q), v1.sub(Vector::new(p, q)).norm())
+    }
+
+    /**
+     * 二つの円から共通接線の方程式を求める
+     * (x-a)2+(y-b)2=r2 を展開して、その二つの方程式の差が共通接線の方程式
+     */
+    pub fn common_line(c1: Circle, c2: Circle) -> LinearEquation {
+        let a = -2. * c1.c.x;
+        let b = -2. * c1.c.y;
+        let c = c1.c.x * c1.c.x + c1.c.y * c1.c.y - c1.r * c1.r;
+        let d = -2. * c2.c.x;
+        let e = -2. * c2.c.y;
+        let f = c2.c.x * c2.c.x + c2.c.y * c2.c.y - c2.r * c2.r;
+        LinearEquation::new(a - d, b - e, c - f)
+    }
+    /**
+     * 円と円の外にある点からの接線の接点を求める
+     * v は「極」
+     *
+     * tangent_point_from_polar を使っても同じ結果が期待できる
+     */
+    pub fn tangent_point_from_polar_2(c: Circle, v: Vector) -> Vec<Vector> {
+        let center = v - c.c; // 新しい円の中心
+        let r = (center.x * center.x + center.y * center.y - c.r * c.r).sqrt(); // 三平方の定理 新しい円の半径
+        let new_c = Circle::new(v, r);
+        CircleFns::points_at_intersection_circles(c, new_c) // 二つの円から交点を求める
+
+        // or
+        // let le = CircleFns::common_line(c, new_c); // 二つの交点を通る直線を求めてから、
+        // CircleFns::points_at_intersection_line_from_le(c, le) // ax+by+k=0 の式を使って交点を求める
+        // CircleFns::points_at_intersection_line_from_le_2(c, le) // ax+by+k=0 の式を使って交点を求める
+    }
+
+    /**
+     * ２つの円の接点を求める
+     */
+    pub fn tangent_circle(c1: Circle, c2: Circle) -> Vec<Vector> {
+        let (r1, r2, v) = (c1.r, c2.r, c2.c - c1.c);
+        let d = v.norm(); // 中心間の距離
+        let mut res = vec![];
+        if d > r1 + r2 {
+            // 共通内接線
+            // 円が離れている
+            let polar = c1.c + v * (r1 / (r1 + r2));
+            let pt = CircleFns::tangent_point_from_polar_2(c1, polar);
+            res.extend(pt);
+        }
+        if d == r1 + r2 || d == (r1 - r2).abs() {
+            // c1 に対して、c2 は内接円 or 外接円
+            // let le = CircleFns::common_line(c1, c2); // 共通接線
+            // let pt = CircleFns::points_at_intersection_line_from_le(c1, le);
+            let pt = CircleFns::points_at_intersection_circles(c1, c2);
+            res.push(pt[0]); // 一点で交わるから一つだけ入れる
+        }
+        if d > (r1 - r2).abs() {
+            // 共通外接線 (２つの円が交わる場合も考慮)
+            if r1 == r2 {
+                // 円の半径が同じ場合共通外接線は並行で交わらないから、中心から半径分垂直に移動した位置を直接求める
+                let n = Vector::new(v.y / d, -v.x / d); // Normal (法線ベクトル)
+                res.extend(vec![c1.c + n * r1, c1.c - n * r1]);
+            } else {
+                let polar = c1.c + v * (r1 / (r1 - r2));
+                let pt = CircleFns::tangent_point_from_polar_2(c1, polar);
+                res.extend(pt);
+            }
+        }
+        res
     }
 }
 
@@ -873,18 +959,30 @@ pub mod manhattan_geo {
 }
 
 /**
- * ay+bx+c=0 の一次方程式
+ * ay+bx+k=0 の一次方程式
  */
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct LinearEquation {
     a: f64,
     b: f64,
     k: f64,
+    v: Vector, // ベクトル
+    e: Vector, // 単位ベクトル
 }
 
 impl LinearEquation {
     pub fn new(a: f64, b: f64, k: f64) -> Self {
-        Self { a, b, k }
+        let a_point_on_line = Vector::new(b, -a); // 直線上の点
+        let e = a_point_on_line / a_point_on_line.norm(); // 単位ベクトル計算
+        let t = if a != 0. {
+            (-k / a, 0.)
+        } else if b != 0. {
+            (0., -k / b)
+        } else {
+            panic!("no line")
+        };
+        let v = Vector::from(t);
+        Self { a, b, k, v, e }
     }
     /**
      * y の係数を 1 に一次方程式を返す

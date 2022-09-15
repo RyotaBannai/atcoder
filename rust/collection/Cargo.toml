@@ -207,6 +207,10 @@ path = "src/bin/geometry/outcircle.rs"
 name = "tangent_to_a_circle"
 path = "src/bin/geometry/tangent_to_a_circle.rs"
 
+[[bin]]
+name = "common_tangent"
+path = "src/bin/geometry/common_tangent.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
