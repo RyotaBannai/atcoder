@@ -211,6 +211,10 @@ path = "src/bin/geometry/tangent_to_a_circle.rs"
 name = "common_tangent"
 path = "src/bin/geometry/common_tangent.rs"
 
+[[bin]]
+name = "area_of_two_circles"
+path = "src/bin/geometry/area_of_two_circles.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"

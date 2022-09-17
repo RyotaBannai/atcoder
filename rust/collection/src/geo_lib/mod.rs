@@ -15,7 +15,7 @@ use std::{
         Ordering,
         Ordering::{Equal, Greater, Less},
     },
-    f64::NAN,
+    f64::{consts::PI, NAN},
     ops::{Add, Div, Mul, Sub},
 };
 
@@ -356,6 +356,9 @@ impl Circle {
     pub fn new(c: Vector, r: f64) -> Self {
         Self { c, r }
     }
+    pub fn area(&self) -> f64 {
+        self.r * self.r * PI
+    }
 }
 pub struct CircleFns {}
 impl CircleFns {
@@ -553,12 +556,12 @@ impl CircleFns {
         let center = v - c.c; // 新しい円の中心
         let r = (center.x * center.x + center.y * center.y - c.r * c.r).sqrt(); // 三平方の定理 新しい円の半径
         let new_c = Circle::new(v, r);
-        CircleFns::points_at_intersection_circles(c, new_c) // 二つの円から交点を求める
+        Self::points_at_intersection_circles(c, new_c) // 二つの円から交点を求める
 
         // or
         // let le = CircleFns::common_line(c, new_c); // 二つの交点を通る直線を求めてから、
-        // CircleFns::points_at_intersection_line_from_le(c, le) // ax+by+k=0 の式を使って交点を求める
-        // CircleFns::points_at_intersection_line_from_le_2(c, le) // ax+by+k=0 の式を使って交点を求める
+        // Self::points_at_intersection_line_from_le(c, le) // ax+by+k=0 の式を使って交点を求める
+        // Self::points_at_intersection_line_from_le_2(c, le) // ax+by+k=0 の式を使って交点を求める
     }
 
     /**
@@ -572,14 +575,14 @@ impl CircleFns {
             // 共通内接線
             // 円が離れている
             let polar = c1.c + v * (r1 / (r1 + r2));
-            let pt = CircleFns::tangent_point_from_polar_2(c1, polar);
+            let pt = Self::tangent_point_from_polar_2(c1, polar);
             res.extend(pt);
         }
         if d == r1 + r2 || d == (r1 - r2).abs() {
             // c1 に対して、c2 は内接円 or 外接円
             // let le = CircleFns::common_line(c1, c2); // 共通接線
             // let pt = CircleFns::points_at_intersection_line_from_le(c1, le);
-            let pt = CircleFns::points_at_intersection_circles(c1, c2);
+            let pt = Self::points_at_intersection_circles(c1, c2);
             res.push(pt[0]); // 一点で交わるから一つだけ入れる
         }
         if d > (r1 - r2).abs() {
@@ -590,11 +593,65 @@ impl CircleFns {
                 res.extend(vec![c1.c + n * r1, c1.c - n * r1]);
             } else {
                 let polar = c1.c + v * (r1 / (r1 - r2));
-                let pt = CircleFns::tangent_point_from_polar_2(c1, polar);
+                let pt = Self::tangent_point_from_polar_2(c1, polar);
                 res.extend(pt);
             }
         }
         res
+    }
+
+    /**
+     * ２つ円の共通部分の面積
+     */
+    // 0<θ<=π 扇型の面積から三角形を引く
+    // π<θ<2π 扇型の面積に三角形を足す
+    pub fn area_of_two_cricles(c1: Circle, c2: Circle) -> f64 {
+        let pos = Self::is_intersect_circles(c1, c2);
+        if pos == 3 || pos == 4 {
+            // 外接 or 交わらない
+            return 0.;
+        } else if pos == 0 || pos == 1 {
+            // 内接 or 内包
+            if c1.r < c2.r {
+                return c1.area();
+            } else {
+                return c2.area();
+            }
+        }
+
+        // 交わる
+        let cps = Self::points_at_intersection_circles(c1, c2);
+        let (cp1, cp2) = (cps[0], cps[1]);
+
+        let place1 = VectorFns::place(c1.c, cp1, cp2);
+        let place2 = VectorFns::place(c2.c, cp1, cp2);
+
+        let cross = VectorFns::cross;
+        let dot = VectorFns::dot;
+        let s1 = cross(cp2 - c1.c, cp1 - c1.c).abs() * 0.5;
+        let ang1 = cross(cp1 - c1.c, cp2 - c1.c) // 三平方の定理 acos では精度が悪かった
+            .atan2(dot(cp1 - c1.c, cp2 - c1.c))
+            .abs();
+        let cs1 = c1.r * c1.r * ang1 * 0.5;
+
+        let s2 = cross(cp2 - c2.c, cp1 - c2.c).abs() * 0.5;
+        let ang2 = cross(cp1 - c2.c, cp2 - c2.c)
+            .atan2(dot(cp1 - c2.c, cp2 - c2.c))
+            .abs();
+        let cs2 = c2.r * c2.r * ang2 * 0.5;
+
+        if place1 * place2 == 3 {
+            // 交点を結んだ線分が円の中心間の間にある
+            cs1 + cs2 - s1 - s2
+        } else if c1.r < c2.r {
+            // c1 の中心が線分を超えて、c2 側にある
+            let cs1 = c1.r * c1.r * (2. * PI - ang1) * 0.5;
+            cs1 + cs2 + s1 - s2
+        } else {
+            // c2 の中心が線分を超えて、c1 側にある
+            let cs2 = c2.r * c2.r * (2. * PI - ang2) * 0.5;
+            cs1 + cs2 - s1 + s2
+        }
     }
 }
 
