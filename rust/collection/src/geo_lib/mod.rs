@@ -290,11 +290,13 @@ impl VectorFns {
         let bnorm = v2.sub(v1).norm(); // base
         let anorm = v.sub(v1).norm(); // active
 
-        if cross > 0.0 {
+        // 0.0 と比較しない
+        // 限りなく小さくて 0.0 とみなせる時は 0.0 とみなす
+        if cross > 1e-10 {
             1
-        } else if cross < 0.0 {
+        } else if cross < -1e-10 {
             3
-        } else if dot < 0.0 {
+        } else if dot < -1e-10 {
             5
         } else if bnorm < 1e-10 && anorm < 1e-10 {
             17
@@ -402,9 +404,39 @@ impl CircleFns {
         }
     }
     /**
+     * 円と線分との交点座標
+     * 線分は二つのベクトルとして与える
+     * 交差しない場合は vec![Vector{NAN,NAN}] を返す
+     *
+     * 直線で交点があっても線分上にない場合は返さない
+     */
+    pub fn points_at_intersection_segment_from_two_vectors(
+        c: Circle,
+        v1: Vector,
+        v2: Vector,
+    ) -> Vec<Vector> {
+        let cp = Self::points_at_intersection_line_from_two_vectors(c, v1, v2);
+        // 交差しないならそのまま返す
+        if cp[0].x.is_nan() || cp[0].y.is_nan() {
+            return cp;
+        }
+        let mut res = vec![];
+        let p1 = VectorFns::place(cp[0], v1, v2);
+        let p2 = VectorFns::place(cp[1], v1, v2);
+        if vec![7, 11, 17, 23].iter().any(|&x| x == p1) {
+            res.push(cp[0]);
+        }
+        if vec![7, 11, 17, 23].iter().any(|&x| x == p2) {
+            res.push(cp[1]);
+        }
+        res
+    }
+    /**
      * 円と直線との交点座標
      * 直線は二つのベクトルとして与える
      * 交差しない場合は vec![Vector{NAN,NAN}] を返す
+     *
+     * ２つ交点がある場合は、v1 に近い方を先に返す
      */
     pub fn points_at_intersection_line_from_two_vectors(
         c: Circle,
@@ -419,7 +451,7 @@ impl CircleFns {
         let nv = pr.sub(c.c);
         let base = (c.r * c.r - VectorFns::dot(nv, nv)).sqrt(); // base: 直線の円の内部における長さの1/2点間の距離
         let nu = e.mul(base); // unit に大きさ base をかけると交点に向けたベクトルになる. それを、正射影のベクトルに加えると交点のベクトルになる
-        vec![pr.add(nu), pr.sub(nu)]
+        vec![pr.sub(nu), pr.add(nu)]
     }
     /**
      * 円と直線との交点座標
@@ -629,7 +661,7 @@ impl CircleFns {
         let cross = VectorFns::cross;
         let dot = VectorFns::dot;
         let s1 = cross(cp2 - c1.c, cp1 - c1.c).abs() * 0.5;
-        let ang1 = cross(cp1 - c1.c, cp2 - c1.c) // 三平方の定理 acos では精度が悪かった
+        let ang1 = cross(cp1 - c1.c, cp2 - c1.c) // 余弦定理 acos では精度が悪かった
             .atan2(dot(cp1 - c1.c, cp2 - c1.c))
             .abs();
         let cs1 = c1.r * c1.r * ang1 * 0.5;
@@ -652,6 +684,97 @@ impl CircleFns {
             let cs2 = c2.r * c2.r * (2. * PI - ang2) * 0.5;
             cs1 + cs2 - s1 + s2
         }
+    }
+    /**
+     * 円と多角形の交わる部分の面積
+     */
+    pub fn area_of_circle_polygon(c: Circle, p: Polygon) -> f64 {
+        #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Eq, Ord)]
+        enum TYPE {
+            Cross,
+            Edge,
+        }
+        let eps = 1e-10;
+
+        if PolygonFns::contain_circle(p.clone(), c) {
+            return c.area();
+        }
+
+        // 多角形の初めの点が円の内側にあるかどうかチェック(円周上も内側とみなす)
+        let d = (c.c - p[0]).norm() - c.r;
+        let mut in_circle = false;
+        let mut ps = vec![];
+        if d < -eps {
+            in_circle = true;
+            ps.push((p[0], TYPE::Edge, None)); // 第三引数: Cross の時に交点が円への出/入 (出:false, 入:true)
+        } else if d.abs() < eps {
+            ps.push((p[0], TYPE::Cross, Some(true)));
+            ps.push((p[0], TYPE::Cross, Some(false)));
+        }
+
+        let mut area = 0.0;
+        let n = p.len();
+        // 多角形の頂点と円との交点とでできる多角形の頂点をまず求める
+        for i in 0..n {
+            let ni = (i + 1) % n; // 最後は cn0 になる
+            let cp = Self::points_at_intersection_segment_from_two_vectors(c, p[i], p[ni])
+                .into_iter()
+                .filter(|cp| !cp.x.is_nan() && !cp.y.is_nan())
+                .collect::<Vec<_>>();
+            // 頂点 i が円の内側にある
+            if in_circle {
+                // 交わる (=多角形の辺が円に出入りする) (接点も考慮)
+                if !cp.is_empty() {
+                    // println!("i cp {:?}", &cp);
+                    for x in cp {
+                        in_circle = !in_circle;
+                        ps.push((x, TYPE::Cross, Some(in_circle)));
+                    }
+                } else {
+                    ps.push((p[ni], TYPE::Edge, None))
+                }
+            } else {
+                // 頂点 i が円の外側にある
+                if !cp.is_empty() {
+                    // 交わる
+                    for x in cp {
+                        in_circle = !in_circle;
+                        ps.push((x, TYPE::Cross, Some(in_circle)));
+                    }
+                    if in_circle {
+                        ps.push((p[ni], TYPE::Edge, None));
+                    }
+                }
+            }
+        }
+
+        let cross = VectorFns::cross;
+        let dot = VectorFns::dot;
+        let place = VectorFns::place;
+        ps.iter().for_each(|x| println!("ps {:?}", &x));
+        println!("len {:?}", &ps.len());
+        let m = ps.len();
+        if m < 2 {
+            return 0.;
+        }
+        for i in 0..m {
+            let ni = (i + 1) % m; // 最後は cm0 になる
+            let (p, _, io) = ps[i];
+            let (np, _, nio) = ps[ni];
+            if !io.unwrap_or(true) && nio.unwrap_or(false) {
+                // 出->入(out->in) の時だけ扇型の面積を求める
+                if place(np, c.c, p) == 3 && ni == 0 {
+                    let ang = cross(np - c.c, p - c.c).atan2(dot(np - c.c, p - c.c));
+                    area += c.r * c.r * (2.0 * PI - ang) * 0.5;
+                } else {
+                    let ang = cross(p - c.c, np - c.c).atan2(dot(p - c.c, np - c.c));
+                    area += c.r * c.r * ang * 0.5;
+                }
+            } else {
+                area += cross(p - c.c, np - c.c) * 0.5;
+            }
+        }
+        area
     }
 }
 
@@ -751,6 +874,23 @@ impl PolygonFns {
         } else {
             3
         }
+    }
+
+    /**
+     * 多角形の中に円を含むかどうか判定
+     */
+    pub fn contain_circle(p: Polygon, c: Circle) -> bool {
+        let n = p.len();
+        let mut ans = Self::contain_point(p.clone(), c.c) == 1;
+        if !ans {
+            return ans;
+        }
+        for i in 0..n {
+            let ni = (i + 1) % n; // 最後は cn0
+            let d = VectorFns::distance_lv(c.c, p[i], p[ni]);
+            ans &= d >= c.r; // 円の半径が多角形の辺以上
+        }
+        ans
     }
 
     // 0~n 区間と n~0 区間をそれぞれ調べる
