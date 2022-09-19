@@ -696,17 +696,7 @@ impl CircleFns {
             Cross,
             Edge,
         }
-        let eps = 1e-10;
         let mut ps = vec![];
-        // 多角形の初めの点が円の内側にあるかどうかチェック(円周上も内側とみなす)
-        let d = (c.c - p[0]).norm() - c.r;
-        if d < -eps {
-            // 第三引数: 内側外側(外:false, 内:true)
-            ps.push((p[0], TYPE::Edge, true));
-        } else if d.abs() < eps {
-            ps.push((p[0], TYPE::Cross, true));
-        }
-
         let mut area = 0.0;
         let n = p.len();
         // まず多角形の頂点と円との交点とでできる多角形の頂点を求める（多角形の頂点と多角形と円とでできる交点全て）
