@@ -685,9 +685,11 @@ impl CircleFns {
             cs1 + cs2 - s1 + s2
         }
     }
+
     /**
      * 円と多角形の交わる部分の面積
      */
+    // 各頂点、交点を使って三角形と扇型の面積どっちを採用するかどうかは図から考える
     pub fn area_of_circle_polygon(c: Circle, p: Polygon) -> f64 {
         #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Eq, Ord)]
         enum TYPE {
@@ -695,83 +697,47 @@ impl CircleFns {
             Edge,
         }
         let eps = 1e-10;
-
-        if PolygonFns::contain_circle(p.clone(), c) {
-            return c.area();
-        }
-
+        let mut ps = vec![];
         // 多角形の初めの点が円の内側にあるかどうかチェック(円周上も内側とみなす)
         let d = (c.c - p[0]).norm() - c.r;
-        let mut in_circle = false;
-        let mut ps = vec![];
         if d < -eps {
-            in_circle = true;
-            ps.push((p[0], TYPE::Edge, None)); // 第三引数: Cross の時に交点が円への出/入 (出:false, 入:true)
+            // 第三引数: 内側外側(外:false, 内:true)
+            ps.push((p[0], TYPE::Edge, true));
         } else if d.abs() < eps {
-            ps.push((p[0], TYPE::Cross, Some(true)));
-            ps.push((p[0], TYPE::Cross, Some(false)));
+            ps.push((p[0], TYPE::Cross, true));
         }
 
         let mut area = 0.0;
         let n = p.len();
-        // 多角形の頂点と円との交点とでできる多角形の頂点をまず求める
+        // まず多角形の頂点と円との交点とでできる多角形の頂点を求める（多角形の頂点と多角形と円とでできる交点全て）
         for i in 0..n {
             let ni = (i + 1) % n; // 最後は cn0 になる
-            let cp = Self::points_at_intersection_segment_from_two_vectors(c, p[i], p[ni])
-                .into_iter()
+
+            // 交わる (=多角形の辺が円に出入りする) (接点も考慮)
+            Self::points_at_intersection_segment_from_two_vectors(c, p[i], p[ni])
+                .iter()
                 .filter(|cp| !cp.x.is_nan() && !cp.y.is_nan())
-                .collect::<Vec<_>>();
-            // 頂点 i が円の内側にある
-            if in_circle {
-                // 交わる (=多角形の辺が円に出入りする) (接点も考慮)
-                if !cp.is_empty() {
-                    // println!("i cp {:?}", &cp);
-                    for x in cp {
-                        in_circle = !in_circle;
-                        ps.push((x, TYPE::Cross, Some(in_circle)));
-                    }
-                } else {
-                    ps.push((p[ni], TYPE::Edge, None))
-                }
-            } else {
-                // 頂点 i が円の外側にある
-                if !cp.is_empty() {
-                    // 交わる
-                    for x in cp {
-                        in_circle = !in_circle;
-                        ps.push((x, TYPE::Cross, Some(in_circle)));
-                    }
-                    if in_circle {
-                        ps.push((p[ni], TYPE::Edge, None));
-                    }
-                }
-            }
+                .for_each(|&x| ps.push((x, TYPE::Cross, true)));
+
+            let is_in = p[ni].sub(c.c).norm() <= c.r;
+            ps.push((p[ni], TYPE::Edge, is_in));
         }
+        // ps.iter().for_each(|x| println!("ps {:?}", &x));
 
         let cross = VectorFns::cross;
         let dot = VectorFns::dot;
-        let place = VectorFns::place;
-        ps.iter().for_each(|x| println!("ps {:?}", &x));
-        println!("len {:?}", &ps.len());
         let m = ps.len();
-        if m < 2 {
-            return 0.;
-        }
         for i in 0..m {
             let ni = (i + 1) % m; // 最後は cm0 になる
-            let (p, _, io) = ps[i];
-            let (np, _, nio) = ps[ni];
-            if !io.unwrap_or(true) && nio.unwrap_or(false) {
-                // 出->入(out->in) の時だけ扇型の面積を求める
-                if place(np, c.c, p) == 3 && ni == 0 {
-                    let ang = cross(np - c.c, p - c.c).atan2(dot(np - c.c, p - c.c));
-                    area += c.r * c.r * (2.0 * PI - ang) * 0.5;
-                } else {
-                    let ang = cross(p - c.c, np - c.c).atan2(dot(p - c.c, np - c.c));
-                    area += c.r * c.r * ang * 0.5;
-                }
-            } else {
+            let (p, _, is_in) = ps[i];
+            let (np, _, nis_in) = ps[ni];
+            if is_in && nis_in {
+                // どっちも内側にある
                 area += cross(p - c.c, np - c.c) * 0.5;
+            } else {
+                // 一つでも外側にある
+                let ang = cross(p - c.c, np - c.c).atan2(dot(p - c.c, np - c.c));
+                area += c.r * c.r * ang * 0.5;
             }
         }
         area
