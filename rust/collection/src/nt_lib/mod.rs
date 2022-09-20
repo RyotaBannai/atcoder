@@ -12,39 +12,89 @@
  */
 use std::collections::{BTreeMap, BTreeSet};
 
+/**
+ * 素数表
+ */
+// 素数だけ持っておく ver.
 pub fn prime(ma: usize) -> Vec<bool> {
-    let mut p = vec![true; ma + 1];
-    p[0] = false;
-    for i in 2..=ma {
-        if p[i] {
-            for j in (i * 2..=ma).step_by(i) {
-                p[j] = false;
+    let mut ps = vec![2];
+    for i in (3..=ma).step_by(2) {
+        let mut is_prime = true;
+        for p in &ps {
+            if p * p > i {
+                break;
+            }
+            if i % p == 0 {
+                is_prime = false;
+                break;
             }
         }
+        if is_prime {
+            ps.push(i);
+        }
     }
-    p
+    // ps.iter().enumerate().for_each(|(i, x)| {
+    //     println!("{}", x);
+    // });
+    let mut table = vec![false; ma + 1];
+    for x in ps {
+        table[x] = true;
+    }
+    table
 }
+
+// pub fn prime(ma: usize) -> Vec<bool> {
+//     let mut p = vec![false; ma + 1];
+//     p[2] = true;
+//     for i in (3..=ma).step_by(2) {
+//         let mut is_prime = true;
+//         for j in 2..=i {
+//             // j 以下で割り切れないなら素数
+//             if j * j > i {
+//                 break;
+//             }
+//             if i % j == 0 {
+//                 is_prime = false;
+//                 break;
+//             }
+//         }
+//         if is_prime {
+//             p[i] = true;
+//         }
+//     }
+//     p.iter().enumerate().for_each(|(i, x)| {
+//         if *x {
+//             println!("{}", i);
+//         }
+//     });
+//     p
+// }
 
 /**
  * 素因数分解
  */
 pub fn factorize(n: usize) -> BTreeMap<usize, usize> {
-    let primes = prime(n);
     let mut factors = BTreeMap::<usize, usize>::new();
     let mut rest = n;
-    for i in 2..=n {
-        if primes[i] {
-            while rest != 0 && rest % i == 0 {
-                rest /= i;
-                if let Some(x) = factors.get_mut(&i) {
-                    *x += 1;
-                } else {
-                    factors.insert(i, 1);
-                }
+    for i in 2..n {
+        // 前半は残りよりも大きい数字で素因数は作れないことを利用 212567592: 2 2 2 3 17 17 19 1613
+        // 後半は素因数は一方が平方根より大きいなら片方は平方根より小さい. i*i が n より大き時、素因数を持たない時はその数値が素数と考える 999993031: 999993031 に対応
+        if i > rest {
+            break;
+        }
+        if i * i > n && factors.is_empty() {
+            factors.insert(n, 1);
+            break;
+        }
+        while rest != 0 && rest % i == 0 {
+            rest /= i;
+            if let Some(x) = factors.get_mut(&i) {
+                *x += 1;
+            } else {
+                factors.insert(i, 1);
             }
         }
     }
-
     factors
 }
 
