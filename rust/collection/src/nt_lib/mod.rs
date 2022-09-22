@@ -99,6 +99,19 @@ pub fn factorize(n: usize) -> BTreeMap<usize, usize> {
 }
 
 /**
+ * オイラーのφ関数
+ */
+// 互いに素な自然数（最大公約数が１）は普通に求めると遅い
+pub fn euler_phi(n: usize) -> usize {
+    let mut ans = n as f64;
+    let factors = factorize(n);
+    for (k, _) in factors.iter() {
+        ans *= 1. - 1. / *k as f64;
+    }
+    ans as usize
+}
+
+/**
  * 最大公約数を求める
  * 引数は３以上可
  */

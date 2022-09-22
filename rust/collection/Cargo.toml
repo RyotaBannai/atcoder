@@ -227,6 +227,10 @@ path = "src/bin/number_theory/lcm.rs"
 name = "factorize"
 path = "src/bin/number_theory/factorize.rs"
 
+[[bin]]
+name = "euler_phi"
+path = "src/bin/number_theory/euler_phi.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
