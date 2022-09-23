@@ -231,6 +231,10 @@ path = "src/bin/number_theory/factorize.rs"
 name = "euler_phi"
 path = "src/bin/number_theory/euler_phi.rs"
 
+[[bin]]
+name = "ext_gcd"
+path = "src/bin/number_theory/ext_gcd.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"

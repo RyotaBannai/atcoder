@@ -145,3 +145,13 @@ pub fn lcm(xs: Vec<usize>) -> usize {
     }
     a
 }
+
+// 返り値: a と b の最大公約数
+// ax + by = gcd(a, b) を満たす (x, y) が格納される
+pub fn ext_gcd(a: isize, b: isize) -> (isize, isize) {
+    if b == 0 {
+        return (0, 1);
+    }
+    let (x, y) = ext_gcd(b, a % b);
+    (y - a / b * x, x)
+}
