@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
 //     Ordering::{Equal, Greater, Less},
@@ -14,7 +14,20 @@
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
-// #[fastout]
+/**
+ * A - Anyway Takahashi
+ *
+ * https://atcoder.jp/contests/abc269/tasks/abc269_a
+ */
+
+#[fastout]
 fn main() {
-    todo!();
+    input! {
+        a:isize,
+        b:isize,
+        c:isize,
+        d:isize,
+    }
+    println!("{}", (a + b) * (c - d));
+    println!("Takahashi");
 }
