@@ -14,6 +14,14 @@ type Set = BTreeSet<usize>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * D - Do use hexagon grid
+ *
+ * https://atcoder.jp/contests/abc269/tasks/abc269_d
+ *
+ * tags: #union_find
+ *
+ */
 struct DisjointSet {
     rank: Vec<usize>,
     p: Vec<usize>,
@@ -64,7 +72,7 @@ fn main() {
 
     let neibours = vec![(-1, -1), (-1, 0), (0, -1), (0, 1), (1, 0), (1, 1)];
 
-    let range = 1005; // １行分
+    let range = 4006; // １行分 max(N)=1000, |xi|=1000, |yi|=1000 だから、正に 2000 分確保したい. 下限は 1 だから、1000 分くらい
     let mut ds = DisjointSet::new(range * range);
     let mut used = vec![false; range * range];
     let mut used_list = vec![];
@@ -94,6 +102,7 @@ fn main() {
     }
 
     let mut s = Set::new();
+    // 異なる親（異なる組み）を探す
     for pos in used_list {
         s.insert(ds.find(pos));
     }
