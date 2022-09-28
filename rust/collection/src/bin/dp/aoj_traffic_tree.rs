@@ -5,7 +5,6 @@
  */
 // use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{max, min};
-use std::io;
 use std::usize::MAX;
 // use superslice::Ext;
 // use ac_library_rs::modint::ModInt998244353 as Mint;
@@ -38,14 +37,7 @@ use std::usize::MAX;
  * この時、最後に到達する頂点が一番遠い時に、最小のステップ数で全ての頂点に到達できるため、部分木が最大の数を (n-1)*2 から引く（ステップ数が多いほど、その分親まで戻ってこなくてはいけない）
  *
 */
-
-// aoj
-// １行読み込んで、空白区切りで vec にして返す
-fn read<T: std::str::FromStr>() -> Vec<T> {
-    let mut buf = String::new();
-    io::stdin().read_line(&mut buf).unwrap();
-    buf.trim().split(' ').flat_map(str::parse).collect()
-}
+use collection::utils::read;
 
 #[derive(Clone, Copy, Debug)]
 struct Edge {

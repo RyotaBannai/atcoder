@@ -5,7 +5,6 @@
  */
 // use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{max, min};
-use std::io;
 use std::usize::MAX;
 // use superslice::Ext;
 // use ac_library_rs::modint::ModInt998244353 as Mint;
@@ -29,14 +28,7 @@ use std::usize::MAX;
  * src/bin/dp/all_directions_tree_dp_merge.rs
  *
 */
-
-// aoj
-// １行読み込んで、空白区切りで vec にして返す
-fn read<T: std::str::FromStr>() -> Vec<T> {
-    let mut buf = String::new();
-    io::stdin().read_line(&mut buf).unwrap();
-    buf.trim().split(' ').flat_map(str::parse).collect()
-}
+use collection::utils::read;
 
 #[derive(Clone, Copy, Debug)]
 struct Edge {

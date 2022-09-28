@@ -116,6 +116,14 @@ name = "aoj_traffic_tree"
 path = "src/bin/dp/aoj_traffic_tree.rs"
 
 [[bin]]
+name = "saikoro"
+path = "src/bin/dp/probability/saikoro.rs"
+
+[[bin]]
+name = "cointoss"
+path = "src/bin/dp/probability/cointoss.rs"
+
+[[bin]]
 name = "parallel_orthogonal"
 path = "src/bin/geometry/parallel_orthogonal.rs"
 

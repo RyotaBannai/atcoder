@@ -4,8 +4,6 @@
  * cpg run -p src/bin/dp/bit_dp.rs
  */
 // use proconio::{fastout, input, marker::Chars};
-use std::cmp::{max, min};
-use std::io;
 use std::isize::MAX;
 // use superslice::Ext;
 // use ac_library_rs::modint::ModInt998244353 as Mint;
@@ -46,14 +44,7 @@ use std::isize::MAX;
  * ・https://blog.hamayanhamayan.com/entry/2017/07/16/130151
  *
  */
-
-// aoj
-// １行読み込んで、空白区切りで vec にして返す
-fn read<T: std::str::FromStr>() -> Vec<T> {
-    let mut buf = String::new();
-    io::stdin().read_line(&mut buf).unwrap();
-    buf.trim().split(' ').flat_map(str::parse).collect()
-}
+use collection::utils::read;
 
 struct Rec {
     n: usize,

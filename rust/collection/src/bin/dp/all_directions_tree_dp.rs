@@ -5,7 +5,6 @@
  */
 // use proconio::{fastout, input, marker::Chars};
 use std::cmp::{max, min};
-use std::io;
 use std::usize::MAX;
 // use superslice::Ext;
 // use ac_library_rs::modint::ModInt998244353 as Mint;
@@ -47,14 +46,7 @@ use std::usize::MAX;
  * e.g. O を根とし、 O の子部分木を A, B とする. O の木dp は求めているから、2回目の dfs で v={A, B} として、dfs を呼ぶ. v=A の時、A の部分木は、1 回目で求めており、A の子を C,D とすると、木dp[C],木dp[D] で O(1) で探すことができる（木dp[C]+cost_ac,木dp[D]+cost_ad）. また、A の親 O への木dp も求めたいが、これも 木dp[O] で求めているから、最大値は 木dp[O]+cost_ao とすれば良い.
  *
 */
-
-// aoj
-// １行読み込んで、空白区切りで vec にして返す
-fn read<T: std::str::FromStr>() -> Vec<T> {
-    let mut buf = String::new();
-    io::stdin().read_line(&mut buf).unwrap();
-    buf.trim().split(' ').flat_map(str::parse).collect()
-}
+use collection::utils::read;
 
 #[derive(Clone, Debug)]
 struct Edge {
