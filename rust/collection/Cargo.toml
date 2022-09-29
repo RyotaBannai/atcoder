@@ -124,6 +124,10 @@ name = "cointoss"
 path = "src/bin/dp/probability/cointoss.rs"
 
 [[bin]]
+name = "tournament"
+path = "src/bin/dp/probability/tournament.rs"
+
+[[bin]]
 name = "parallel_orthogonal"
 path = "src/bin/geometry/parallel_orthogonal.rs"
 
