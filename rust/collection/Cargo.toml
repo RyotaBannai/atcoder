@@ -133,7 +133,11 @@ path = "src/bin/dp/probability/expected_value.rs"
 
 [[bin]]
 name = "expected_value_2"
-path = "src/bin/dp/probability/expected_value_2.rs"
+path = "src/bin/dp/probability/expected_value_2.rs" 
+
+[[bin]]
+name = "hsi"
+path = "src/bin/dp/probability/hsi.rs" 
 
 [[bin]]
 name = "parallel_orthogonal"
