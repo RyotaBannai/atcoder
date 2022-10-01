@@ -140,6 +140,10 @@ name = "hsi"
 path = "src/bin/dp/probability/hsi.rs" 
 
 [[bin]]
+name = "eratosthenes_zaru"
+path = "src/bin/dp/probability/eratosthenes_zaru.rs" 
+
+[[bin]]
 name = "parallel_orthogonal"
 path = "src/bin/geometry/parallel_orthogonal.rs"
 
