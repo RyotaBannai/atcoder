@@ -1,9 +1,15 @@
 ---
 type: Batch
-timelimit: 2s
+timelimit: 10s
 match: Lines
 
 cases:
+  # - name: sample1
+  #   in: |
+  #     10
+  #     2 3
+  #   out: |
+  #     4
   - name: sample1
     in: |
       227
