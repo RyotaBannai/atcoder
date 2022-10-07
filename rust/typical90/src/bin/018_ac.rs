@@ -12,6 +12,13 @@ use std::f64::consts::PI;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * 018 - Statue of Chokudai（★3）
+ *
+ * https://atcoder.jp/contests/typical90/tasks/typical90_r
+ *
+*/
+
 #[fastout]
 fn main() {
     input! {
@@ -35,12 +42,12 @@ fn main() {
         // println!("theta {}", theta);
         // println!("ny {}, nz {}", ny, nz);
 
-        let a = (x * x + (y - ny) * (y - ny)).sqrt(); // xy 平面上の距離
-        let b = (x * x + (y - ny) * (y - ny) + nz * nz).sqrt(); // 観覧車と象のなす斜辺
-        let c = nz; // 観覧車の高さ
+        let a2 = x * x + (y - ny) * (y - ny); // xy 平面上の距離
+        let b2 = x * x + (y - ny) * (y - ny) + nz * nz; // 観覧車と象のなす斜辺
+        let c2 = nz * nz; // 観覧車の高さ
 
         let eps = 0.000_000_000_1;
-        if c.abs() < eps {
+        if c2.abs() < eps {
             // 余弦定理の分母が0 になるとNaN になるからここで処理
             println!("0");
             continue;
@@ -52,7 +59,7 @@ fn main() {
         // 俯角だから、90から成す角を引いた角度
         // ラジアンに180/πを掛けると度
         // 度にπ/180を掛けるとラジアン
-        let ans = 90. - ((b * b + c * c - a * a) / (2. * b * c)).acos() * 180. / PI; // NaN if the number is outside the range -1, 1.
+        let ans = 90. - ((b2 + c2 - a2) / (2. * b2.sqrt() * c2.sqrt())).acos() * 180. / PI; // NaN if the number is outside the range -1, 1.
 
         // atan 使っても可
 
