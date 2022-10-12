@@ -69,6 +69,10 @@ path = "src/bin/l.rs"
 name = "practice2-g_ac"
 path = "src/bin/g_ac.rs"
 
+[[bin]]
+name = "practice2-j_ac"
+path = "src/bin/j_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"

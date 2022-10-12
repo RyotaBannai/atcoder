@@ -104,7 +104,7 @@ impl LazySegTree {
     // build := set で直接葉を更新した後に、まとめてセグ木の全体を min で更新
     // n = 8 とした時、n-2 は一番後ろの内部節点なので、そこから根まで順に更新
     pub fn build(&mut self) {
-        for k in (0..=self.n - 2).rev() {
+        for k in (0..self.n - 1).rev() {
             self.dat[k] = (self.fx)(self.dat[left(k)], self.dat[right(k)]);
         }
     }
