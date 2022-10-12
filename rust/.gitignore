@@ -1,3 +1,4 @@
 target/
 workspace.code-workspace
 Cargo.lock
+scripts/

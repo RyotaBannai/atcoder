@@ -72,6 +72,10 @@ name = "range_query_2d"
 path = "src/bin/query/range_query_2d.rs"
 
 [[bin]]
+name = "range_minimum_query"
+path = "src/bin/query/range_minimum_query.rs"
+
+[[bin]]
 name = "centroid"
 path = "src/bin/graph/centroid.rs"
 
