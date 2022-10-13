@@ -54,6 +54,7 @@ pub struct LazySegTree {
     pub n: usize, // ノード数
     pub dat: Vec<isize>,
     pub lazy: Vec<isize>,
+    es: isize,                           // 葉の初期値
     ex: isize,                           // モノイドXでの単位元
     em: isize,                           // モノイドMでの単位元
     fx: fn(a: isize, b: isize) -> isize, // a.min(b) など
@@ -66,6 +67,7 @@ impl LazySegTree {
     #[allow(clippy::too_many_arguments)]
     pub fn new(
         leafs: usize,
+        es: isize,
         ex: isize,
         em: isize,
         fx: fn(a: isize, b: isize) -> isize,
@@ -82,8 +84,9 @@ impl LazySegTree {
         }
         Self {
             n,
-            dat: vec![em; n * 2],
-            lazy: vec![em; n * 2],
+            dat: vec![es; n * 2],
+            lazy: vec![es; n * 2],
+            es,
             ex,
             em,
             fx,
@@ -182,7 +185,7 @@ impl LazySegTree {
     ) -> isize {
         self.eval(k, r - l);
         if (self.fc)(self.dat[k], x) || r <= a || b <= l {
-            // 自分の値がxより大きい or [a,b)が[l,r)の範囲外なら
+            // 自分の値がxより大きい(or より小さいなど) or [a,b)が[l,r)の範囲外なら
             self.ex
         } else if k >= self.n - 1 {
             // ? 葉 k は全ノードの各頂点の値の配列に対する index. 葉の数を n とすると、葉以外のノード数（内部接点数）は n-1

@@ -1,7 +1,7 @@
 /**
- * @cpg_dirspec range_minimum_query
+ * @cpg_dirspec rmq_raq
  *
- * cpg run -p src/bin/query/range_minimum_query.rs
+ * cpg run -p src/bin/query/rmq_raq.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
@@ -21,9 +21,9 @@
 use collection::{query_lib::*, utils::*};
 
 /**
- * Range Minimum Query (RMQ)
+ * Range Add Query (RAQ) and Range Minimum Query(RMQ)
  *
- * https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_A
+ * https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_H
  *
  * tags: #segment_tree #セグメント木 #セグ木 #セグメントツリー
  *
@@ -33,30 +33,28 @@ use collection::{query_lib::*, utils::*};
 fn main() {
     let a = read::<usize>();
     let (n, q) = (a[0], a[1]);
-    let mut qs = vec![];
-    for _ in 0..q {
-        let b = read::<usize>();
-        qs.push((b[0], (b[1], b[2])));
-    }
 
+    let f = |a: isize, b: isize| a + b;
     let mut seg = LazySegTree::new(
         n,
-        (1 << 31) - 1,
-        (1 << 31) - 1,
-        (1 << 31) - 1,
-        |a: isize, b: isize| a.min(b), // min
-        |_: isize, b: isize| b,        // replace
-        |_: isize, b: isize| b,        // replace
-        |a: isize, _: usize| a,        // mul 1
+        0,
+        std::isize::MAX, // 注意: query の無効値としての単位元は fx:min なら MAX, fx:max なら MIN
+        0,               // 注意: add 用だから単位元は 0
+        |a: isize, b: isize| a.min(b),
+        f,
+        f,
+        |a: isize, _: usize| a,
         |a: isize, x: isize| a > x,
     );
 
-    for (t, q) in qs {
+    for _ in 0..q {
+        let b = read::<isize>();
+        let t = b[0];
         if t == 0 {
-            let (x, v) = q;
-            seg.update(x, x + 1, v as isize);
+            let (l, r, x) = (b[1] as usize, b[2] as usize, b[3]);
+            seg.update(l, r + 1, x);
         } else {
-            let (l, r) = q;
+            let (l, r) = (b[1] as usize, b[2] as usize);
             println!("{}", seg.query(l, r + 1));
         }
     }

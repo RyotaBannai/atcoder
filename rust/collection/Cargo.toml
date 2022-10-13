@@ -80,6 +80,30 @@ name = "range_sum_query"
 path = "src/bin/query/range_sum_query.rs"
 
 [[bin]]
+name = "range_update_query"
+path = "src/bin/query/range_update_query.rs"
+
+[[bin]]
+name = "range_add_query"
+path = "src/bin/query/range_add_query.rs"
+
+[[bin]]
+name = "rmq_ruq"
+path = "src/bin/query/rmq_ruq.rs"
+
+[[bin]]
+name = "rsq_raq"
+path = "src/bin/query/rsq_raq.rs"
+
+[[bin]]
+name = "rmq_raq"
+path = "src/bin/query/rmq_raq.rs"
+
+[[bin]]
+name = "rsq_ruq"
+path = "src/bin/query/rsq_ruq.rs"
+
+[[bin]]
 name = "centroid"
 path = "src/bin/graph/centroid.rs"
 
