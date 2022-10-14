@@ -50,6 +50,7 @@ fn mid(l: usize, r: usize) -> usize {
     (l + r) / 2
 }
 
+#[derive(Debug, Clone)]
 pub struct LazySegTree {
     pub n: usize, // ノード数
     pub dat: Vec<isize>,

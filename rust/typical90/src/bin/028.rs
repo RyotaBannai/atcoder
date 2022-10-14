@@ -11,6 +11,8 @@ use std::collections::{BTreeMap, BTreeSet};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+use typical90::query_lib::*;
+
 /**
  *  028 - Cluttered Paper（★4）
  *
@@ -22,23 +24,66 @@ use std::collections::{BTreeMap, BTreeSet};
 
 #[fastout]
 fn main() {
-    todo!();
-    // input! {
-    //     k: usize,
-    //     s: [(usize,usize, usize,usize); k]
-    // }
+    input! {
+        k: usize,
+        s: [(usize,usize, usize,usize); k]
+    }
 
-    // let mut m: BTreeMap<String, usize> = BTreeMap::new();
-    // for (x1, y1, x2, y2) in s {
-    //     for i in x1..x2 {
-    //         for j in y1..y2 {
-    //             let key = format!("{} {}", i, j);
-    //             if let Some(x) = m.get_mut(&key) {
-    //                 *x += 1;
-    //             } else {
-    //                 m.insert(key, 1);
-    //             }
-    //         }
-    //     }
-    // }
+    let n = 1005;
+
+    let f = |a: isize, b: isize| a + b;
+    let mut vs = vec![];
+    for i in 0..n {
+        vs.push(LazySegTree::new(
+            n,
+            0,
+            0,
+            0,
+            f,
+            f,
+            f,
+            |a: isize, n: usize| a * n as isize,
+            |a: isize, x: isize| a > x,
+        ));
+    }
+
+    for (x1, y1, x2, y2) in s {
+        for i in y1 - 1..y2 - 1 {
+            vs[i].update(x1 - 1, x2 - 1, 1);
+        }
+    }
+
+    let mut sum_x = vec![vec![0; n]; n];
+    for i in 0..n {
+        for j in 0..n - 1 {
+            sum_x[i][j + 1] = vs[i].query(0, j);
+        }
+    }
+
+    // println!("{:?}", &sum_x);
+    // println!("{:?}", &x.dat);
+    // println!("{:?}", &y.dat);
+    // 各 k 回重なる部分の総和を求める
+    // k: k 回重なる, v: 総和
+    let mut sum: BTreeMap<usize, usize> = BTreeMap::new();
+    for xs in sum_x {
+        for i in 1..n {
+            let v = (xs[i] - xs[i - 1]) as usize;
+            if let Some(x) = sum.get_mut(&v) {
+                *x += 1;
+            } else {
+                sum.insert(v, 1);
+            }
+        }
+    }
+    // println!("{:?}", &sum);
+
+    // i=1 回重なる総和から順位出力
+    for i in 1..=k {
+        if let Some(x) = sum.get(&i) {
+            println!("{}", x);
+        } else {
+            println!("0");
+        }
+    }
 }
