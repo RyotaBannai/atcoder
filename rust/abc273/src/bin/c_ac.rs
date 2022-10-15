@@ -8,7 +8,10 @@ use superslice::{self, Ext};
 // use derive_new::new;
 // #[derive(new)]
 // use indexmap::indexmap;
-use std::collections::{BTreeMap, BTreeSet};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    iter::FromIterator,
+};
 // type Map = BTreeMap<String, usize>;
 type Set = BTreeSet<usize>;
 // use easy_ext::ext;
@@ -22,12 +25,9 @@ type Set = BTreeSet<usize>;
 fn main() {
     input! {
         n: usize,
-        xs: [usize;n]
+        mut xs: [usize;n]
     }
-    let mut s = Set::new();
-    for &x in &xs {
-        s.insert(x);
-    }
+    let s = Set::from_iter(xs.clone().into_iter());
     let vs = s.into_iter().collect::<Vec<_>>();
 
     let mut v = vec![0; n]; // k は 0..n-1
