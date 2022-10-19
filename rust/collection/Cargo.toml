@@ -88,6 +88,14 @@ name = "range_add_query"
 path = "src/bin/query/range_add_query.rs"
 
 [[bin]]
+name = "number_of_customers"
+path = "src/bin/query/number_of_customers.rs"
+
+[[bin]]
+name = "number_of_overlaps"
+path = "src/bin/query/number_of_overlaps.rs"
+
+[[bin]]
 name = "rmq_ruq"
 path = "src/bin/query/rmq_ruq.rs"
 
