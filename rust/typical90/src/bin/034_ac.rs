@@ -12,9 +12,9 @@ type Map = BTreeMap<usize, usize>;
 // use std::collections::{BinaryHeap, VecDeque};
 
 /**
- * 034 - There are few types of elements（★4
+ * 034 - There are few types of elements（★4）
  *
- * https://atcoder.jp/contests/typical90/tasks/typical90_a
+ * https://atcoder.jp/contests/typical90/tasks/typical90_ah
  *
  * tags: #尺取り法
  *
