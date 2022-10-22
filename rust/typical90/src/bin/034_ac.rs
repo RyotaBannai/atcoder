@@ -35,12 +35,8 @@ fn main() {
     let mut ma = 0;
     let mut map = Map::new();
     while l < n {
-        while map.len() <= k && r < n {
-            if map.len() == k && map.get(&a[r]).is_none() {
-                // len==k の時、これ以上要素の種類を増やせないため、map に保持してない要素が入ってくる場合事前にbreakする
-                break;
-            }
-
+        // len < k なら、追加しても len<=k || len==k の時、これ以上要素の種類を増やせないため、map に保持してない要素が入ってくる場合事前にbreakする
+        while r < n && (map.len() < k || map.len() == k && map.get(&a[r]).is_some()) {
             if let Some(x) = map.get_mut(&a[r]) {
                 *x += 1;
             } else {
