@@ -10,6 +10,15 @@ use derive_new::new;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * 042 - Multiple of 9（★4）
+ *
+ * https://atcoder.jp/contests/typical90/tasks/typical90_ap
+ *
+ * tags: #dp #動的計画法
+ *
+ */
+
 #[derive(new)]
 struct Rec {
     k: usize,
