@@ -21,7 +21,7 @@ use ac_library_rs::modint::ModInt1000000007 as Mint;
  * https://logicalbear.net/%E3%80%90%E7%AB%B6%E3%83%97%E3%83%AD%E5%85%B8%E5%9E%8B90%E5%95%8F%E3%80%91%E3%80%8C042-multiple-of-9%EF%BC%88%E2%98%854%EF%BC%89%E3%80%8D%E8%A7%A3%E6%B3%95/
  *
  * 類題:
- * - ABC 182-C「To 3」(3の倍数)
+ * - ABC 182-C「To 3」(3の倍数) abc182/src/bin/c_ac.rs
  * - ABC 181-D「Hachi」(8の倍数)
  * - DDCC2020 予選D「Digit Sum Replace」(9の倍数)
  * - AOJ 2182「Eleven Lover」(11の倍数)
