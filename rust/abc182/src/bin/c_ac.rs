@@ -53,10 +53,10 @@ fn main() {
         }
         // d桁目を使う
         for j in 0..ma {
-            if j < rest as usize {
+            if j < rest {
                 continue;
             }
-            let (b, cnt) = sum[(i + 1) % 2][j - rest as usize];
+            let (b, cnt) = sum[(i + 1) % 2][j - rest];
             if b {
                 sum[i][j] = (true, cnt);
             }
