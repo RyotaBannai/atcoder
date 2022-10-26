@@ -35,6 +35,10 @@ path = "src/bin/e.rs"
 name = "ddcc2020-qual-f"
 path = "src/bin/f.rs"
 
+[[bin]]
+name = "ddcc2020-qual-d_ac"
+path = "src/bin/d_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"

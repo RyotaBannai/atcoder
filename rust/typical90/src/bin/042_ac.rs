@@ -23,7 +23,7 @@ use ac_library_rs::modint::ModInt1000000007 as Mint;
  * 類題:
  * - ABC 182-C「To 3」(3の倍数) abc182/src/bin/c_ac.rs
  * - ABC 181-D「Hachi」(8の倍数) abc181/src/bin/d_ac.rs
- * - DDCC2020 予選D「Digit Sum Replace」(9の倍数)
+ * - DDCC2020 予選D「Digit Sum Replace」(9の倍数) ddcc2020-qual/src/bin/d_ac.rs
  * - AOJ 2182「Eleven Lover」(11の倍数)
  *
  * その他:
