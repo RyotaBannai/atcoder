@@ -3,6 +3,8 @@
  *
  * cpg run -p src/bin/other/eleven_lover.rs
  */
+use std::collections::{BTreeMap, BTreeSet};
+type Map = BTreeMap<isize, usize>;
 use collection::utils::read;
 
 /**
@@ -34,25 +36,77 @@ fn main() {
             }
         }
 
+        let mut sub = vec![0isize; len + 1];
+        for i in 0..=len {
+            sub[i] = se[i] - so[i];
+        }
+
         // println!("{:?}", &se);
         // println!("{:?}", &so);
+        // println!("{:?}", &sub);
 
-        let mut ans = 0;
-        for l in 0..len {
-            if a[l] == '0' {
+        let mut ans = 0usize;
+
+        let mut map = Map::new();
+        let mut mapper = Map::new();
+        for (i, x) in sub.clone().iter().enumerate() {
+            if i > 0 && a[i - 1] == '0' {
+                if sub[i - 1] == 0 {
+                    if let Some(y) = mapper.get(&0) {
+                        ans += y - 1;
+                    }
+                } else {
+                    let (k, m) = (
+                        sub[i - 1] % 11,
+                        (sub[i - 1] % 11 + if sub[i - 1] < 0 { 11 } else { -11 }),
+                    );
+
+                    // println!("k {}", k);
+                    // println!("m {}", m);
+
+                    if let Some(y) = mapper.get(&k) {
+                        ans += y - 1;
+                    }
+
+                    if let Some(y) = mapper.get(&m) {
+                        ans += y;
+                    }
+                }
+
                 continue;
             }
-            for r in l + 1..=len {
-                let ret = (so[r] - so[l]) - (se[r] - se[l]);
+            if let Some(y) = map.get_mut(x) {
+                *y += 1;
+            } else {
+                map.insert(*x, 1);
+            }
 
-                if ret % 11 == 0 {
-                    // println!(">> [{}, {}]", l, r);
-                    // println!("os {}", so[r] - so[l]);
-                    // println!("es {}", se[r] - se[l]);
-                    ans += 1;
+            let k = x % 11;
+            if let Some(y) = mapper.get_mut(&k) {
+                *y += 1;
+            } else {
+                mapper.insert(k, 1);
+            }
+        }
+
+        let v = map.into_iter().collect::<Vec<(isize, usize)>>();
+        // println!("{:?}", &v);
+        for i in 0..v.len() {
+            for j in i..v.len() {
+                let (k1, v1) = v[i];
+                let (k2, v2) = v[j];
+                if (k1 - k2) % 11 == 0 {
+                    if i == j {
+                        ans += v1 * (v1 - 1) / 2;
+                    } else {
+                        // println!("[{},{}]", k1, k2);
+                        // println!("[{},{}]", v1, v2);
+                        ans += v1 * v2;
+                    }
                 }
             }
         }
+
         println!("{}", ans);
     }
 }
