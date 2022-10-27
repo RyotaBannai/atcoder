@@ -303,6 +303,10 @@ path = "src/bin/number_theory/euler_phi.rs"
 name = "ext_gcd"
 path = "src/bin/number_theory/ext_gcd.rs"
 
+[[bin]]
+name = "eleven_lover"
+path = "src/bin/other/eleven_lover.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
