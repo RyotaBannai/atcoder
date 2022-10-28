@@ -12,16 +12,33 @@ use collection::utils::read;
  *
  * https://onlinejudge.u-aizu.ac.jp/problems/2182
  *
+ * tags: #累積和 #整数和
+ *
+ * １１の倍数は、奇数の桁の数字の和-偶数の桁の数字の和　で求めれられる
+ * これを累積和を求めてる方針を立てると, ある区間[l,r] が11 の倍数かどうかを調べるには、
+ * odd[r] - odd[l] - (even[r] - odd[l])  これを整理して、
+ * odd[r] - even[r]　- (odd[l] + odd[l])  
+ * すなわち、
+ * fn(x): odd[x] - even[x] とすると
+ * fn(r) - fn(l) となる. この累積和をさらに求めておくと、ある区間[l,r] が１１の倍数かどうかは
+ * sub[r] - sub[l] で調べることができる.
+ *
+ * さらに 1 の位の桁から順に求めていくと、ある時点 i 番目で sub[i] - sub[?] が 11 の倍数になるかどうかは、
+ * マップでその組みとりうる組を保持しておけば、高速に求めることができる. 例えば、sub[i] == 9 ならば、sub[?] == -2 となる位置との区間で 11 の倍数になる.
+ * ゆえにもし、１の位の桁から順に見ていって、sub[i]=-2 になる位置があるなら、map[-1] +=1 としておくと良い.
+ *
+ * 1 の位から見ていくため、元の数値で 0 になる時は、先頭が０になるということで、整数の値としては不正だから、その回は組み合わせを考えずに、map に sub[i] を追加するようにする.
+ *
  */
 
 fn main() {
     loop {
-        let a = read::<String>()[0].chars().collect::<Vec<_>>();
-        if a[0] == '0' {
+        let a = read::<String>()[0].chars().rev().collect::<Vec<_>>();
+        let len = a.len();
+        if a[len - 1] == '0' {
             break;
         }
 
-        let len = a.len();
         let mut so = vec![0isize; len + 1];
         let mut se = vec![0isize; len + 1];
         for (i, c) in a.iter().enumerate() {
@@ -46,64 +63,30 @@ fn main() {
         // println!("{:?}", &sub);
 
         let mut ans = 0usize;
-
         let mut map = Map::new();
-        let mut mapper = Map::new();
         for (i, x) in sub.clone().iter().enumerate() {
-            if i > 0 && a[i - 1] == '0' {
-                if sub[i - 1] == 0 {
-                    if let Some(y) = mapper.get(&0) {
-                        ans += y - 1;
-                    }
-                } else {
-                    let (k, m) = (
-                        sub[i - 1] % 11,
-                        (sub[i - 1] % 11 + if sub[i - 1] < 0 { 11 } else { -11 }),
-                    );
+            if i > 0 && a[i - 1] != '0' {
+                let (k, m) = (
+                    sub[i] % 11,
+                    (sub[i] % 11 + if sub[i] < 0 { 11 } else { -11 }),
+                );
 
-                    // println!("k {}", k);
-                    // println!("m {}", m);
+                if let Some(y) = map.get(&k) {
+                    ans += y;
+                }
 
-                    if let Some(y) = mapper.get(&k) {
-                        ans += y - 1;
-                    }
-
-                    if let Some(y) = mapper.get(&m) {
+                if k != m {
+                    if let Some(y) = map.get(&m) {
                         ans += y;
                     }
                 }
-
-                continue;
-            }
-            if let Some(y) = map.get_mut(x) {
-                *y += 1;
-            } else {
-                map.insert(*x, 1);
             }
 
             let k = x % 11;
-            if let Some(y) = mapper.get_mut(&k) {
+            if let Some(y) = map.get_mut(&k) {
                 *y += 1;
             } else {
-                mapper.insert(k, 1);
-            }
-        }
-
-        let v = map.into_iter().collect::<Vec<(isize, usize)>>();
-        // println!("{:?}", &v);
-        for i in 0..v.len() {
-            for j in i..v.len() {
-                let (k1, v1) = v[i];
-                let (k2, v2) = v[j];
-                if (k1 - k2) % 11 == 0 {
-                    if i == j {
-                        ans += v1 * (v1 - 1) / 2;
-                    } else {
-                        // println!("[{},{}]", k1, k2);
-                        // println!("[{},{}]", v1, v2);
-                        ans += v1 * v2;
-                    }
-                }
+                map.insert(k, 1);
             }
         }
 
