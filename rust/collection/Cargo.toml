@@ -307,6 +307,10 @@ path = "src/bin/number_theory/ext_gcd.rs"
 name = "eleven_lover"
 path = "src/bin/other/eleven_lover.rs"
 
+[[bin]]
+name = "eleven_lover_dp"
+path = "src/bin/other/eleven_lover_dp.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
