@@ -19,6 +19,13 @@ type Set = BTreeSet<(
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * C - Counting Squares
+ *
+ * https://atcoder.jp/contests/abc275/tasks/abc275_c
+ *
+ */
+
 #[fastout]
 fn main() {
     input! {

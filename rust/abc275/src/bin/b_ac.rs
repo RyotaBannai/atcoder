@@ -14,6 +14,17 @@ use ac_library_rs::modint::ModInt998244353 as Mint;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * B - ABC-DEF
+ *
+ * https://atcoder.jp/contests/abc275/tasks/abc275_b
+ *
+ * tags: #mod
+ *
+ * mod した数値同士の和差は、元々も和差をmod したものと同じ.
+ *
+ */
+
 #[fastout]
 fn main() {
     input! {

@@ -1,3 +1,4 @@
+use itertools::Itertools;
 use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
@@ -14,19 +15,18 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * A - Find Takahashi
+ *
+ * https://atcoder.jp/contests/abc275/tasks/abc275_a
+ *
+ */
+
 #[fastout]
 fn main() {
     input! {
         n:usize,
         h:[usize;n]
     }
-    let mut ma = 0;
-    let mut idx = 0;
-    for (i, &x) in h.iter().enumerate() {
-        if ma < x {
-            ma = x;
-            idx = i;
-        }
-    }
-    println!("{}", idx + 1);
+    println!("{}", h.iter().position_max().unwrap() + 1);
 }
