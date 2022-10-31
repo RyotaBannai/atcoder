@@ -19,10 +19,6 @@ use std::isize::MAX;
  *
  * tags: #bsf #01bfs #ダイクストラ #拡張ダイクストラ
  *
- * 類題：
- * - JOI 2017 予選6 「蛇のJOI 君」
- * - JOI 女性部門(JOIG 2021) 問題5 「パレード」
- * - ABC 132-E 「Hopscotch Addict」
  */
 
 #[fastout]
@@ -54,7 +50,11 @@ fn main() {
         if v[r as usize][c as usize][prev_direc] <= count || mi <= count {
             continue;
         }
-        v[r as usize][c as usize][prev_direc] = count;
+        for direc in 0..4 {
+            // ※同じ方向以外は +1 する方法. 速度はあまり変わらない.
+            v[r as usize][c as usize][prev_direc] = v[r as usize][c as usize][prev_direc]
+                .min(count + if direc == prev_direc { 0 } else { 1 });
+        }
 
         // 上右下左　時計回り
         for (direc, (dr, dc)) in vec![(-1, 0), (0, 1), (1, 0), (0, -1)].iter().enumerate() {
