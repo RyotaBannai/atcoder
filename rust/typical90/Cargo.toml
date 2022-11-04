@@ -576,6 +576,14 @@ path = "src/bin/058_ac.rs"
 name = "typical90-058_ac_pigeonhole"
 path = "src/bin/058_ac_pigeonhole.rs"
 
+[[bin]]
+name = "typical90-063_ac"
+path = "src/bin/063_ac.rs"
+
+[[bin]]
+name = "typical90-061_ac"
+path = "src/bin/061_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
