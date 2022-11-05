@@ -584,6 +584,14 @@ path = "src/bin/063_ac.rs"
 name = "typical90-061_ac"
 path = "src/bin/061_ac.rs"
 
+[[bin]]
+name = "typical90-064_ac"
+path = "src/bin/064_ac.rs"
+
+[[bin]]
+name = "typical90-064_ac_seg_tree"
+path = "src/bin/064_ac_seg_tree.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
