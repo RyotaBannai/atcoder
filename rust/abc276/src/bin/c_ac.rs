@@ -35,13 +35,8 @@ type Set = BTreeSet<(usize, usize)>;
  *
  */
 
-#[fastout]
-fn main() {
-    input! {
-        n: usize,
-        mut p: [usize; n] //文字列で受け取る
-    }
-
+fn prev_permutation(mut p: Vec<usize>) -> Vec<usize> {
+    let n = p.len();
     let mut set = Set::new(); // 数値, index
     let mut pos = 0;
     for i in (1..n).rev() {
@@ -65,8 +60,17 @@ fn main() {
     p[pos - 1] = b;
     p[orig_pos] = a;
     p[pos..].reverse();
+    p
+}
 
-    for x in p {
+#[fastout]
+fn main() {
+    input! {
+        n: usize,
+        mut p: [usize; n] //文字列で受け取る
+    }
+
+    for x in prev_permutation(p) {
         print!("{} ", x);
     }
     println!();
