@@ -113,3 +113,4 @@ easy-ext = "1.0.0"
 ac-library-rs  = { git = "https://github.com/rust-lang-ja/ac-library-rs" }
 
 [dev-dependencies]
+rstest = "0.15.0"

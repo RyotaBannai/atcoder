@@ -1,3 +1,4 @@
+use itertools::Itertools;
 use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
@@ -77,15 +78,75 @@ fn prev_permutation(mut p: Vec<usize>) -> Vec<usize> {
     p
 }
 
+// n の階乗 n!
+#[allow(dead_code)]
+fn fact(n: usize) -> Vec<usize> {
+    let mut fact = vec![1; n + 1];
+    for i in 0..n {
+        fact[i + 1] = fact[i] * (i + 1);
+    }
+    fact
+}
+
+#[allow(dead_code)]
+fn id_of_permutation(n: Vec<usize>) -> usize {
+    let fact = fact(n.len());
+
+    let mut set = BTreeSet::<usize>::new();
+    for &x in &n {
+        set.insert(x);
+    }
+
+    let mut k = 0;
+    for &x in &n {
+        set.remove(&x);
+        let len = set.len();
+        let m = set.range(..x).count(); // x より先にくる順列数
+        k += m * fact[len];
+    }
+
+    k
+}
+
+// https://atcoder.jp/contests/abc276/editorial/5189
+// https://atcoder.jp/contests/abc276/submissions/36265971
+#[allow(dead_code)]
+fn kth_permutation(n: usize, mut k: usize) -> Vec<usize> {
+    let fact = fact(n);
+    let mut v = vec![];
+    let mut s = (0..n).collect_vec();
+    for i in 0..n {
+        let a = fact[n - 1 - i];
+        let j = k / a;
+        k %= a;
+        v.push(s[j]);
+        s = [&s[..j], &s[j + 1..]].concat();
+    }
+
+    v.iter().map(|x| x + 1).collect_vec()
+}
+
 #[fastout]
 fn main() {
-    println!();
+    todo!();
+
+    // judge pass しない
+    // input! { n: usize, mut p: [usize; n] }
+    // let kth = id_of_permutation(p.clone());
+    // let ret = kth_permutation(p.len(), kth - 1);
+
+    // for x in ret {
+    //     print!("{} ", x);
+    // }
 }
+
+// https://stackoverflow.com/questions/40154150/how-do-i-concatenate-two-slices-in-rust
 
 #[cfg(test)]
 mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.
     use super::*;
+    use rstest::*;
 
     #[test]
     fn test_next_permutation() {
@@ -110,6 +171,27 @@ mod tests {
 
         for i in 0..len {
             assert_eq!(a[i], p[i]);
+        }
+    }
+
+    // https://crates.io/crates/rstest
+    #[rstest]
+    #[case(vec![3, 1, 2], 4, vec![2, 3, 1])]
+    #[case(vec![1, 3, 2], 1, vec![1, 2, 3])]
+    #[case(vec![4, 2, 1, 3], 20, vec![4, 1, 3, 2])]
+    fn test_kth_permutation(
+        #[case] input: Vec<usize>,
+        #[case] expected_kth: usize,
+        #[case] expected_output: Vec<usize>,
+    ) {
+        let len = input.len();
+        let kth = id_of_permutation(input);
+        assert_eq!(kth, expected_kth);
+
+        let ret = kth_permutation(len, kth - 1);
+
+        for i in 0..len {
+            assert_eq!(ret[i], expected_output[i]);
         }
     }
 }
