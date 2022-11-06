@@ -14,27 +14,42 @@ type Set = BTreeSet<(usize, usize)>;
 // use std::collections::{BinaryHeap, VecDeque};
 
 /**
+ * @workspace
+ *
  * C - Previous Permutation
  *
  * https://atcoder.jp/contests/abc276/tasks/abc276_c
  *
  * tags: #next_permutation #prev_permutation
  *
- * 整数のある区間で桁が小さい方から、単調増加している範囲ではそれ以上小さくできないことがわかる.
- * 51234 この時上の内容は、1234 にあたる.
- * 51234 より小さい整数を求めたい時は、５より小さい、かつ1234 の中で一番大きい数値と5 を入れ替える必要があり、入れ替えた後は単調増加していた部分は単調減少することがわかる.
- *
- * 41235（入れ替え）-> 45321（単調減少） が次の値
- *
- * 必ずしも、単調増加部分の末尾が単調増加が終わった位置より大きいとは限らない.
- * 例えば、
- * 41235, 21345 など. 21345 では単調増加が 21 間で完了しているから、1 2 を入れ替え、単調減少にする. 12543
- *
- * 上記のことはどの桁でも成り立つことに注意.
- * 12354 なら、4 5 間で単調増加が完了しているから、'5 より小さく一番大きい数値' 4 と入れ替えて 12345 となる.
- *
  */
 
+#[allow(dead_code)]
+fn next_permutation(mut p: Vec<usize>) -> Vec<usize> {
+    let n = p.len();
+    let mut set = Set::new(); // 数値, index
+    let mut pos = 0;
+    for i in (1..n).rev() {
+        set.insert((p[i], i));
+        if p[i - 1] < p[i] {
+            pos = i;
+            break;
+        }
+    }
+
+    let a = p[pos - 1];
+    let mut v = p[pos..].to_vec();
+    v.sort_unstable();
+    let np = v.upper_bound(&a);
+    let b = v[np];
+    let orig_pos = set.range((b, 0)..).next().unwrap().1;
+
+    p.swap(pos - 1, orig_pos);
+    p[pos..].reverse();
+    p
+}
+
+#[allow(dead_code)]
 fn prev_permutation(mut p: Vec<usize>) -> Vec<usize> {
     let n = p.len();
     let mut set = Set::new(); // 数値, index
@@ -64,13 +79,37 @@ fn prev_permutation(mut p: Vec<usize>) -> Vec<usize> {
 
 #[fastout]
 fn main() {
-    input! {
-        n: usize,
-        mut p: [usize; n] //文字列で受け取る
+    println!();
+}
+
+#[cfg(test)]
+mod tests {
+    // Note this useful idiom: importing names from outer (for mod tests) scope.
+    use super::*;
+
+    #[test]
+    fn test_next_permutation() {
+        let mut p = vec![1, 2, 5, 4, 3];
+        let len = p.len();
+
+        let a = next_permutation(p.clone());
+        p.next_permutation();
+
+        for i in 0..len {
+            assert_eq!(a[i], p[i]);
+        }
     }
 
-    for x in prev_permutation(p) {
-        print!("{} ", x);
+    #[test]
+    fn test_prev_permutation() {
+        let mut p = vec![2, 1, 3, 4, 5];
+        let len = p.len();
+
+        let a = prev_permutation(p.clone());
+        p.prev_permutation();
+
+        for i in 0..len {
+            assert_eq!(a[i], p[i]);
+        }
     }
-    println!();
 }

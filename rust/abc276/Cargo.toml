@@ -13,13 +13,15 @@ abc276-ex = { alias = "ex", problem = "https://atcoder.jp/contests/abc276/tasks/
 abc276-f = { alias = "f", problem = "https://atcoder.jp/contests/abc276/tasks/abc276_f" }
 abc276-g = { alias = "g", problem = "https://atcoder.jp/contests/abc276/tasks/abc276_g" }
 
+
 [[bin]]
 name = "abc276-a"
-path = "src/bin/a.rs"
+path = "src/bin/c.rs"
+
 
 [[bin]]
 name = "abc276-b"
-path = "src/bin/b.rs"
+path = "src/bin/c.rs"
 
 [[bin]]
 name = "abc276-c"
@@ -56,6 +58,15 @@ path = "src/bin/b_ac.rs"
 [[bin]]
 name = "abc276-c_ac"
 path = "src/bin/c_ac.rs"
+
+[[bin]]
+name = "abc276-c_ws"
+path = "src/bin/c_ws.rs"
+
+[[bin]]
+name = "abc276-c_golf"
+path = "src/bin/c_golf.rs"
+
 
 [dependencies]
 num = "=0.2.1"
