@@ -57,7 +57,7 @@ fn main() {
                 break;
             }
         }
-        ans = v.into_iter().collect::<Vec<_>>();
+        ans = v;
     }
 
     for c in ans.iter().rev() {

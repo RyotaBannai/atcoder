@@ -179,6 +179,8 @@ mod tests {
     #[case(vec![3, 1, 2], 4, vec![2, 3, 1])]
     #[case(vec![1, 3, 2], 1, vec![1, 2, 3])]
     #[case(vec![4, 2, 1, 3], 20, vec![4, 1, 3, 2])]
+    #[should_panic(expected = "attempt to multiply with overflow")]
+    #[case((1..=40).collect_vec(), 20, vec![])]
     fn test_kth_permutation(
         #[case] input: Vec<usize>,
         #[case] expected_kth: usize,
