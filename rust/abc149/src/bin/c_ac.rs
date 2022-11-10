@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
 //     Ordering::{Equal, Greater, Less},
@@ -13,8 +13,28 @@
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
+use abc149::nt_lib::*;
 
-// #[fastout]
+/**
+ * C - Next Prime
+ *
+ * https://atcoder.jp/contests/abc149/tasks/abc149_c
+ *
+ * tags: #prime #素数判定
+ *
+ * 先に篩にかけて素数表を作成しておく
+ *
+ */
+#[fastout]
 fn main() {
-    todo!();
+    input! {
+        x: usize
+    }
+    let primes = prime(2 * x);
+    for x in x..2 * x {
+        if primes[x] {
+            println!("{}", x);
+            return;
+        }
+    }
 }
