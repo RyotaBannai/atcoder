@@ -75,24 +75,38 @@ pub fn prime(ma: usize) -> Vec<bool> {
  */
 pub fn factorize(n: usize) -> BTreeMap<usize, usize> {
     let mut factors = BTreeMap::<usize, usize>::new();
+    fn add(k: usize, m: &mut BTreeMap<usize, usize>) {
+        if let Some(x) = m.get_mut(&k) {
+            *x += 1;
+        } else {
+            m.insert(k, 1);
+        }
+    }
+
     let mut rest = n;
     for i in 2..n {
         // 前半は残りよりも大きい数字で素因数は作れないことを利用 212567592: 2 2 2 3 17 17 19 1613
         // 後半は素因数は一方が平方根より大きいなら片方は平方根より小さい. i*i が n より大き時、素因数を持たない時はその数値が素数と考える 999993031: 999993031 に対応
         if i > rest {
+            if rest != 1 {
+                // n 自体は素数ではないが、他の数字で割った結果あまりが1 以外の場合
+                add(rest, &mut factors);
+            }
             break;
         }
-        if i * i > n && factors.is_empty() {
-            factors.insert(n, 1);
+        if i * i > n {
+            if factors.is_empty() {
+                // n 自体が素数（どの数でも割り切れない）の場合
+                add(n, &mut factors);
+            } else if rest != 1 {
+                // n 自体は素数ではないが、他の数字で割った結果あまりが1 以外の場合 例えば、42->21->7
+                add(rest, &mut factors);
+            }
             break;
         }
         while rest != 0 && rest % i == 0 {
             rest /= i;
-            if let Some(x) = factors.get_mut(&i) {
-                *x += 1;
-            } else {
-                factors.insert(i, 1);
-            }
+            add(i, &mut factors);
         }
     }
     factors
