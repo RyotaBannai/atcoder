@@ -15,8 +15,6 @@ use typical90::nt_lib::*;
 /**
  * 075 - Magic For Balls（★3）
  *
- * 075 - Magic For Balls（★3）
- *
  * tags: #素因数分解
  *
  * 考察
