@@ -12,6 +12,8 @@
  */
 use std::collections::{BTreeMap, BTreeSet};
 
+use itertools::Itertools;
+
 /**
  * 素数表
  */
@@ -110,6 +112,24 @@ pub fn factorize(n: usize) -> BTreeMap<usize, usize> {
         }
     }
     factors
+}
+
+/**
+ * 約数
+ * sorted
+ */
+pub fn divisor(n: usize) -> Vec<usize> {
+    let mut divisors = BTreeSet::<usize>::new();
+    for i in 1..=n {
+        if i * i > n {
+            break;
+        }
+        if n % i == 0 {
+            divisors.insert(i);
+            divisors.insert(n / i);
+        }
+    }
+    divisors.into_iter().collect_vec()
 }
 
 /**
