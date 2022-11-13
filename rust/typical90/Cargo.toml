@@ -620,6 +620,14 @@ path = "src/bin/078_ac.rs"
 name = "typical90-079_ac"
 path = "src/bin/079_ac.rs"
 
+[[bin]]
+name = "typical90-085_ac"
+path = "src/bin/085_ac.rs"
+
+[[bin]]
+name = "typical90-082_ac"
+path = "src/bin/082_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
