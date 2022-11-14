@@ -13,6 +13,7 @@ use proconio::{fastout, input, marker::Chars};
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
+
 /**
  * B - Ancestor
  *
@@ -21,7 +22,6 @@ use proconio::{fastout, input, marker::Chars};
  * P 番目の人から、順に先祖を辿る
  *
  */
-
 #[fastout]
 fn main() {
     input! {
