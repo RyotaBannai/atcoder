@@ -16,7 +16,6 @@ cases:
       kittyonyourlap
     out: |
       inlap
-
 extend:
   - type: Text
     path: "./006"
