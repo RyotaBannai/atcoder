@@ -77,6 +77,10 @@ path = "src/bin/d_ac2_segtree.rs.rs"
 name = "abc278-d_ac2_segtree"
 path = "src/bin/d_ac2_segtree.rs"
 
+[[bin]]
+name = "abc278-e_ac"
+path = "src/bin/e_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
@@ -120,5 +124,6 @@ smallvec = "=1.2.0"
 derive-new = "0.5.9"
 easy-ext = "1.0.0"
 ac-library-rs  = { git = "https://github.com/rust-lang-ja/ac-library-rs" }
+multiset = "0.0.5"
 
 [dev-dependencies]
