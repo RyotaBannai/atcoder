@@ -20,7 +20,7 @@ use proconio::{fastout, input, marker::Chars};
  *
  * https://atcoder.jp/contests/abc278/tasks/abc278_e
  *
- * tags: #累積和 #window
+ * tags: #累積和 #2d累積和 #window
  *
  * ２元累積和を使う.
  *
@@ -100,18 +100,16 @@ fn main() {
     let aw = w - ww + 1;
     let mut v = vec![vec![vec![0isize; aw]; ah]; n + 1];
     for k in 1..=n {
-        for i in 1..=ah {
-            for j in 1..=aw {
+        for i in 0..ah {
+            for j in 0..aw {
+                // window の左上を(i,j) とすると
                 // 数値k の盤の累積和 - (windowの右下 - windowの右(下-1) - windowの(左-1)下)
-                // (i,j) 左上が基準
-                let cnt = sum[k][h][w]
-                    - (sum[k][i + hh - 1][j + ww - 1]
-                        - sum[k][i - 1][j + ww - 1]
-                        - sum[k][i + hh - 1][j - 1]);
+                let cnt =
+                    sum[k][h][w] - (sum[k][i + hh][j + ww] - sum[k][i][j + ww] - sum[k][i + hh][j]);
 
                 // print!("({},{}), ", i, j);
-                // 四角形　(i,j), (i + h - 1, j - w + 1) の window を隠した範囲外に数値 k が存在するなら
-                v[k][i - 1][j - 1] = if cnt >= 1 { 1 } else { 0 };
+                // 四角形　(i,j), (i + h - 1, j - w + 1) の window を隠した範囲外に数値 k が存在するなら 1
+                v[k][i][j] = if cnt >= 1 { 1 } else { 0 };
             }
             // println!();
         }
@@ -126,8 +124,8 @@ fn main() {
     //     println!();
     // }
 
-    for i in 0..=h - hh {
-        for j in 0..=w - ww {
+    for i in 0..ah {
+        for j in 0..aw {
             let mut cnt = 0;
             for k in 1..=n {
                 cnt += v[k][i][j];
