@@ -81,6 +81,10 @@ path = "src/bin/d_ac2_segtree.rs"
 name = "abc278-e_ac"
 path = "src/bin/e_ac.rs"
 
+[[bin]]
+name = "abc278-e_ac2"
+path = "src/bin/e_ac2.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
