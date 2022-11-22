@@ -15,7 +15,11 @@ use proconio::{fastout, input, marker::Chars};
 // use std::collections::{BinaryHeap, VecDeque};
 
 /**
+ * D - おいしいたこ焼きの焼き方
  *
+ * https://atcoder.jp/contests/abc005/tasks/abc005_4
+ *
+ * tags: #2d累積和 #二元累積和
  *
  */
 

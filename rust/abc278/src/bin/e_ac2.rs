@@ -20,7 +20,7 @@ use proconio::{fastout, input, marker::Chars};
  *
  * https://atcoder.jp/contests/abc278/tasks/abc278_e
  *
- * tags: #累積和 #2d累積和 #window
+ * tags: #累積和 #2d累積和 #二元累積和　#window
  *
  * ２元累積和を使う.
  *
@@ -73,14 +73,8 @@ fn main() {
     for k in 1..=n {
         for i in 0..h {
             for j in 0..w {
-                // 行方向に累積和をとる
-                sum[k][i + 1][j + 1] = sum[k][i + 1][j] + if a[i][j] == k { 1 } else { 0 };
-            }
-        }
-        for j in 0..=w {
-            for i in 0..h {
-                // 列方向に累積和をとる
-                sum[k][i + 1][j] += sum[k][i][j];
+                sum[k][i + 1][j + 1] = sum[k][i + 1][j] + sum[k][i][j + 1] - sum[k][i][j]
+                    + if a[i][j] == k { 1 } else { 0 };
             }
         }
     }
@@ -104,8 +98,10 @@ fn main() {
             for j in 0..aw {
                 // window の左上を(i,j) とすると
                 // 数値k の盤の累積和 - (windowの右下 - windowの右(下-1) - windowの(左-1)下)
-                let cnt =
-                    sum[k][h][w] - (sum[k][i + hh][j + ww] - sum[k][i][j + ww] - sum[k][i + hh][j]);
+                let cnt = sum[k][h][w]
+                    - (sum[k][i + hh][j + ww] + sum[k][i][j]
+                        - sum[k][i][j + ww]
+                        - sum[k][i + hh][j]);
 
                 // print!("({},{}), ", i, j);
                 // 四角形　(i,j), (i + h - 1, j - w + 1) の window を隠した範囲外に数値 k が存在するなら 1
