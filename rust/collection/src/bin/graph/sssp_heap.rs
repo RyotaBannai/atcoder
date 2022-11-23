@@ -13,10 +13,7 @@
 // type Map = BTreeMap<String, usize>;
 // type Set = BTreeSet<usize>;
 // use std::cmp::{max, min};
-use std::{
-    cmp::{Ord, Reverse},
-    collections::BinaryHeap,
-};
+use std::collections::BinaryHeap;
 
 /**
  * 単一始点最短経路（single source shortest path: SSSP）
@@ -52,39 +49,14 @@ use std::{
  * ・次の loop の回で pq から先頭を取り出す
  *
  */
-use std::io;
+use collection::utils::*;
 use Color::*;
-
-// aoj
-// １行読み込んで、空白区切りで vec にして返す
-fn read<T: std::str::FromStr>() -> Vec<T> {
-    let mut buf = String::new();
-    io::stdin().read_line(&mut buf).unwrap();
-    buf.trim().split(' ').flat_map(str::parse).collect()
-}
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 enum Color {
     White,
     Grey,
     Black,
-}
-
-trait ExtRev<T: Ord> {
-    fn peek_rev(&self) -> Option<&T>;
-    fn push_rev(&mut self, x: T);
-    fn pop_rev(&mut self) -> Option<T>;
-}
-impl<T: Ord> ExtRev<T> for BinaryHeap<Reverse<T>> {
-    fn peek_rev(&self) -> Option<&T> {
-        self.peek().map(|Reverse(v)| v)
-    }
-    fn push_rev(&mut self, x: T) {
-        self.push(Reverse(x))
-    }
-    fn pop_rev(&mut self) -> Option<T> {
-        self.pop().map(|Reverse(u)| u)
-    }
 }
 
 // #[fastout]
@@ -108,7 +80,7 @@ fn main() {
     d[0] = 0;
 
     // priority queue は優先度が一番高い要素を先頭に持っているだけで、全要素がソートされている訳ではない
-    let mut x: BinaryHeap<Reverse<(usize, usize)>> = BinaryHeap::new();
+    let mut x = BinaryHeap::new();
     x.push_rev((0, 0)); // (d, u)
 
     loop {
