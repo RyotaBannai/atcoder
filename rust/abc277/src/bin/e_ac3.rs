@@ -48,14 +48,6 @@ use std::collections::{BinaryHeap, VecDeque};
  *
  */
 use abc277::utils::*;
-use Color::*;
-
-#[derive(Clone, Copy, Debug, PartialEq)]
-enum Color {
-    White,
-    Grey,
-    Black,
-}
 
 #[fastout]
 fn main() {
@@ -66,55 +58,39 @@ fn main() {
         es: [(usize, usize, usize); m], // 無効グラフ, 通れる・通れないの初期状態
         s: [usize; k], // スイッチがおいてある頂点 1<=
     }
-    let mut swi = HashMap::new();
+    let mut swi = vec![false; n + 1];
     for x in s {
-        swi.insert(x, true);
+        swi[x] = true;
     }
-
-    // 初期状態
-    let mut st: HashMap<usize, HashMap<usize, usize>> = HashMap::new();
-    let mut v = vec![vec![]; n + 1]; // 連接リスト
+    let mut map = vec![vec![]; n + 1];
     for &e in &es {
-        let (a, b, w) = e;
-        // 1 通行可能、0 通行不能
-        st.entry(a).or_insert(hashmap! {}).entry(b).or_insert(w);
-        st.entry(b).or_insert(hashmap! {}).entry(a).or_insert(w);
-        v[a].push(b);
-        v[b].push(a);
+        let (a, b, s) = e;
+        map[a].push((b, s));
+        map[b].push((a, s));
     }
 
-    let inf = 1isize << 21;
-    let mut c = vec![vec![White; 2]; n + 1]; // 頂点i において通行済みかどうか スイッチの切り替えの状態（偶奇）で分ける
+    let inf = std::i32::MAX / 10;
     let mut d = vec![vec![inf; 2]; n + 1]; // 距離 スイッチの切り替えの状態（偶奇）で分ける
-    d[0][0] = 0;
-    c[0][0] = Grey;
+    d[1][1] = 0;
 
-    let mut x = BinaryHeap::new();
-    x.push_rev((0, 1, 0)); // (d, u, switch) 切り替えの偶奇　初回はデフォルトだから0 {0,1}
+    let mut x = VecDeque::new();
+    x.push_back((1, 1));
 
     // 候補の中から最小コストで入っている頂点を取り出す
-    while let Some(y) = x.pop_rev() {
-        let (ud, u, o) = y;
-        c[u as usize][o] = Black; // 今回で通過済み
+    while let Some((onoff, u)) = x.pop_front() {
+        let ud = d[u][onoff];
 
-        // 連接リストから隣接する頂点を取り出す
-        for &chi in &v[u] {
-            let nd = ud + 1;
+        let no = onoff ^ 1;
+        if swi[u] && ud < d[u][no] {
+            d[u][no] = ud;
+            x.push_front((no, u));
+        }
 
-            let nst = st.get(&u).and_then(|m| m.get(&chi)).unwrap();
-            // スイッチの切り替えを考慮しない
-            if c[chi][o] != Black && d[chi][o] > nd && ((nst + o) % 2 == 1) {
-                d[chi][o] = nd;
-                x.push_rev((nd, chi, o));
-            }
-            // スイッチの切り替えを考慮する
-            if swi.get(&u).is_some() {
-                // do extra
-                let no = (o + 1) % 2;
-                if c[chi][no] != Black && d[chi][no] > nd && ((nst + no) % 2 == 1) {
-                    d[chi][no] = nd;
-                    x.push_rev((nd, chi, no));
-                }
+        let nd = ud + 1;
+        for &(chi, p) in map[u].iter() {
+            if p == onoff && nd < d[chi][onoff] {
+                d[chi][onoff] = nd;
+                x.push_back((onoff, chi));
             }
         }
     }
