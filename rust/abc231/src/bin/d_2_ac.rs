@@ -12,47 +12,7 @@ use proconio::{fastout, input};
  * ・頂点が循環しないこと
  * をチェック
  */
-
-struct DisjointSet {
-    rank: Vec<usize>,
-    p: Vec<usize>,
-}
-impl DisjointSet {
-    fn new(n: usize) -> Self {
-        let mut p = vec![0; n + 1];
-        let mut rank = vec![0; n + 1];
-        for i in 1..=n {
-            p[i] = i;
-            rank[i] = 0;
-        }
-        Self { rank, p }
-    }
-    fn same(&mut self, x: usize, y: usize) -> bool {
-        self.find(x) == self.find(y)
-    }
-    fn find(&mut self, x: usize) -> usize {
-        if x != self.p[x] {
-            self.p[x] = self.find(self.p[x]);
-        }
-        self.p[x]
-    }
-    fn unite(&mut self, x: usize, y: usize) {
-        let p1 = self.find(x);
-        let p2 = self.find(y);
-        self.link(p1, p2);
-    }
-    fn link(&mut self, x: usize, y: usize) {
-        if self.rank[x] > self.rank[y] {
-            self.p[y] = x; // ランクが大き方につける
-        } else {
-            self.p[x] = y;
-            if self.rank[x] == self.rank[y] {
-                // rank 更新前は同じ可能性がある
-                self.rank[y] += 1;
-            }
-        }
-    }
-}
+use abc231::utils::*;
 
 #[fastout]
 fn main() {

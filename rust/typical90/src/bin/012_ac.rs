@@ -40,64 +40,7 @@ use proconio::{fastout, input, marker::Chars};
  * 赤で塗るときに、上下左右が赤なら全て連結したい
  *
  */
-
-struct DisjointSet {
-    rank: Vec<usize>,
-    x: Vec<bool>,
-    p: Vec<usize>,
-}
-
-impl DisjointSet {
-    fn new(n: usize) -> Self {
-        let mut p = vec![1; n + 1];
-        let mut rank = vec![1; n + 1];
-        for i in 1..=n {
-            p[i] = i;
-            rank[i] = 0;
-        }
-        let x = vec![false; n + 1];
-        Self { rank, x, p }
-    }
-    fn add(&mut self, i: usize) {
-        self.x[i] = true;
-    }
-    fn has(&mut self, i: usize) -> bool {
-        self.x[i]
-    }
-    // x に入っているかどうか判定しない
-    fn find(&mut self, i: usize) -> usize {
-        if i != self.p[i] {
-            self.p[i] = self.find(self.p[i]);
-        }
-        self.p[i]
-    }
-    fn same(&mut self, i: usize, j: usize) -> bool {
-        if !self.has(i) || !self.has(j) {
-            return false;
-        }
-        self.find(i) == self.find(j)
-    }
-    fn unite(&mut self, i: usize, j: usize) {
-        if !self.has(i) || !self.has(j) {
-            return;
-        }
-        let p1 = self.find(i);
-        let p2 = self.find(j);
-        self.link(p1, p2);
-    }
-    // x に入っているかどうか判定しない
-    fn link(&mut self, i: usize, j: usize) {
-        if self.rank[i] > self.rank[j] {
-            self.p[j] = i; // ランクが大き方につける
-        } else {
-            self.p[i] = j;
-            if self.rank[i] == self.rank[j] {
-                // rank 更新前は同じ可能性がある
-                self.rank[j] += 1;
-            }
-        }
-    }
-}
+use typical90::utils::*;
 
 #[fastout]
 fn main() {
@@ -107,7 +50,7 @@ fn main() {
         q: usize,
     }
 
-    let mut ds = DisjointSet::new(h * w);
+    let mut ds = IndexedDisjointSet::new(h * w);
     let mut pos = vec![vec![0; w + 1]; h + 1];
     let moves = vec![(-1, 0), (1, 0), (0, -1), (0, 1)]; //  上下左右
     for i in 1..=h {
@@ -125,7 +68,7 @@ fn main() {
                 r: usize, c: usize,
             }
             let p = pos[r][c];
-            ds.add(p); // 赤に塗る
+            ds.used(p); // 赤に塗る
             for (dr, dc) in &moves {
                 // 上下左右を繋げるかどうか確認
                 let nr = ((r as isize) + dr) as usize;
