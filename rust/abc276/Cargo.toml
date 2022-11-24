@@ -67,6 +67,10 @@ path = "src/bin/c_ws.rs"
 name = "abc276-c_golf"
 path = "src/bin/c_golf.rs"
 
+[[bin]]
+name = "abc276-e_wa"
+path = "src/bin/e_wa.rs"
+
 
 [dependencies]
 num = "=0.2.1"
