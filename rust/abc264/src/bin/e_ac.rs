@@ -34,81 +34,7 @@ use std::cmp::{
  * ・重み付き UnionFind abc087/src/bin/d_ac.rs
  *
  */
-
-struct DisjointSet {
-    rank: Vec<usize>,
-    p: Vec<usize>,
-    size: Vec<usize>, // 連結成分の leader の番号を index した連結成分に属する要素の数
-    diff_weight: Vec<isize>,
-}
-impl DisjointSet {
-    fn new(n: usize) -> Self {
-        let mut p = vec![0; n + 1];
-        let mut rank = vec![0; n + 1];
-        for i in 1..=n {
-            p[i] = i;
-            rank[i] = 0;
-        }
-        Self {
-            rank,
-            p,
-            diff_weight: vec![0; n + 1],
-            size: vec![1; n + 1],
-        }
-    }
-    fn same(&mut self, x: usize, y: usize) -> bool {
-        self.find(x) == self.find(y)
-    }
-    fn find(&mut self, x: usize) -> usize {
-        if x != self.p[x] {
-            let r = self.find(self.p[x]);
-            self.diff_weight[x] += self.diff_weight[self.p[x]];
-            self.p[x] = r;
-        }
-        self.p[x]
-    }
-    fn merge(&mut self, x: usize, y: usize, mut w: isize) -> bool {
-        let px = self.find(x);
-        let py = self.find(y);
-        // すでに繋がっている
-        if px == py {
-            return false;
-        }
-
-        let wx = self.weight(x);
-        let wy = self.weight(y);
-
-        if self.rank[px] > self.rank[py] {
-            // y を x につける
-            w += wx;
-            w -= wy;
-
-            self.p[py] = px; // ランクが大きい方につける
-            self.diff_weight[py] = w;
-            self.size[px] += self.size[py]; // py の連結成分に属する要素数が、px に入る
-        } else {
-            // x を y につける
-            w = -w;
-            w -= wx;
-            w += wy;
-
-            self.p[px] = py;
-            if self.rank[px] == self.rank[py] {
-                self.rank[py] += 1;
-            }
-            self.diff_weight[px] = w;
-            self.size[py] += self.size[px]; // px の連結成分に属する要素数が、py に入る
-        }
-        true
-    }
-    fn weight(&mut self, x: usize) -> isize {
-        self.find(x); // 経路圧縮
-        self.diff_weight[x]
-    }
-    fn diff(&mut self, x: usize, y: usize) -> isize {
-        self.weight(y) - self.weight(x)
-    }
-}
+use abc264::utils::*;
 
 #[fastout]
 fn main() {
@@ -143,7 +69,7 @@ fn main() {
 
     // 初期状態
     let mut cur = 0; // 発電所につながっている家屋数
-    let mut ds = DisjointSet::new(n + m);
+    let mut ds = WeightedDisjointSet::new(n + m);
     for (i, &(x, y)) in es.iter().enumerate() {
         // 初期状態にない辺ならパス
         if !ne[i] {
