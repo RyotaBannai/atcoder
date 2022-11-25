@@ -93,7 +93,7 @@ fn main() {
         let (group, dist) = used[i as usize][j as usize];
         if group != -1 {
             // すでにどのグループかが通った.
-            if group != marker && d + dist >= 4 {
+            if group != marker && d + dist >= 3 {
                 println!("Yes");
                 return;
             } else {
