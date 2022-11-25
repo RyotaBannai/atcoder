@@ -75,6 +75,10 @@ path = "src/bin/e_wa.rs"
 name = "abc276-e_ac3"
 path = "src/bin/e_ac3.rs"
 
+[[bin]]
+name = "abc276-e_ac4"
+path = "src/bin/e_ac4.rs"
+
 
 [dependencies]
 num = "=0.2.1"
