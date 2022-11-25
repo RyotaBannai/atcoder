@@ -1,7 +1,7 @@
 mod disjoint_set;
 mod rev_priority_queue;
-pub use disjoint_set::*;
-pub use rev_priority_queue::*;
+pub use self::disjoint_set::*;
+pub use self::rev_priority_queue::*;
 
 use std::io;
 pub fn read<T: std::str::FromStr>() -> Vec<T> {
