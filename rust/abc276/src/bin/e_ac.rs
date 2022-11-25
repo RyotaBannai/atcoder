@@ -22,6 +22,8 @@ use proconio::{fastout, input, marker::Chars};
  *
  * https://atcoder.jp/contests/abc276/tasks/abc276_e
  *
+ * tags: #dfs
+ *
  * 考察
  * 盤の大きさは高々 10^6 だから全探索しても間に合う.
  * またSから出て、Sに戻るというのは、S の隣接する頂点のうち、２つを選んでそのうち一つから出発して、もう一つの方に到着する、というように考えられる
