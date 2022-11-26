@@ -23,7 +23,7 @@ use proconio::{fastout, input, marker::Chars};
  * （正方形abcd において、始線 cb に対し、ab の外積が正、これを各頂点について調べる）
  * https://atcoder.jp/contests/abc266/editorial/4659
  */
-use abc266::geo_lib::*;
+use abc266::geometry::*;
 
 #[fastout]
 fn main() {

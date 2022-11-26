@@ -13,7 +13,7 @@ use proconio::{fastout, input, marker::Chars};
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use practice2::query_lib::*;
+use practice2::query::*;
 
 /**
  * Segment Tree
@@ -35,6 +35,7 @@ fn main() {
     }
     let mut sg = LazySegTree::new(
         n,
+        -1,
         -1,
         -1,
         |a: isize, b: isize| a.max(b), // min

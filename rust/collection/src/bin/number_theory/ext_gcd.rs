@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/number_theory/ext_gcd.rs
  */
-use collection::{nt_lib::*, utils::read};
+use collection::{number::*, utils::read::*};
 
 /**
  * 拡張ユークリッドの互除法

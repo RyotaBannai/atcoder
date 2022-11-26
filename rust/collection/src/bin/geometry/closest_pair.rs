@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/geometry/closest_pair.rs
  */
-use collection::{geo_lib::*, utils::read};
+use collection::{geometry::*, utils::read::*};
 use std::ops::Sub;
 
 /**

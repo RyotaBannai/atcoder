@@ -21,7 +21,7 @@ use proconio::{fastout, input, marker::Chars};
  * ・ソート順に最小全域木 T にその頂点が含まれていない場合は T に新たに追加する
  * ・含まれているかどうかの判定には、UninonFind を用いると高速
  */
-use abc065::utils::*;
+use abc065::structure::disjoint_set::*;
 
 #[fastout]
 fn main() {

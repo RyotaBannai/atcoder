@@ -10,7 +10,7 @@ use proconio::{fastout, input, marker::Chars};
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use typical90::nt_lib::*;
+use typical90::number::*;
 
 /**
  * 085 - Multiplication 085（★4）

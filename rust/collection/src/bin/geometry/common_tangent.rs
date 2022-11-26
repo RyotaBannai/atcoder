@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/geometry/common_tangent.rs
  */
-use collection::{geo_lib::*, utils::read};
+use collection::{geometry::*, utils::read::*};
 
 /**
  * 円の共通接線

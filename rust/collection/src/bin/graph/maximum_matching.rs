@@ -25,7 +25,7 @@ use std::io;
  *
  * https://algo-logic.info/ford-fullkerson/
  */
-use collection::{graph_lib::max_flow::*, utils::*};
+use collection::{graph::max_flow::*, utils::read::*};
 
 fn main() {
     // aoj

@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/geometry/area_of_circle_polygon.rs
  */
-use collection::{geo_lib::*, utils::read};
+use collection::{geometry::*, utils::read::*};
 
 /**
  * 円と多角形の共通部分

@@ -16,14 +16,14 @@ use std::usize::MAX;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
-use collection::{graph_lib::low_link::*, utils::*};
+use collection::{graph::low_link::*, utils::read::*};
 
 /**
  * 関節点（切断点）
  *
  * https://onlinejudge.u-aizu.ac.jp/problems/GRL_3_A
  *
- * tags: #関節点 #切断点
+ * tags: #関節点 #切断点 #articulation_point #後退辺 #lowlink
  *
  * 参考
  * https://o-treetree.hatenablog.com/entry/2020/06/08/231258#%E9%96%A2%E7%AF%80%E7%82%B9%E3%81%A8%E6%A9%8B
@@ -42,11 +42,10 @@ fn main() {
         m[t].push(s);
     }
 
-    // println!("{:?}", m);
-    let mut rec = LowLink::new(m);
-    rec.dfs(0, MAX);
+    let mut ll = LowLink::new(m);
+    ll.dfs(0, MAX);
 
-    for x in rec.get_articulation_point() {
+    for x in ll.get_articulation_point() {
         println!("{}", x);
     }
 }

@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/geometry/intersection_circle_segment.rs
  */
-use collection::{geo_lib::*, utils::read};
+use collection::{geometry::*, utils::read::*};
 
 /**
  * 円と直線の交点

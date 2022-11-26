@@ -13,7 +13,7 @@ use proconio::{fastout, input, marker::Chars};
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use abc276::utils::*;
+use abc276::structure::disjoint_set::*;
 
 /**
  * E - Round Trip

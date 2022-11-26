@@ -34,7 +34,7 @@ use std::cmp::{
  * ・重み付き UnionFind abc087/src/bin/d_ac.rs
  *
  */
-use abc264::utils::*;
+use abc264::structure::disjoint_set::*;
 
 #[fastout]
 fn main() {

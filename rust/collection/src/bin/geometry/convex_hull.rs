@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/geometry/convex_hull.rs
  */
-use collection::{geo_lib::*, utils::read};
+use collection::{geometry::*, utils::read::*};
 use std::cmp::Ordering::Less;
 
 /**

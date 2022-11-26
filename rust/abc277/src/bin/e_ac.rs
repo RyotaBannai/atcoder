@@ -16,7 +16,7 @@ use std::collections::{BinaryHeap, VecDeque};
  *
  * https://atcoder.jp/contests/abc277/tasks/abc277_e
  */
-use abc277::utils::*;
+use abc277::structure::rev_priority_queue::*;
 
 #[derive(Clone, Copy, Debug, PartialEq, new)]
 struct Edge {

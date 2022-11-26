@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/geometry/diameter_convex.rs
  */
-use collection::{geo_lib::*, utils::read};
+use collection::{geometry::*, utils::read::*};
 
 /**
  * 凸多角形の直径

@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/number_theory/euler_phi.rs
  */
-use collection::{nt_lib::*, utils::read};
+use collection::{number::*, utils::read::*};
 
 /**
  * オイラーのφ関数

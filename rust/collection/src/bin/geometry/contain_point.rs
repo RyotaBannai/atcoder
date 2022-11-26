@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/geometry/contain_point.rs
  */
-use collection::{geo_lib::*, utils::read};
+use collection::{geometry::*, utils::read::*};
 
 /**
  * 多角形-点の包含

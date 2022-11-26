@@ -18,7 +18,7 @@
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use collection::{query_lib::*, utils::*};
+use collection::{query::*, utils::read::*};
 
 /**
  * Range Add Query (RAQ)

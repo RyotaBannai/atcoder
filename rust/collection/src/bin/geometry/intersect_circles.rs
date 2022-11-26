@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/geometry/intersect_circles.rs
  */
-use collection::{geo_lib::*, utils::read};
+use collection::{geometry::*, utils::read::*};
 
 /**
  * 円の交差判定

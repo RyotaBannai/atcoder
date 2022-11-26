@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/geometry/convex_cut.rs
  */
-use collection::{geo_lib::*, utils::read};
+use collection::{geometry::*, utils::read::*};
 
 /**
  * 凸多角形の切断

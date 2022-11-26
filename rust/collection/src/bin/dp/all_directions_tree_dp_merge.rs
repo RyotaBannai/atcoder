@@ -36,7 +36,7 @@ use std::usize::MAX;
  * ・木DPと全方位木DPを基礎から抽象化まで解説【競技プログラミング】　https://algo-logic.info/tree-dp/#toc_id_2_1
  *
 */
-use collection::utils::read;
+use collection::utils::read::*;
 
 #[derive(Clone, Copy, Debug)]
 struct Edge {

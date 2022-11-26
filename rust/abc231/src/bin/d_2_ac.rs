@@ -12,7 +12,7 @@ use proconio::{fastout, input};
  * ・頂点が循環しないこと
  * をチェック
  */
-use abc231::utils::*;
+use abc231::structure::disjoint_set::*;
 
 #[fastout]
 fn main() {

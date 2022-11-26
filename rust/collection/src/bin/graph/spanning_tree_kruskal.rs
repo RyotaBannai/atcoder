@@ -43,7 +43,7 @@
  * 参考
  * https://algo-logic.info/kruskal-mst/
  */
-use collection::utils::*;
+use collection::{structure::disjoint_set::*, utils::read::*};
 
 // #[fastout]
 fn main() {

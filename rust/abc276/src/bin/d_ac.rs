@@ -14,7 +14,7 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
-use abc276::nt_lib::*;
+use abc276::number::*;
 
 /**
  * @workspace

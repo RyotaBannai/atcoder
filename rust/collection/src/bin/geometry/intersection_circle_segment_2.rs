@@ -6,7 +6,7 @@
  * output
  * 0.95747864 6.56378204 6.42713674 -1.64070512
  */
-use collection::geo_lib::*;
+use collection::geometry::*;
 
 /**
  * 円と直線の交点

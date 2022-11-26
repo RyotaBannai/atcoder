@@ -25,7 +25,7 @@
  * 参考
  * https://algo-logic.info/range-dp/
  */
-use collection::utils::read;
+use collection::utils::read::*;
 
 struct Rec {
     dp: Vec<Vec<isize>>,

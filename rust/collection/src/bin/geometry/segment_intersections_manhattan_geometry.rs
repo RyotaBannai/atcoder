@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/geometry/segment_intersections_manhattan_geometry.rs
  */
-use collection::{geo_lib::*, utils::read};
+use collection::{geometry::*, utils::read::*};
 
 /**
  * 線分交差問題

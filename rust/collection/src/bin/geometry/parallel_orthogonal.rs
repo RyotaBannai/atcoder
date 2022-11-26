@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/geometry/parallel_orthogonal.rs
  */
-use collection::{geo_lib::*, utils::read};
+use collection::{geometry::*, utils::read::*};
 
 /**
  * 平行・垂直

@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/geometry/intersection_segment_segment.rs
  */
-use collection::{geo_lib::*, utils::read};
+use collection::{geometry::*, utils::read::*};
 
 /**
  * 交点

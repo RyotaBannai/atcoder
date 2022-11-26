@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/geometry/area_of_two_circles.rs
  */
-use collection::{geo_lib::*, utils::read};
+use collection::{geometry::*, utils::read::*};
 
 /**
  * ２つ円の共通部分の面積

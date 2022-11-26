@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/geometry/polygon_area.rs
  */
-use collection::{geo_lib::*, utils::read};
+use collection::{geometry::*, utils::read::*};
 
 /**
  * 面積

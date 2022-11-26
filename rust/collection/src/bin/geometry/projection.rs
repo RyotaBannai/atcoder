@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/geometry/projection.rs
  */
-use collection::{geo_lib::*, utils::read};
+use collection::{geometry::*, utils::read::*};
 
 /**
  * 射影

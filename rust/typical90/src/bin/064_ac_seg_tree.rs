@@ -10,7 +10,7 @@ use proconio::{fastout, input, marker::Chars};
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use typical90::query_lib::*;
+use typical90::query::disjoint_set::*;
 
 /**
  * 064 - Uplift（★3）

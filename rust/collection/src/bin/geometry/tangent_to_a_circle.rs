@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/geometry/tangent_to_a_circle.rs
  */
-use collection::{geo_lib::*, utils::read};
+use collection::{geometry::*, utils::read::*};
 
 /**
  * 円の接線

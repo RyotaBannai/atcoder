@@ -1,5 +1,6 @@
-// pub mod geo_lib;
-pub mod graph_lib;
-// pub mod nt_lib;
-// pub mod query_lib;
+pub mod geometry;
+pub mod graph;
+pub mod number;
+pub mod query;
+pub mod structure;
 pub mod utils;

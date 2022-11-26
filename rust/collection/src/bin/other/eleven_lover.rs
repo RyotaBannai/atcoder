@@ -5,7 +5,7 @@
  */
 use std::collections::{BTreeMap, BTreeSet};
 type Map = BTreeMap<isize, usize>;
-use collection::utils::read;
+use collection::utils::read::*;
 
 /**
  * Problem H: Eleven Lover

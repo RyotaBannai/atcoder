@@ -24,7 +24,7 @@ use proconio::{fastout, input, marker::Chars};
  *
  * https://algo-logic.info/ford-fullkerson/
  */
-use collection::{graph_lib::max_flow::*, utils::*};
+use collection::{graph::max_flow::*, utils::read::*};
 
 #[fastout]
 fn main() {

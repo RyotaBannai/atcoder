@@ -16,9 +16,9 @@ use proconio::{fastout, input, marker::Chars};
 
 /**
  * "atcoder".substr()
- * 
+ *
  * https://atcoder.jp/contests/abc264/tasks/abc264_a
- * 
+ *
  */
 
 #[fastout]

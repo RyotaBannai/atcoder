@@ -43,7 +43,7 @@ use std::isize::MAX;
  * ビット bit に i 番目のフラグを立てたもの          bit｜(1<<i)
  * ビット bit に i 番目のフラグを消したもの          bit & ~(1<<i)
  */
-use collection::utils::read;
+use collection::utils::read::*;
 
 struct Rec {
     n: usize,
