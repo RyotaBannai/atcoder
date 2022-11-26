@@ -44,7 +44,7 @@ fn main() {
         m[t].push(s);
     }
 
-    let mut ll = LowLink::new(m);
+    let mut ll = LowLink::new(m, MAX);
     ll.dfs(0, MAX);
 
     for (a, b) in ll.get_bridge() {

@@ -9,12 +9,17 @@ pub struct LowLink {
     ord: Vec<usize>,
     low: Vec<usize>,
     list: Vec<Vec<usize>>,
+    sentinel: usize,
 }
 impl LowLink {
     /**
      * list: グラフの連接リスト
+     * selntinel: 番兵
+     * - 橋判定で、開始する頂点へ他の辺から入ってくるようなケースで、pre (MAX)に流れてしまうことがある.
+     *   p=MAX になり存在しないマスであるため番兵を入れて処理しないようにする.
+     * -
      */
-    pub fn new(list: Vec<Vec<usize>>) -> Self {
+    pub fn new(list: Vec<Vec<usize>>, sentinel: usize) -> Self {
         let n = list.len();
         Self {
             n,
@@ -23,6 +28,7 @@ impl LowLink {
             ord: vec![MAX; n],
             low: vec![MAX; n],
             list,
+            sentinel,
         }
     }
 
@@ -58,6 +64,10 @@ impl LowLink {
         // 関節点のチェックは、各頂点を条件を満たすかどうか見るだけ
         for u in 1..self.n {
             let p = self.parent[u];
+            if p == self.sentinel {
+                // 動作未確認.
+                continue;
+            }
             if p == 0 {
                 np += 1;
             } else if self.ord[p] <= self.low[u] {
@@ -78,6 +88,9 @@ impl LowLink {
         // 橋のチェックは、各頂点が条件を満たすかどうか見るだけ
         for u in 1..self.n {
             let p = self.parent[u];
+            if p == self.sentinel {
+                continue;
+            }
             if self.ord[p] < self.low[u] {
                 s.insert(if p > u { (u, p) } else { (p, u) }); // set の時点でソート済にしておく.
             }
