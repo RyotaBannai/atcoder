@@ -57,6 +57,10 @@ path = "src/bin/b_ac.rs"
 name = "abc279-c_ac"
 path = "src/bin/c_ac.rs"
 
+[[bin]]
+name = "abc279-d_ac"
+path = "src/bin/d_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"

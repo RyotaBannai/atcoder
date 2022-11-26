@@ -7,16 +7,16 @@ match:
     absolute_error: 1e-6
 
 cases:
-  # - name: sample1
-  #   in: |
-  #     10 1
-  #   out: |
-  #     7.7735026919
-  # - name: sample2
-  #   in: |
-  #     5 10
-  #   out: |
-  #     5.0000000000
+  - name: sample1
+    in: |
+      10 1
+    out: |
+      7.7735026919
+  - name: sample2
+    in: |
+      5 10
+    out: |
+      5.0000000000
   - name: sample3
     in: |
       1000000000000000000 100
