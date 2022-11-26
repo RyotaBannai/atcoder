@@ -8,11 +8,19 @@ use proconio::{fastout, input, marker::Chars};
 // use derive_new::new;
 // #[derive(new)]
 // use indexmap::indexmap;
-use std::collections::{BTreeMap, BTreeSet};
+// use std::collections::{BTreeMap, BTreeSet};
 // type Map = BTreeMap<String, usize>;
-type Set = BTreeSet<usize>;
+// type Set = BTreeSet<usize>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
+
+/**
+ * C - RANDOM
+ *
+ * https://atcoder.jp/contests/abc279/tasks/abc279_c
+ *
+ * . と # の数が各行で揃っていれば列を並び替えで、同じ模様に揃えることができる、ということに気づく.
+ */
 
 #[fastout]
 fn main() {

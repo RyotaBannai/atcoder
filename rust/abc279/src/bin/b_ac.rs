@@ -14,6 +14,13 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * B - LOOKUP
+ *
+ * https://atcoder.jp/contests/abc279/tasks/abc279_b
+ *
+ */
+
 #[fastout]
 fn main() {
     input! {
