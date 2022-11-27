@@ -3,7 +3,10 @@
  *
  * cpg run -p src/bin/geometry/projection.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::vector::{other::*, prelude::*},
+    utils::read::*,
+};
 
 /**
  * 射影
@@ -33,7 +36,7 @@ fn main() {
     for _ in 0..n {
         let a = read::<f64>();
         let v = Vector::new(a[0], a[1]);
-        let ans = VectorFns::projection(v, v1, v2);
+        let ans = projection(v, v1, v2);
 
         // 0.00000001 以下の誤差（小数点8桁+1）だから、9 桁まで出力
         println!("{:.10} {:.10}", ans.x, ans.y);

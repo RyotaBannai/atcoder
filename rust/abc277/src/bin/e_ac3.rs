@@ -47,7 +47,6 @@ use std::collections::{BinaryHeap, VecDeque};
  * ・ダイクストラ法は、辺の重みが非負の場合のみ. 負値はある場合は、ベルマンフォード（Bellman Ford）/ ワーシャルフロイド（Warshall Floyd）を検討
  *
  */
-use abc277::utils::read::*;
 
 #[fastout]
 fn main() {

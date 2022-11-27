@@ -18,7 +18,7 @@
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use collection::{query::*, utils::read::*};
+use library::{query::*, utils::read::*};
 
 /**
  * Range Update Query (RUQ) and Range Sum Query (RSQ)

@@ -3,7 +3,10 @@
  *
  * cpg run -p src/bin/geometry/placement.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::vector::{place::*, prelude::Vector},
+    utils::read::*,
+};
 
 /**
  * 反時計回り
@@ -22,7 +25,7 @@ fn main() {
     for _ in 0..n {
         let b = read::<f64>();
         let v = Vector::new(b[0], b[1]);
-        let ans = VectorFns::place(v, v1, v2);
+        let ans = place(v, v1, v2);
         println!(
             "{}",
             match ans {

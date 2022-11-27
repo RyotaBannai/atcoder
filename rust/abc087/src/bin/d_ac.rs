@@ -25,7 +25,7 @@ use std::usize::MAX;
  * 参考
  * https://qiita.com/drken/items/cce6fc5c579051e64fab
  */
-use abc087::structure::disjoint_set::*;
+use library::structure::disjoint_set::*;
 
 #[fastout]
 fn main() {

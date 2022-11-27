@@ -33,7 +33,7 @@ use std::usize::MAX;
  * ・https://qiita.com/drken/items/cce6fc5c579051e64fab
  * ・/Users/ryotabannai/Documents/dev/atcoder/atcoder/rust/abc087/src/bin/d_ac.rs
  */
-use collection::{structure::disjoint_set::*, utils::read::*};
+use library::{structure::disjoint_set::*, utils::read::*};
 
 // #[fastout]
 fn main() {

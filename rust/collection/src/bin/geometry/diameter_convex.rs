@@ -3,7 +3,10 @@
  *
  * cpg run -p src/bin/geometry/diameter_convex.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::{polygon::diameter::diameter, vector::prelude::Vector},
+    utils::read::*,
+};
 
 /**
  * 凸多角形の直径
@@ -34,6 +37,6 @@ fn main() {
         p.push(Vector::new(a[0], a[1]));
     }
 
-    let ans = PolygonFns::diameter(p);
+    let ans = diameter(p);
     println!("{:.7}", ans);
 }

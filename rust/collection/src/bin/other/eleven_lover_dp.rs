@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/other/eleven_lover_dp.rs
  */
-use collection::utils::read::*;
+use library::utils::read::*;
 
 /**
  * Problem H: Eleven Lover

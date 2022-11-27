@@ -3,7 +3,10 @@
  *
  * cpg run -p src/bin/geometry/convex_cut.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::{polygon::convex_cut::*, vector::prelude::Vector},
+    utils::read::*,
+};
 
 /**
  * 凸多角形の切断
@@ -25,8 +28,7 @@ fn main() {
     let q = read::<usize>()[0];
     for _ in 0..q {
         let a = read::<f64>();
-        let ans =
-            PolygonFns::convex_cut(p.clone(), Vector::new(a[0], a[1]), Vector::new(a[2], a[3]));
+        let ans = convex_cut(p.clone(), Vector::new(a[0], a[1]), Vector::new(a[2], a[3]));
         println!("{:.8}", ans);
     }
 }

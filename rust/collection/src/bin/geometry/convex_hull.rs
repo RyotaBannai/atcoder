@@ -3,7 +3,10 @@
  *
  * cpg run -p src/bin/geometry/convex_hull.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::{polygon::convex_hull::*, vector::prelude::Vector},
+    utils::read::*,
+};
 use std::cmp::Ordering::Less;
 
 /**
@@ -23,7 +26,7 @@ fn main() {
         p.push(Vector::new(a[0], a[1]));
     }
 
-    let (mut up, mut low) = PolygonFns::convex_hull(p);
+    let (mut up, mut low) = convex_hull(p);
     let mut vs = up;
     let wl = low.len();
     vs.append(&mut low[1..wl - 1].to_vec());

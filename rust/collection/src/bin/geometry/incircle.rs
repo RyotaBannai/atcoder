@@ -3,7 +3,10 @@
  *
  * cpg run -p src/bin/geometry/incircle.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::{circle::other::*, vector::prelude::Vector},
+    utils::read::*,
+};
 
 /**
  * 内接円
@@ -19,6 +22,6 @@ fn main() {
         p.push(Vector::new(a[0], a[1]));
     }
 
-    let c = CircleFns::incircle(p[0], p[1], p[2]);
+    let c = incircle(p[0], p[1], p[2]);
     println!("{} {} {}", c.c.x, c.c.y, c.r);
 }

@@ -3,7 +3,10 @@
  *
  * cpg run -p src/bin/geometry/polygon_area.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::{polygon::area::*, vector::prelude::Vector},
+    utils::read::*,
+};
 
 /**
  * 面積
@@ -28,5 +31,5 @@ fn main() {
         p.push(Vector::new(a[0], a[1]));
     }
 
-    println!("{:.1}", PolygonFns::area(p));
+    println!("{:.1}", area(p));
 }

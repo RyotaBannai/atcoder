@@ -353,6 +353,7 @@ rustc-hash = "=1.1.0"
 smallvec = "=1.2.0"
 easy-ext = "1.0.0"
 ac-library-rs  = { git = "https://github.com/rust-lang-ja/ac-library-rs.git" }
+library = { path = "../library" }
 
 [profile.release]
 lto = true

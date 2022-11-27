@@ -46,7 +46,7 @@ use std::usize::MAX;
  * e.g. O を根とし、 O の子部分木を A, B とする. O の木dp は求めているから、2回目の dfs で v={A, B} として、dfs を呼ぶ. v=A の時、A の部分木は、1 回目で求めており、A の子を C,D とすると、木dp[C],木dp[D] で O(1) で探すことができる（木dp[C]+cost_ac,木dp[D]+cost_ad）. また、A の親 O への木dp も求めたいが、これも 木dp[O] で求めているから、最大値は 木dp[O]+cost_ao とすれば良い.
  *
 */
-use collection::utils::read::*;
+use library::utils::read::*;
 
 #[derive(Clone, Debug)]
 struct Edge {

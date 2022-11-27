@@ -3,7 +3,13 @@
  *
  * cpg run -p src/bin/geometry/tangent_to_a_circle.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::{
+        circle::{prelude::Circle, tangent::*},
+        vector::prelude::Vector,
+    },
+    utils::read::*,
+};
 
 /**
  * 円の接線
@@ -19,7 +25,7 @@ fn main() {
     let b = read::<f64>();
     let v = Vector::new(a[0], a[1]);
     let c = Circle::new(Vector::new(b[0], b[1]), b[2]);
-    let mut pt = CircleFns::tangent_point_from_polar(c, v);
+    let mut pt = tangent_point_from_polar(c, v);
     pt.sort();
     let (v1, v2) = (pt[0], pt[1]);
     println!("{:.10} {:.10}", v1.x, v1.y);

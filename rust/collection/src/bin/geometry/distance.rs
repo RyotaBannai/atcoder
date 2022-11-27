@@ -3,7 +3,10 @@
  *
  * cpg run -p src/bin/geometry/distance.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::vector::{distance::*, prelude::Vector},
+    utils::read::*,
+};
 
 /**
  * 距離
@@ -22,6 +25,6 @@ fn main() {
             Vector::new(a[4], a[5]),
             Vector::new(a[6], a[7]),
         );
-        println!("{:.10}", VectorFns::distance_ss(v1, v2, u1, u2));
+        println!("{:.10}", distance_ss(v1, v2, u1, u2));
     }
 }

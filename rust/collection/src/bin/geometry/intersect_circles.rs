@@ -3,7 +3,13 @@
  *
  * cpg run -p src/bin/geometry/intersect_circles.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::{
+        circle::{intersect::*, prelude::*},
+        vector::prelude::Vector,
+    },
+    utils::read::*,
+};
 
 /**
  * 円の交差判定
@@ -18,7 +24,7 @@ fn main() {
 
     println!(
         "{:.10}",
-        CircleFns::is_intersect_circles(
+        is_intersect_circles(
             Circle::new(Vector::new(c1[0], c1[1]), c1[2]),
             Circle::new(Vector::new(c2[0], c2[1]), c2[2])
         )

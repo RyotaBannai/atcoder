@@ -3,7 +3,10 @@
  *
  * cpg run -p src/bin/geometry/intersect.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::vector::{intersect::*, prelude::*},
+    utils::read::*,
+};
 
 /**
  * 交差判定
@@ -22,13 +25,6 @@ fn main() {
             Vector::new(a[4], a[5]),
             Vector::new(a[6], a[7]),
         );
-        println!(
-            "{}",
-            if VectorFns::intersect(v1, v2, u1, u2) {
-                "1"
-            } else {
-                "0"
-            }
-        );
+        println!("{}", if intersect(v1, v2, u1, u2) { "1" } else { "0" });
     }
 }

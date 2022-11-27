@@ -3,7 +3,10 @@
  *
  * cpg run -p src/bin/geometry/reflection.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::vector::{other::*, prelude::*},
+    utils::read::*,
+};
 
 /**
  * 反射
@@ -24,7 +27,7 @@ fn main() {
     for _ in 0..n {
         let a = read::<f64>();
         let v = Vector::new(a[0], a[1]);
-        let ans = VectorFns::reflection(v, v1, v2);
+        let ans = reflection(v, v1, v2);
         println!("{:.10} {:.10}", ans.x, ans.y);
     }
 }

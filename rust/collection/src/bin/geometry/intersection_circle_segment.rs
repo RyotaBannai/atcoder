@@ -3,7 +3,13 @@
  *
  * cpg run -p src/bin/geometry/intersection_circle_segment.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::{
+        circle::{intersect::*, prelude::*},
+        vector::prelude::Vector,
+    },
+    utils::read::*,
+};
 
 /**
  * 円と直線の交点
@@ -19,7 +25,7 @@ fn main() {
     let q = read::<usize>()[0];
     for _ in 0..q {
         let a = read::<f64>();
-        let mut pt = CircleFns::points_at_intersection_line_from_two_vectors(
+        let mut pt = points_at_intersection_line_from_two_vectors(
             c,
             Vector::new(a[0], a[1]),
             Vector::new(a[2], a[3]),

@@ -49,7 +49,7 @@ use std::collections::BinaryHeap;
  * ・次の loop の回で pq から先頭を取り出す
  *
  */
-use collection::{structure::rev_priority_queue::*, utils::read::*};
+use library::{structure::rev_priority_queue::*, utils::read::*};
 use Color::*;
 
 #[derive(Clone, Copy, Debug, PartialEq)]

@@ -15,7 +15,7 @@
 // type Set = BTreeSet<(usize, usize)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use collection::utils::read::*;
+use library::utils::read::*;
 
 /**
  * 確率DP HSI

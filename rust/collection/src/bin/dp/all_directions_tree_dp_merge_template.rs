@@ -28,7 +28,7 @@ use std::usize::MAX;
  * src/bin/dp/all_directions_tree_dp_merge.rs
  *
 */
-use collection::utils::read::*;
+use library::utils::read::*;
 
 #[derive(Clone, Copy, Debug)]
 struct Edge {

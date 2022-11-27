@@ -3,7 +3,10 @@
  *
  * cpg run -p src/bin/geometry/is_convex.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::vector::{place::*, prelude::Vector},
+    utils::read::*,
+};
 
 /**
  * 凸性判定
@@ -27,7 +30,7 @@ fn main() {
     for i in 0..n {
         let j = (i + 1) % n; // next vector
         let k = (i + 2) % n; // next next vector
-        let place = VectorFns::place(vs[i], vs[j], vs[k]);
+        let place = place(vs[i], vs[j], vs[k]);
         ans &= place != 3;
     }
 

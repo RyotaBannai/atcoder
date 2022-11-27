@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
 //     Ordering::{Equal, Greater, Less},
@@ -13,8 +13,9 @@
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
+use library::utils::read::*;
 
-// #[fastout]
+#[fastout]
 fn main() {
     todo!();
 }

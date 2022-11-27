@@ -3,7 +3,10 @@
  *
  * cpg run -p src/bin/geometry/contain_point.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::{polygon::contain::*, vector::prelude::Vector},
+    utils::read::*,
+};
 
 /**
  * 多角形-点の包含
@@ -29,7 +32,7 @@ fn main() {
 
     for _ in 0..q {
         let b = read::<f64>();
-        let ans = PolygonFns::contain_point(p.clone(), Vector::new(b[0], b[1]));
+        let ans = contain_point(p.clone(), Vector::new(b[0], b[1]));
         println!(
             "{}",
             match ans {

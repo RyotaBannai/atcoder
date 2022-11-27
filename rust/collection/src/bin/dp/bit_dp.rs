@@ -44,7 +44,7 @@ use std::isize::MAX;
  * ・https://blog.hamayanhamayan.com/entry/2017/07/16/130151
  *
  */
-use collection::utils::read::*;
+use library::utils::read::*;
 
 struct Rec {
     n: usize,

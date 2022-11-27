@@ -29,7 +29,7 @@ type Set = BTreeSet<(usize, usize)>;
  * https://o-treetree.hatenablog.com/entry/2020/06/08/231258#%E9%96%A2%E7%AF%80%E7%82%B9%E3%81%A8%E6%A9%8B
  *
  */
-use collection::{graph::low_link::*, utils::read::*};
+use library::{graph::low_link::*, utils::read::*};
 
 // #[fastout]
 fn main() {

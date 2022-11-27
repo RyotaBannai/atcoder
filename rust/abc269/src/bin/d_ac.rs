@@ -22,7 +22,7 @@ type Set = BTreeSet<usize>;
  * tags: #union_find
  *
  */
-use abc269::structure::disjoint_set::*;
+use library::structure::disjoint_set::*;
 
 #[fastout]
 fn main() {

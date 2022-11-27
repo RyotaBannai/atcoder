@@ -16,7 +16,7 @@ use std::usize::MAX;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
-use collection::{graph::low_link::*, utils::read::*};
+use library::{graph::low_link::*, utils::read::*};
 
 /**
  * 関節点（切断点）
@@ -42,7 +42,7 @@ fn main() {
         m[t].push(s);
     }
 
-    let mut ll = LowLink::new(m);
+    let mut ll = LowLink::new(m, std::usize::MAX);
     ll.dfs(0, MAX);
 
     for x in ll.get_articulation_point() {

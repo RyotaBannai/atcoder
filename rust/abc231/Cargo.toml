@@ -91,5 +91,6 @@ rustc-hash = "=1.1.0"
 smallvec = "=1.2.0"
 derive-new = "0.5.9"
 ac-library-rs  = { git = "https://github.com/rust-lang-ja/ac-library-rs" }
+library = { path = "../library" }
 
 [dev-dependencies]

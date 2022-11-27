@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/number_theory/lcm.rs
  */
-use collection::{number::*, utils::read::*};
+use library::{number::*, utils::read::*};
 
 /**
  * 最小公倍数

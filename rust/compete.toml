@@ -97,6 +97,7 @@ smallvec = "=1.2.0"
 derive-new = "0.5.9"
 easy-ext = "1.0.0"
 ac-library-rs  = { git = "https://github.com/rust-lang-ja/ac-library-rs" }
+library = { path = "../library" }
 '''
 dev-dependencies = '''
 #atcoder-202004-lock = { git = "https://github.com/qryxip/atcoder-202004-lock" }

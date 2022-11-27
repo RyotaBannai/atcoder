@@ -3,7 +3,10 @@
  *
  * cpg run -p src/bin/geometry/parallel_orthogonal.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::vector::{other::*, prelude::Vector},
+    utils::read::*,
+};
 
 /**
  * 平行・垂直
@@ -24,9 +27,9 @@ fn main() {
             Vector::new(a[4], a[5]),
             Vector::new(a[6], a[7]),
         );
-        if VectorFns::is_parallel(v1, v2, u1, u2) {
+        if is_parallel(v1, v2, u1, u2) {
             println!("2");
-        } else if VectorFns::is_orthogonal(v1, v2, u1, u2) {
+        } else if is_orthogonal(v1, v2, u1, u2) {
             println!("1");
         } else {
             println!("0");

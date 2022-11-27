@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/geometry/closest_pair.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{geometry::vector::prelude::Vector, utils::read::*};
 use std::ops::Sub;
 
 /**
@@ -12,6 +12,8 @@ use std::ops::Sub;
  * https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/5/CGL_5_A
  *
  * tags: #closest_pair #最近点対
+ *
+ * TODO: library
  *
  */
 

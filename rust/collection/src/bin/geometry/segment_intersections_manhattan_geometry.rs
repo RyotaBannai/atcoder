@@ -3,7 +3,10 @@
  *
  * cpg run -p src/bin/geometry/segment_intersections_manhattan_geometry.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::{manhattan_geometry::*, vector::prelude::Vector},
+    utils::read::*,
+};
 
 /**
  * 線分交差問題
@@ -25,6 +28,6 @@ fn main() {
         segs.push((Vector::new(a[0], a[1]), Vector::new(a[2], a[3])));
     }
 
-    let ans = manhattan_geo::plane_sweep(segs);
+    let ans = plane_sweep(segs);
     println!("{}", ans);
 }

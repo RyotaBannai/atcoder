@@ -37,7 +37,7 @@ use std::usize::MAX;
  * この時、最後に到達する頂点が一番遠い時に、最小のステップ数で全ての頂点に到達できるため、部分木が最大の数を (n-1)*2 から引く（ステップ数が多いほど、その分親まで戻ってこなくてはいけない）
  *
 */
-use collection::utils::read::*;
+use library::utils::read::*;
 
 #[derive(Clone, Copy, Debug)]
 struct Edge {

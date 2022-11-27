@@ -14,7 +14,7 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
-use abc278::query::*;
+use library::query::*;
 
 #[fastout]
 fn main() {

@@ -3,7 +3,13 @@
  *
  * cpg run -p src/bin/geometry/area_of_circle_polygon.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::{
+        circle::{area::*, prelude::*},
+        vector::prelude::Vector,
+    },
+    utils::read::*,
+};
 
 /**
  * 円と多角形の共通部分
@@ -21,7 +27,7 @@ fn main() {
         let b = read::<f64>();
         p.push(Vector::new(b[0], b[1]));
     }
-    let ans = CircleFns::area_of_circle_polygon(c, p);
+    let ans = area_of_circle_polygon(c, p);
 
     println!("{:.20}", ans);
 }

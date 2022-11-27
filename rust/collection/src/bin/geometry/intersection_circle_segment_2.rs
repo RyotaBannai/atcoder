@@ -6,7 +6,11 @@
  * output
  * 0.95747864 6.56378204 6.42713674 -1.64070512
  */
-use collection::geometry::*;
+use library::geometry::{
+    circle::{intersect::*, prelude::*},
+    linear_equation::*,
+    vector::prelude::Vector,
+};
 
 /**
  * 円と直線の交点
@@ -14,8 +18,7 @@ use collection::geometry::*;
 
 fn main() {
     let c = Circle::new(Vector::new(3., 2.), 5.);
-    let mut pt =
-        CircleFns::points_at_intersection_line_from_le(c, LinearEquation::new(3., 2., -16.));
+    let mut pt = points_at_intersection_line_from_le(c, LinearEquation::new(3., 2., -16.));
     pt.sort();
     let (v1, v2) = (pt[0], pt[1]);
     println!("{:.8} {:.8} {:.8} {:.8}", v1.x, v1.y, v2.x, v2.y);

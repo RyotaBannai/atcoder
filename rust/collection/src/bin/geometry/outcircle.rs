@@ -3,7 +3,10 @@
  *
  * cpg run -p src/bin/geometry/outcircle.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::{circle::other::outcircle, vector::prelude::Vector},
+    utils::read::*,
+};
 
 /**
  * 外接円
@@ -21,6 +24,6 @@ fn main() {
         p.push(Vector::new(a[0], a[1]));
     }
 
-    let c = CircleFns::outcircle(p[0], p[1], p[2]);
+    let c = outcircle(p[0], p[1], p[2]);
     println!("{:.10} {:.10} {:.10}", c.c.x, c.c.y, c.r);
 }

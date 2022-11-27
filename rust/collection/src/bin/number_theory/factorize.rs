@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/number_theory/factorize.rs
  */
-use collection::{number::*, utils::read::*};
+use library::{number::*, utils::read::*};
 
 /**
  * 素因数分解

@@ -13,7 +13,7 @@ use proconio::{fastout, input, marker::Chars};
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use practice2::query::*;
+use library::query::*;
 
 /**
  * Segment Tree

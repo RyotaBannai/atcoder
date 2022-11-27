@@ -3,7 +3,10 @@
  *
  * cpg run -p src/bin/geometry/intersection_segment_segment.rs
  */
-use collection::{geometry::*, utils::read::*};
+use library::{
+    geometry::vector::{intersect::*, prelude::Vector},
+    utils::read::*,
+};
 
 /**
  * 交点
@@ -22,7 +25,7 @@ fn main() {
             Vector::new(a[4], a[5]),
             Vector::new(a[6], a[7]),
         );
-        let ans = VectorFns::point_at_intersection_on_ss(v1, v2, u1, u2);
+        let ans = point_at_intersection_on_ss(v1, v2, u1, u2);
         println!("{:.10} {:.10}", ans.x, ans.y);
     }
 }
