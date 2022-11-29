@@ -8,7 +8,7 @@
  */
 use library::geometry::{
     circle::{intersect::*, prelude::*},
-    linear_equation::*,
+    linear_equation::prelude::LinearEquation,
     vector::prelude::Vector,
 };
 
