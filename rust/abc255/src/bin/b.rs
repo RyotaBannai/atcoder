@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{min, max};
 // use ac_library_rs::modint::ModInt998244353 as Mint;
 // use superslice::{self, Ext};
@@ -11,7 +11,23 @@
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
-// #[fastout]
+#[fastout]
 fn main() {
-    todo!();
+    input! {
+        n: usize,
+        x: usize,
+        y: usize,
+        z: usize,
+        a: [usize; n],
+        b: [usize; n],
+    }
+    let mut ans = vec![]; // student id(index)
+    let mut c = a
+        .iter()
+        .enumerate()
+        .map(|(i, x)| (x, i))
+        .collect::<Vec<_>>();
+
+    c.sort_unstable_by(|a, b| if a.0.cmp(b.0) == Less {});
+    // for
 }
