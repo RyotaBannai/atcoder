@@ -14,7 +14,13 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
-#[fastout]
+/**
+ * A - Pawn on a Grid
+ *
+ * https://atcoder.jp/contests/abc280/tasks/abc280_a
+ */
+
+// #[fastout]
 fn main() {
     input! {
         h: usize,

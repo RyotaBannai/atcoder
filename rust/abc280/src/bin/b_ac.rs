@@ -14,7 +14,13 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
-#[fastout]
+/**
+ * B - Inverse Prefix Sum
+ *
+ * https://atcoder.jp/contests/abc280/tasks/abc280_b
+ */
+
+// #[fastout]
 fn main() {
     input! {
      n: usize,

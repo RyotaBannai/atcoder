@@ -16,7 +16,13 @@ use regex::internal::Char;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
-#[fastout]
+/**
+ * C - Extra Character
+ *
+ * https://atcoder.jp/contests/abc280/tasks/abc280_c
+ */
+
+// #[fastout]
 fn main() {
     input! {
         s: Chars,

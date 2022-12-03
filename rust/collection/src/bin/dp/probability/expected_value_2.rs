@@ -20,7 +20,7 @@ use proconio::{fastout, input, marker::Chars};
 /**
  * 確率DP 期待値 出た目の和
  *
- * tags: #DP #確率DP
+ * tags: #DP #確率DP #期待値
  *
 */
 

@@ -20,26 +20,36 @@ fn main() {
     input! {
         k : usize
     }
-    let mut facts = factorize(k);
-    let mut a = 2;
-    loop {
-        let mut m = factorize(a);
 
-        // k に残っている素因数だけチェック
-        for (key, val) in facts.clone() {
-            if let Some(w) = m.get_mut(&key) {
-                if val > *w {
-                    facts.entry(key).and_modify(|e| *e -= *w);
-                } else {
-                    // v が全て消えるなら、entry を削除
-                    facts.remove(&key);
-                }
+    fn f(mut n: usize, p: usize) -> usize {
+        if n == 0 {
+            return 0;
+        }
+        n /= p;
+        n + f(n, p)
+    }
+
+    let facts = factorize(k);
+    let mut l = 0;
+    let mut r = k;
+
+    while r - l > 1 {
+        let mid = (r + l) / 2;
+        let mut ok = true;
+
+        for (&p, &cnt) in facts.iter() {
+            if f(mid, p) < cnt {
+                ok = false;
+                break;
             }
         }
-        if facts.is_empty() {
-            println!("{}", a);
-            return;
+        if ok {
+            // 最小を求めたいから、r を更新.
+            r = mid;
+        } else {
+            l = mid;
         }
-        a += 1;
     }
+
+    println!("{}", r);
 }
