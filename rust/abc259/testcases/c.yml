@@ -16,7 +16,12 @@ cases:
       xyyzz
     out: |
       No
-
+  - name: sample2
+    in: |
+      aabcc
+      aaabccc
+    out: |
+      Yes
 extend:
   - type: Text
     path: "./c"
