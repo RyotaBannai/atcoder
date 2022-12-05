@@ -15,6 +15,14 @@ use proconio::{fastout, input, marker::Chars};
 // use std::collections::{BinaryHeap, VecDeque};
 use library::number::factorize;
 
+/**
+ * D - Factorial and Multiple
+ *
+ * https://atcoder.jp/contests/abc280/tasks/abc280_d
+ *
+ * tags: #素数判定 #二分探索
+ */
+
 // #[fastout]
 fn main() {
     input! {
