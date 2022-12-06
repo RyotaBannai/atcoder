@@ -23,6 +23,8 @@ use library::*;
  *
  * 同じ数値が連続する場合に注意.
  *
+ * tags: #数値が連続
+ *
  * 参考
  * https://atcoder.jp/contests/abc257/tasks/abc257_c/editorial
  *
