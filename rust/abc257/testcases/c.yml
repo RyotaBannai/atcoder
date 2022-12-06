@@ -26,6 +26,14 @@ cases:
     out: |
       4
 
+  - name: sample3
+    in: |
+      5
+      10101
+      3 3 5 1 2
+    out: |
+      4
+
 extend:
   - type: Text
     path: "./c"
