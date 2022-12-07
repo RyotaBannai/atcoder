@@ -15,6 +15,14 @@ use proconio::{fastout, input, marker::Chars};
 // use std::collections::{BinaryHeap, VecDeque};
 use library::geometry::vector::{polar::*, prelude::*};
 
+/**
+ * B - Counterclockwise Rotation
+ *
+ * https://atcoder.jp/contests/abc259/tasks/abc259_b
+ *
+ * tags: #polar
+ */
+
 // #[fastout]
 fn main() {
     input! {
