@@ -20,8 +20,8 @@ fn main() {
     input! {
         x: f64,
         y: f64,
-        rad: f64
+        deg: f64
     }
-    let ans = polar_on_v(Vector::new(x, y), rad * std::f64::consts::PI / 180.);
+    let ans = polar_on_v(Vector::new(x, y), to_rad(deg));
     println!("{} {}", ans.x, ans.y);
 }

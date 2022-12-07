@@ -3,6 +3,7 @@ use std::{
         Ordering,
         Ordering::{Equal, Greater, Less},
     },
+    f64::consts::PI,
     ops::{Add, Div, Mul, Sub},
 };
 
@@ -115,6 +116,15 @@ return はラジアン p363
 */
 pub fn rad(v1: Vector, v2: Vector) -> f64 {
     (dot(v1, v2) / (norm(v1) * norm(v2))).acos()
+}
+
+// 度->ラジアン
+pub fn to_rad(deg: f64) -> f64 {
+    deg * PI / 180.
+}
+// ラジアン->度
+pub fn to_deg(rad: f64) -> f64 {
+    rad * 180. / PI
 }
 /*
 外積 xy
