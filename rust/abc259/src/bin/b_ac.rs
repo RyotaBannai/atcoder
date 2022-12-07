@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
 //     Ordering::{Equal, Greater, Less},
@@ -13,8 +13,15 @@
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
+use library::geometry::vector::{polar::*, prelude::*};
 
 // #[fastout]
 fn main() {
-    todo!();
+    input! {
+        x: f64,
+        y: f64,
+        rad: f64
+    }
+    let ans = polar_on_v(Vector::new(x, y), rad * std::f64::consts::PI / 180.);
+    println!("{} {}", ans.x, ans.y);
 }
