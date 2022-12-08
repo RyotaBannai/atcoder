@@ -103,7 +103,7 @@ pub fn norm(v: Vector) -> f64 {
 }
 // ２つのベクトルの距離
 pub fn abs(v1: Vector, v2: Vector) -> f64 {
-    dot(v1, v2).sqrt()
+    v1.sub(v2).norm()
 }
 // ベクトルの内積
 pub fn dot(v1: Vector, v2: Vector) -> f64 {
