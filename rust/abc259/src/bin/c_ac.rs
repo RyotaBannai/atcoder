@@ -34,7 +34,7 @@ fn main() {
 
     // cursor 一つずつincrement して、条件を満たしたらs に1文字だけ増やす
     while j < t.len() {
-        // or 条件の前半に注意. 最後 s は t より小さいから等価判定すると out out index
+        // or 条件の前半に注意. 最後 s は t より小さいから等価判定すると out of index
         if i == s.len() || t[j] != s[i] {
             if i >= 2 && s[i - 1] == s[i - 2] && s[i - 2] == t[j] {
                 s.insert(i, t[j]);
