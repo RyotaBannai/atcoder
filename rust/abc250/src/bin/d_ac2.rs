@@ -21,15 +21,14 @@ use library::number::prime;
  *
  * tags: #素数
  *
- * q^3 部分を計算すると overflow する可能性があるから、
- * n の分母に持ってくることで回避する.
- * rust なら saturaring_mul で最大値で丸めても良い.
+ * 素数をp として固定して考えた時に、
+ * その素数とペアとなりうる q が n を超えない範囲はどこに位置するかを考える.
  *
- * 同様なテクニック
- * 典型90 Multiplication 085（★4）typical90/src/bin/085_ac.rs
+ * q を考えうる最大の素数から初めて、一つずつ小さくしていくことを考えると良い.（多分小さい方から始めても同様に求まる.）
  *
+ * 参考
+ * https://atcoder.jp/contests/abc250/tasks/abc250_d/editorial
  *
- * 全素数のペアの組み合わせチェックしても少ないから間に合う.
  *
  *
  * 入力値が大きいため、f64 は使わない（誤差が出る）
@@ -47,20 +46,24 @@ fn main() {
     }
 
     let (_, ps) = prime((n as f64).cbrt() as usize);
+
     let mut ans = 0;
-    for i in 0..ps.len() - 1 {
-        for j in i + 1..ps.len() {
-            if ps[i]
-                .saturating_mul(ps[j])
-                .saturating_mul(ps[j])
-                .saturating_mul(ps[j])
-                <= n
-            {
-                ans += 1;
-            } else {
-                break;
-            }
+
+    let check_over_n =
+        |p: usize, q: usize| p.saturating_mul(q).saturating_mul(q).saturating_mul(q) > n;
+
+    for i in 0..ps.len() {
+        let mut j = ps.len() - 1; // 一番大きい素数から始める
+        while i < j && check_over_n(ps[i], ps[j]) {
+            j -= 1;
         }
+
+        // ここは continue ではない.
+        // これ以上 <=N を満たす素数ペアが無いということ.
+        if i >= j {
+            break;
+        }
+        ans += j - i;
     }
     println!("{}", ans);
 }
