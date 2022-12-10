@@ -18,6 +18,13 @@ use library::*;
 /**
  * D - Max Multiple
  *
+ * https://atcoder.jp/contests/abc281/tasks/abc281_d
+ *
+ * k 回まで流す...
+ * すでにk 使っていた時の最大を引き継ぐように for l in 0..=k のようにk まで流す.
+ * この回は k+1 にできないから　前回分の最大値を引き継ぐだけにする.
+ *
+ *
  */
 
 // #[fastout]
@@ -30,23 +37,22 @@ fn main() {
     }
 
     // [[商; 余り]; n 回目使った]
-    let mut dp = vec![vec![vec![None; d + 1]; k + 1]; 2]; // あまり、尚
-    dp[0][0][0] = Some(0); // 初回は　余りも商も 0, 使った回数も 0
+    let mut dp = vec![vec![vec![None; d + 1]; k + 1]; n + 1]; // あまり、尚
+    dp[0][0][0] = Some(0);
 
     for i in 0..n {
-        for l in 0..k {
+        for l in 0..=k {
             for j in 0..d {
-                // j はその時の余り
-                if let Some(z) = dp[i % 2][l][j] {
+                if let Some(z) = dp[i][l][j] {
                     let x = a[i]; // i 番目の要素を使う.
 
                     // x を使う場合
-                    let p = ((j + x) / d) + z;
-                    let q = (j + x) % d;
-                    chmax!(dp[(i + 1) % 2][l + 1][q], Some(p)); // 商は加えていく
+                    if l != k {
+                        chmax!(dp[i + 1][l + 1][(z + x) % d], Some(z + x));
+                    }
 
                     // x を使わない
-                    chmax!(dp[(i + 1) % 2][l][j], Some(z));
+                    chmax!(dp[i + 1][l][j], Some(z));
                 }
             }
         }
@@ -57,8 +63,8 @@ fn main() {
     // println!("{:?}", &xs);
     // }
 
-    if let Some(a) = dp[n % 2][k][0] {
-        println!("{}", a * d);
+    if let Some(a) = dp[n][k][0] {
+        println!("{}", a);
     } else {
         println!("-1");
     }
