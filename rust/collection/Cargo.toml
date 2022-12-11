@@ -105,15 +105,27 @@ path = "src/bin/query/seg_tree/rsq_ruq.rs"
 
 [[bin]]
 name = "number_of_customers"
-path = "src/bin/query/other/imos/number_of_customers.rs"
+path = "src/bin/query/imos/number_of_customers.rs"
 
 [[bin]]
 name = "number_of_overlaps"
-path = "src/bin/query/other/imos/number_of_overlaps.rs"
+path = "src/bin/query/imos/number_of_overlaps.rs"
 
 [[bin]]
 name = "the_smallest_window1"
-path = "src/bin/query/other/the_smallest_window1.rs"
+path = "src/bin/query/sliding_window/the_smallest_window1.rs"
+
+[[bin]]
+name = "the_smallest_window2"
+path = "src/bin/query/sliding_window/the_smallest_window2.rs"
+
+[[bin]]
+name = "the_number_of_windows"
+path = "src/bin/query/sliding_window/the_number_of_windows.rs"
+
+[[bin]]
+name = "sliding_minimum_element"
+path = "src/bin/query/sliding_window/sliding_minimum_element.rs"
 
 [[bin]]
 name = "weighted_disjoint_set"
