@@ -1,7 +1,7 @@
 /**
- * @cpg_dirspec range_sum_query
+ * @cpg_dirspec range_minimum_query
  *
- * cpg run -p src/bin/query/range_sum_query.rs
+ * cpg run -p src/bin/query/seg_tree/range_minimum_query.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
@@ -21,13 +21,11 @@
 use library::{query::*, utils::read::*};
 
 /**
- * Range Sum Query (RSQ)
+ * Range Minimum Query (RMQ)
  *
- * https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_B
+ * https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_A
  *
  * tags: #segment_tree #セグメント木 #セグ木 #セグメントツリー
- *
- * https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_A と配列の index が違うため注意.
  *
  */
 
@@ -40,17 +38,26 @@ fn main() {
         let b = read::<usize>();
         qs.push((b[0], (b[1], b[2])));
     }
-    let f = |a: isize, b: isize| a + b;
-    let fp = |a: isize, n: usize| a * n as isize;
-    let mut seg = LazySegTree::new(n, 0, 0, 0, f, f, f, fp, |a: isize, x: isize| a > x);
+
+    let mut seg = LazySegTree::new(
+        n,
+        (1 << 31) - 1,
+        (1 << 31) - 1,
+        (1 << 31) - 1,
+        |a: isize, b: isize| a.min(b), // min
+        |_: isize, b: isize| b,        // replace
+        |_: isize, b: isize| b,        // replace
+        |a: isize, _: usize| a,        // mul 1
+        |a: isize, x: isize| a > x,
+    );
 
     for (t, q) in qs {
         if t == 0 {
             let (x, v) = q;
-            seg.update(x - 1, x, v as isize);
+            seg.update(x, x + 1, v as isize);
         } else {
             let (l, r) = q;
-            println!("{}", seg.query(l - 1, r));
+            println!("{}", seg.query(l, r + 1));
         }
     }
 }

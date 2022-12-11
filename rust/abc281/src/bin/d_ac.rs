@@ -1,4 +1,4 @@
-use itertools::Itertools;
+use itertools::iproduct;
 use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
@@ -36,29 +36,21 @@ fn main() {
         a: [usize; n]
     }
 
-    // [[商; 余り]; n 回目使った]
-    let mut dp = vec![vec![vec![None; d + 1]; k + 1]; n + 1]; // あまり、尚
+    let mut dp = vec![vec![vec![None; d + 1]; k + 1]; n + 1];
     dp[0][0][0] = Some(0);
 
-    for i in 0..n {
-        for l in 0..=k {
-            for j in 0..d {
-                if let Some(z) = dp[i][l][j] {
-                    let x = a[i]; // i 番目の要素を使う.
-
-                    // x を使う場合
-                    if l != k {
-                        chmax!(dp[i + 1][l + 1][(z + x) % d], Some(z + x));
-                    }
-
-                    // x を使わない
-                    chmax!(dp[i + 1][l][j], Some(z));
-                }
+    for (i, l, j) in iproduct!(0..n, 0..=k, 0..d) {
+        let x = a[i]; // i 番目の要素を使う.
+        if let Some(z) = dp[i][l][j] {
+            // x を使う場合
+            if l != k {
+                chmax!(dp[i + 1][l + 1][(z + x) % d], Some(z + x));
             }
+            // x を使わない
+            chmax!(dp[i + 1][l][j], Some(z));
         }
     }
 
-    // println!("{:?}", &dp[n][k]);
     // for xs in &dp {
     // println!("{:?}", &xs);
     // }

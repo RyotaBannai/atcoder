@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec range_update_query
  *
- * cpg run -p src/bin/query/range_update_query.rs
+ * cpg run -p src/bin/query/seg_tree/range_update_query.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{

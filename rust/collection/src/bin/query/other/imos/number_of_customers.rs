@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec number_of_customers
  *
- * cpg run -p src/bin/query/number_of_customers.rs
+ * cpg run -p src/bin/query/other/imos/number_of_customers.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{min, max};

@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec weighted_disjoint_set
  *
- * cpg run -p src/bin/query/weighted_disjoint_set.rs
+ * cpg run -p src/bin/query/union_find/weighted_disjoint_set.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 use std::io;

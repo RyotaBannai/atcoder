@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec rmq_ruq
  *
- * cpg run -p src/bin/query/rmq_ruq.rs
+ * cpg run -p src/bin/query/seg_tree/rmq_ruq.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{

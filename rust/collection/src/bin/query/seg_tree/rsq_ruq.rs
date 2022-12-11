@@ -1,7 +1,7 @@
 /**
- * @cpg_dirspec rmq_raq
+ * @cpg_dirspec rsq_ruq
  *
- * cpg run -p src/bin/query/rmq_raq.rs
+ * cpg run -p src/bin/query/seg_tree/rsq_ruq.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
@@ -21,9 +21,9 @@
 use library::{query::*, utils::read::*};
 
 /**
- * Range Add Query (RAQ) and Range Minimum Query(RMQ)
+ * Range Update Query (RUQ) and Range Sum Query (RSQ)
  *
- * https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_H
+ * https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_I
  *
  * tags: #segment_tree #セグメント木 #セグ木 #セグメントツリー
  *
@@ -34,16 +34,15 @@ fn main() {
     let a = read::<usize>();
     let (n, q) = (a[0], a[1]);
 
-    let f = |a: isize, b: isize| a + b;
     let mut seg = LazySegTree::new(
         n,
         0,
-        std::isize::MAX, // 注意: query の無効値としての単位元は fx:min なら MAX, fx:max なら MIN
-        0,               // 注意: add 用だから単位元は 0
-        |a: isize, b: isize| a.min(b),
-        f,
-        f,
-        |a: isize, _: usize| a,
+        0,
+        std::isize::MAX, // 注意: es, ms が異なるのは、0 で update をかける時 0 以外ではなく MAX (or Min)の時にしたいため. add (RAQ)の場合は 0 以外としても問題ない.
+        |a: isize, b: isize| a + b,
+        |_: isize, b: isize| b, // 注意: update
+        |_: isize, b: isize| b, // 注意: update, 前回の lazy を捨てる
+        |a: isize, n: usize| a * n as isize,
         |a: isize, x: isize| a > x,
     );
 

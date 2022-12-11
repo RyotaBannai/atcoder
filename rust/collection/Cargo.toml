@@ -65,51 +65,59 @@ path = "src/bin/graph/minimum_cost_flow_queue.rs"
 
 [[bin]]
 name = "range_query_1d"
-path = "src/bin/query/range_query_1d.rs"
+path = "src/bin/query/seg_tree/range_query_1d.rs"
 
 [[bin]]
 name = "range_query_2d"
-path = "src/bin/query/range_query_2d.rs"
+path = "src/bin/query/seg_tree/range_query_2d.rs"
 
 [[bin]]
 name = "range_minimum_query"
-path = "src/bin/query/range_minimum_query.rs"
+path = "src/bin/query/seg_tree/range_minimum_query.rs"
 
 [[bin]]
 name = "range_sum_query"
-path = "src/bin/query/range_sum_query.rs"
+path = "src/bin/query/seg_tree/range_sum_query.rs"
 
 [[bin]]
 name = "range_update_query"
-path = "src/bin/query/range_update_query.rs"
+path = "src/bin/query/seg_tree/range_update_query.rs"
 
 [[bin]]
 name = "range_add_query"
-path = "src/bin/query/range_add_query.rs"
-
-[[bin]]
-name = "number_of_customers"
-path = "src/bin/query/number_of_customers.rs"
-
-[[bin]]
-name = "number_of_overlaps"
-path = "src/bin/query/number_of_overlaps.rs"
+path = "src/bin/query/seg_tree/range_add_query.rs"
 
 [[bin]]
 name = "rmq_ruq"
-path = "src/bin/query/rmq_ruq.rs"
+path = "src/bin/query/seg_tree/rmq_ruq.rs"
 
 [[bin]]
 name = "rsq_raq"
-path = "src/bin/query/rsq_raq.rs"
+path = "src/bin/query/seg_tree/rsq_raq.rs"
 
 [[bin]]
 name = "rmq_raq"
-path = "src/bin/query/rmq_raq.rs"
+path = "src/bin/query/seg_tree/rmq_raq.rs"
 
 [[bin]]
 name = "rsq_ruq"
-path = "src/bin/query/rsq_ruq.rs"
+path = "src/bin/query/seg_tree/rsq_ruq.rs"
+
+[[bin]]
+name = "number_of_customers"
+path = "src/bin/query/other/imos/number_of_customers.rs"
+
+[[bin]]
+name = "number_of_overlaps"
+path = "src/bin/query/other/imos/number_of_overlaps.rs"
+
+[[bin]]
+name = "the_smallest_window1"
+path = "src/bin/query/other/the_smallest_window1.rs"
+
+[[bin]]
+name = "weighted_disjoint_set"
+path = "src/bin/query/union_find/weighted_disjoint_set.rs"
 
 [[bin]]
 name = "centroid"
@@ -122,10 +130,6 @@ path = "src/bin/graph/strongly_connected_components.rs"
 [[bin]]
 name = "select_stages"
 path = "src/bin/yukicoder/select_stages.rs"
-
-[[bin]]
-name = "weighted_disjoint_set"
-path = "src/bin/query/weighted_disjoint_set.rs"
 
 [[bin]]
 name = "bit_dp"
