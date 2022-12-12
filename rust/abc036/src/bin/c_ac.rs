@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
 //     Ordering::{Equal, Greater, Less},
@@ -13,8 +13,25 @@
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
+use library::structure::compress::*;
+
+/**
+ * C - 座圧
+ *
+ * https://atcoder.jp/contests/abc036/tasks/abc036_c
+ *
+ * tags: #座標圧縮 #compress
+ *
+ */
 
 // #[fastout]
 fn main() {
-    todo!();
+    input! {
+        n: usize,
+        mut a: [usize; n]
+    }
+    let na = compress1(a);
+    for x in na {
+        println!("{}", x);
+    }
 }
