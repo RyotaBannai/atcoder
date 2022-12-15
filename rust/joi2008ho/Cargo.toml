@@ -30,6 +30,10 @@ path = "src/bin/d.rs"
 name = "joi2008ho-e"
 path = "src/bin/e.rs"
 
+[[bin]]
+name = "joi2008ho-e_ac"
+path = "src/bin/e_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
