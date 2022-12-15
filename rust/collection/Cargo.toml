@@ -132,6 +132,10 @@ name = "weighted_disjoint_set"
 path = "src/bin/query/union_find/weighted_disjoint_set.rs"
 
 [[bin]]
+name = "union_of_rectangles"
+path = "src/bin/query/other/union_of_rectangles.rs"
+
+[[bin]]
 name = "centroid"
 path = "src/bin/graph/centroid.rs"
 
