@@ -19,11 +19,6 @@ use proconio::{fastout, input, marker::Chars};
  *
  * https://atcoder.jp/contests/abc223/tasks/abc223_c
  *
- * 1cm 進むのに要する時間を管理して、
- * 1cm ずつ距離と 進む時間を加算していく.
- *
- * 加算した時間が合計時間/2 になった時点で加算した距離cm を出力する.
- *
  */
 
 // #[fastout]
@@ -33,26 +28,15 @@ fn main() {
         xs: [(f64, f64); n]
     }
     let mut total = 0.;
-    let mut ts = vec![]; // 1cm 進むのに要する時間
-    for (a, b) in xs {
-        ts.append(&mut vec![1. / b; a as usize]);
+    for (a, b) in &xs {
         total += a / b;
     }
 
-    // println!("{:?}", &total);
-    // println!("{:?}", &ts);
-
     let mut sum = 0.;
-    let mut cur = 0.;
-    for t in ts {
-        if cur + t < total / 2. {
-            cur += t;
-            sum += 1.;
-        } else {
-            let c = (total / 2. - cur).abs();
-            let d = (cur + t - total / 2.).abs();
-            println!("{}", sum + 1. * (c / (c + d)));
-            return;
-        }
+    let mut t = total / 2.; // 左右どちらから始めた場合も、合計時間の半分使える
+    for (a, b) in &xs {
+        sum += a.min(t * b); // 時間t がまだ十分に余ってるなら、a cm進めるが、t が不足してる場合は、t*b 分だけしか進めない.
+        t -= (a / b).min(t); // 0. 以下にならないように調整する. a cm を b cm/s 進む時に費やす時間を引く. もし不足してる時は、t しか使わない（この時　残りがちょうど 0 s となる）
     }
+    println!("{}", sum);
 }
