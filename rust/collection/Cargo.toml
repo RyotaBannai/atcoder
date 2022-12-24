@@ -72,6 +72,10 @@ name = "bipartite_graph"
 path = "src/bin/graph/other/bipartite_graph.rs"
 
 [[bin]]
+name = "euler_tour_vertex_base"
+path = "src/bin/graph/other/euler_tour/vertex_base.rs"
+
+[[bin]]
 name = "range_query_1d"
 path = "src/bin/query/seg_tree/range_query_1d.rs"
 
