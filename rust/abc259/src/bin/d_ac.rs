@@ -28,7 +28,7 @@ use std::collections::{BinaryHeap, VecDeque};
  *
  * https://atcoder.jp/contests/abc259/tasks/abc259_d
  *
- * tags: #union_find #disjoint_set #circle
+ * tags: #union_find #disjoint_set #circle #円 #幾何学 #geometry #小数
  *     
  * 1.
  * 始点と終点と交わる円を探す. この時点でなければ No, 同じ円なら Yes
@@ -92,6 +92,7 @@ fn main() {
             continue;
         }
         // is_intersect_circles(c1, c2)
+        // ここらへんの 10^9 を２乗する計算（10^18 の小数部分）は、小数が丸められる
         let (v1, r) = (cs[i].c, cs[i].r as isize);
         let (a, b) = (v1.x as isize, v1.y as isize);
         let (v2, s) = (cs[j].c, cs[j].r as isize);
