@@ -5,63 +5,71 @@ edition = "2021"
 
 [[bin]]
 name = "max_flow"
-path = "src/bin/graph/max_flow.rs"
-
-[[bin]]
-name = "bipartite_graph"
-path = "src/bin/graph/bipartite_graph.rs"
+path = "src/bin/graph/flow/max_flow.rs"
 
 [[bin]]
 name = "maximum_matching"
-path = "src/bin/graph/maximum_matching.rs"
-
-[[bin]]
-name = "connected_components"
-path = "src/bin/graph/connected_components.rs"
-
-[[bin]]
-name = "spanning_tree_prim"
-path = "src/bin/graph/spanning_tree_prim.rs"
-
-[[bin]]
-name = "spanning_tree_kruskal"
-path = "src/bin/graph/spanning_tree_kruskal.rs"
-
-[[bin]]
-name = "sssp"
-path = "src/bin/graph/sssp.rs"
-
-[[bin]]
-name = "sssp_heap"
-path = "src/bin/graph/sssp_heap.rs"
-
-[[bin]]
-name = "sssp_bf"
-path = "src/bin/graph/sssp_bf.rs"
-
-[[bin]]
-name = "apsp"
-path = "src/bin/graph/apsp.rs"
-
-[[bin]]
-name = "dfs_timestamp"
-path = "src/bin/graph/dfs_timestamp.rs"
-
-[[bin]]
-name = "articulation_point"
-path = "src/bin/graph/articulation_point.rs"
-
-[[bin]]
-name = "bridge"
-path = "src/bin/graph/bridge.rs"
+path = "src/bin/graph/flow/maximum_matching.rs"
 
 [[bin]]
 name = "minimum_cost_flow"
-path = "src/bin/graph/minimum_cost_flow.rs"
+path = "src/bin/graph/flow/minimum_cost_flow.rs"
 
 [[bin]]
 name = "minimum_cost_flow_queue"
-path = "src/bin/graph/minimum_cost_flow_queue.rs"
+path = "src/bin/graph/flow/minimum_cost_flow_queue.rs"
+
+[[bin]]
+name = "spanning_tree_prim"
+path = "src/bin/graph/mst/spanning_tree_prim.rs"
+
+[[bin]]
+name = "spanning_tree_kruskal"
+path = "src/bin/graph/mst/spanning_tree_kruskal.rs"
+
+[[bin]]
+name = "sssp"
+path = "src/bin/graph/mst/sssp.rs"
+
+[[bin]]
+name = "sssp_heap"
+path = "src/bin/graph/mst/sssp_heap.rs"
+
+[[bin]]
+name = "sssp_bf"
+path = "src/bin/graph/mst/sssp_bf.rs"
+
+[[bin]]
+name = "apsp"
+path = "src/bin/graph/mst/apsp.rs"
+
+[[bin]]
+name = "dfs_timestamp"
+path = "src/bin/graph/other/dfs_timestamp.rs"
+
+[[bin]]
+name = "articulation_point"
+path = "src/bin/graph/other/articulation_point.rs"
+
+[[bin]]
+name = "bridge"
+path = "src/bin/graph/other/bridge.rs"
+
+[[bin]]
+name = "strongly_connected_components"
+path = "src/bin/graph/other/strongly_connected_components.rs"
+
+[[bin]]
+name = "connected_components"
+path = "src/bin/graph/other/other/connected_components.rs"
+
+[[bin]]
+name = "centroid"
+path = "src/bin/graph/other/centroid.rs"
+
+[[bin]]
+name = "bipartite_graph"
+path = "src/bin/graph/other/bipartite_graph.rs"
 
 [[bin]]
 name = "range_query_1d"
@@ -134,14 +142,6 @@ path = "src/bin/query/union_find/weighted_disjoint_set.rs"
 [[bin]]
 name = "union_of_rectangles"
 path = "src/bin/query/other/union_of_rectangles.rs"
-
-[[bin]]
-name = "centroid"
-path = "src/bin/graph/centroid.rs"
-
-[[bin]]
-name = "strongly_connected_components"
-path = "src/bin/graph/strongly_connected_components.rs"
 
 [[bin]]
 name = "select_stages"

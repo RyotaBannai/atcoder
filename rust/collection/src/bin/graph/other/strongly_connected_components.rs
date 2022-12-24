@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec strongly_connected_components
  *
- * cpg run -p src/bin/graph/strongly_connected_components.rs
+ * cpg run -p src/bin/graph/other/strongly_connected_components.rs
  */
 use std::io;
 use std::usize::MAX;

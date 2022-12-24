@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec maximum_matching
  *
- * cpg run -p src/bin/graph/maximum_matching.rs
+ * cpg run -p src/bin/graph/flow/maximum_matching.rs
  */
 use std::cmp::{max, min};
 use std::io;

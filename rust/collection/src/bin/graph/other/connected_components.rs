@@ -1,9 +1,8 @@
 /**
  * @cpg_dirspec connected_components
  *
- * cpg run -p src/bin/graph/connected_components.rs
+ * cpg run -p src/bin/graph/other/connected_components.rs
  */
-use std::io;
 // use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
@@ -18,6 +17,7 @@ use std::io;
 // type Map = BTreeMap<String, usize>;
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
+use library::utils::read::read;
 use std::collections::{BinaryHeap, VecDeque};
 
 /**
@@ -33,14 +33,6 @@ use std::collections::{BinaryHeap, VecDeque};
  * G' を部分グラフとして持つような連結部分グラフが G' 以外に G にないことを言う
  *
  */
-
-// aoj
-// １行読み込んで、空白区切りで vec にして返す
-fn read<T: std::str::FromStr>() -> Vec<T> {
-    let mut buf = String::new();
-    io::stdin().read_line(&mut buf).unwrap();
-    buf.trim().split(' ').flat_map(str::parse).collect()
-}
 
 // #[fastout]
 fn main() {

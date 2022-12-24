@@ -1,7 +1,7 @@
 /**
- * @cpg_dirspec
+ * @cpg_dirspec bipartite_graph
  *
- * cpg run -p src/bin/graph/bipartite_graph.rs
+ * cpg run -p src/bin/graph/other/bipartite_graph.rs
  */
 use proconio::{fastout, input, marker::Chars};
 use std::cmp::{max, min};
@@ -43,7 +43,7 @@ fn read<T: std::str::FromStr>() -> Vec<T> {
  *
  */
 
-#[fastout]
+// #[fastout]
 fn main() {
     // aoj inp
     let a = read::<usize>();

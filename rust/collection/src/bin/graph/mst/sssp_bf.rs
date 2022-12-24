@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec sssp_neg
  *
- * cpg run -p src/bin/graph/sssp_bf.rs
+ * cpg run -p src/bin/graph/mst/sssp_bf.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 // use superslice::Ext;

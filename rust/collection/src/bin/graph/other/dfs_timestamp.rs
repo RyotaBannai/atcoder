@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec dfs_timestamp
  *
- * cpg run -p src/bin/graph/dfs_timestamp.rs
+ * cpg run -p src/bin/graph/other/dfs_timestamp.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{max, min};

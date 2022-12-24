@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec centroid
  *
- * cpg run -p src/bin/graph/centroid.rs
+ * cpg run -p src/bin/graph/other/centroid.rs
  */
 use std::io;
 use std::usize::MAX;

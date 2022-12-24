@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec spanning_tree
  *
- * cpg run -p src/bin/graph/spanning_tree_prim.rs
+ * cpg run -p src/bin/graph/mst/spanning_tree_prim.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{max, min};

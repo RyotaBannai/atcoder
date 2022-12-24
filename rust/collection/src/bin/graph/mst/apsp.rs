@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec apsp
  *
- * cpg run -p src/bin/graph/apsp.rs
+ * cpg run -p src/bin/graph/mst/apsp.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 use std::cmp::{max, min};

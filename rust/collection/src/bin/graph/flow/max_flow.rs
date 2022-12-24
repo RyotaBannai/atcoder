@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec max_flow
  *
- * cpg run -p src/bin/graph/max_flow.rs
+ * cpg run -p src/bin/graph/flow/max_flow.rs
  */
 use proconio::{fastout, input, marker::Chars};
 // use superslice::Ext;
@@ -26,7 +26,7 @@ use proconio::{fastout, input, marker::Chars};
  */
 use library::{graph::max_flow::*, utils::read::*};
 
-#[fastout]
+// #[fastout]
 fn main() {
     input! {
       n: usize,
