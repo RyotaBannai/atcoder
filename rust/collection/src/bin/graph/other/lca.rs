@@ -14,51 +14,85 @@
 // type Set = BTreeSet<usize>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use library::{graph::euler_tour::*, query::seg_tree::*, utils::read::*};
+use library::{graph::euler_tour::*, query::seg_tree::*, utils::read::*, *};
 
 /**
  * LCA: Lowest Common Ancestor
+ * solved with Euler Tour + Segment Tree
+ *
+ * https://onlinejudge.u-aizu.ac.jp/problems/GRL_5_C
+ *
+ * MLE テストケース#24 までは通る.
+ *
  */
 
 // #[fastout]
 fn main() {
-    let a = read::<usize>();
-    let (n, e) = (a[0], a[1]);
+    let n = read::<usize>()[0];
     let mut list = vec![vec![]; n + 1];
-    for _ in 0..e {
+    for i in 0..n {
+        // i 番目の親子関係を取り出す.
         let b = read::<usize>();
-        let (s, t, w) = (b[0], b[1], b[2] as isize);
-        list[s].push(Vertex::new(s, t, w));
-        list[t].push(Vertex::new(t, s, w));
+        let k = b[0];
+        for j in 1..=k {
+            // i-index で管理
+            list[i + 1].push(Vertex::new(i + 1, b[j] + 1, 1));
+            list[b[j] + 1].push(Vertex::new(b[j] + 1, i + 1, 1));
+        }
     }
+
+    // read query
+    let q = read::<usize>()[0];
+    let mut qs = vec![];
+    for _ in 0..q {
+        let b = read::<usize>();
+        // i-index で管理
+        qs.push((b[0] + 1, b[1] + 1));
+    }
+
+    // for xs in list.iter() {
+    //     println!("{:?}", &xs);
+    // }
 
     let et = euler_tour_vertex(Vertex::new(0, 1, 1), list);
 
-    // RMQ
-    let mut seg = LazySegTree::new(
-        n,
-        (1 << 31) - 1,
-        (1 << 31) - 1,
-        (1 << 31) - 1,
-        |a: isize, b: isize| a.min(b), // min
-        |_: isize, b: isize| b,        // replace
-        |_: isize, b: isize| b,        // replace
-        |a: isize, _: usize| a,        // mul 1
-        |a: isize, x: isize| a > x,
+    // RMQ tuple
+    let mut seg = LazySegTree::<(usize, usize)>::new(
+        et.visit.len(),
+        ((1 << 31) - 1, 0),
+        ((1 << 31) - 1, 0),
+        ((1 << 31) - 1, 0),
+        0,
+        |a: (usize, usize), b: (usize, usize)| a.min(b), // min
+        |_: (usize, usize), b: (usize, usize)| b,        // update(replace)
+        |_: (usize, usize), b: (usize, usize)| b,        // update(replace)
+        |a: (usize, usize), _: usize| a,                 // mul 1
+        |a: (usize, usize), x: (usize, usize)| a > x,
     );
 
-    for (i, &d) in et.depth.iter().enumerate() {
-        seg.set(i, (d, et.visit[i])); // 深さをキー、value に頂点番号を持つ
+    // println!("depth {:?}", &et.depth);
+    // println!("visit {:?}", &et.visit);
+    // println!("vcost1 {:?}", &et.vcost1);
+    // println!("vcost2 {:?}", &et.vcost2);
+    // println!("i {:?}", &et.i);
+    // println!("o {:?}", &et.o);
+
+    for (i, &d) in et.depth.iter().take(et.visit.len()).enumerate() {
+        // (根からの深さ, 頂点番号)
+        seg.set(i, (d, et.visit[i]));
     }
     seg.build();
 
-    for (t, q) in qs {
-        if t == 0 {
-            let (x, v) = q;
-            seg.update(x, x + 1, v as isize);
-        } else {
-            let (l, r) = q;
-            println!("{}", seg.query(l, r + 1));
+    // println!("dat {:?}", &seg.dat);
+
+    for (u, v) in qs {
+        let mut mi = std::usize::MAX;
+        let mut ma = 0;
+        for &x in &[et.i[u - 1], et.o[u - 1], et.i[v - 1], et.o[v - 1]] {
+            chmin!(mi, x);
+            chmax!(ma, x);
         }
+        // println!("{:?}", seg.query(mi, ma + 1));
+        println!("{:?}", seg.query(mi, ma + 1).1 - 1); // 0-index に戻す
     }
 }

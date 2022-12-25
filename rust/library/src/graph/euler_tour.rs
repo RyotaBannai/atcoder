@@ -45,41 +45,42 @@ impl EulerTour {
         if self.list[u.to].len() == 1 && self.list[u.to][0].to == p.to {
             self.i[u.to] = self.timer;
             self.o[u.to] = self.timer;
-            // 葉ではtimestamps をinc しない
+            self.timer += 1; // 葉：親に戻る時にtimer を増やす.
             return;
         }
 
         self.i[u.to] = self.timer; // inc する前に記録.
-        self.timer += 1;
 
         for y in self.list[u.to].clone() {
             // 木だからサイクルを気にしない.（連結で閉路を持たない）
             if y.to != p.to {
+                self.timer += 1; // ノード：子に移動する時にtimer を増やす.
                 self.dfs(y, u.clone());
-                // 子から戻った時、他の子へ移動する際に親を通過するから、ここでも追加, timer+=1 する.
                 self.visit.push(u.to);
-                self.timer += 1;
             }
         }
         self.o[u.to] = self.timer;
-        self.timer += 1;
+        self.timer += 1; // ノード：親に戻る時にtimer を増やす.
     }
 
     fn make_cost_table(&mut self, u: Vertex, p: Vertex) {
         self.vcost1 = vec![0; self.visit.len()];
         self.vcost2 = vec![0; self.visit.len()];
         self.depth = vec![0; self.visit.len()];
+        self.timer = 0;
         self.run(u, p, 0);
     }
 
     fn run(&mut self, u: Vertex, p: Vertex, dep: usize) -> Vec<usize> {
-        self.vcost1[self.i[u.to]] = u.w; // コストは累積でなくて良い.
-        self.vcost2[self.i[u.to]] = u.w;
-        self.vcost2[self.o[u.to] + 1] = -u.w; // 出る時は out+1 index に配置
-        self.depth[self.i[u.to]] = dep;
-        self.depth[self.o[u.to] + 1] = dep.saturating_sub(1);
+        // コストはpathの累積でない.
+        // 葉、ノード：頂点に入るときに値を入れる.
+        self.vcost1[self.timer] = u.w;
+        self.vcost2[self.timer] = u.w;
+        self.depth[self.timer] = dep;
         self.p[u.to] = p.to;
         if self.list[u.to].len() == 1 && self.list[u.to][0].to == p.to {
+            self.timer += 1;
+            self.vcost2[self.timer] = -u.w; // 葉：頂点を出る時に負値を入れる.
             return vec![u.to];
         }
 
@@ -87,11 +88,15 @@ impl EulerTour {
         for y in self.list[u.to].clone() {
             // 木だからサイクルを気にしない.（連結で閉路を持たない）
             if y.to != p.to {
+                self.timer += 1;
                 sub.append(&mut self.run(y, u.clone(), dep + 1));
+                self.depth[self.timer] = dep;
             }
         }
         self.sub[u.to] = sub.clone();
         sub.push(u.to);
+        self.timer += 1;
+        self.vcost2[self.timer] = -u.w; // ノード：頂点を出る時に負値を入れる.
         sub
     }
 }
