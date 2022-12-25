@@ -1,7 +1,7 @@
 /**
- * @cpg_dirspec euler_tour_vertex_base
+ * @cpg_dirspec euler_tour
  *
- * cpg run -p src/bin/graph/other/euler_tour/vertex_base.rs
+ * cpg run -p src/bin/graph/other/euler_tour.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 // use superslice::Ext;
@@ -67,4 +67,6 @@ fn main() {
         print!("{} ", x);
     }
     println!();
+    // println!("{:?}", &et.p);
+    // println!("{:?}", &et.sub);
 }

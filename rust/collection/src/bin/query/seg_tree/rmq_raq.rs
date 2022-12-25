@@ -18,7 +18,7 @@
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use library::{query::*, utils::read::*};
+use library::{query::seg_tree::*, utils::read::*};
 
 /**
  * Range Add Query (RAQ) and Range Minimum Query(RMQ)
@@ -40,6 +40,7 @@ fn main() {
         0,
         std::isize::MAX, // 注意: query の無効値としての単位元は fx:min なら MAX, fx:max なら MIN
         0,               // 注意: add 用だから単位元は 0
+        std::isize::MAX,
         |a: isize, b: isize| a.min(b),
         f,
         f,

@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec range_query_2d
  *
- * cpg run -p src/bin/query/seg_tree/range_query_2d.rs
+ * cpg run -p src/bin/query/kdtree/range_query_2d.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 use std::io;

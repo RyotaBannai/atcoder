@@ -18,7 +18,7 @@
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use library::{query::*, utils::read::*};
+use library::{query::seg_tree::*, utils::read::*};
 
 /**
  * Range Update Query (RUQ) and Range Sum Query (RSQ)
@@ -38,8 +38,11 @@ fn main() {
         n,
         0,
         0,
-        std::isize::MAX, // 注意: es, ms が異なるのは、0 で update をかける時 0 以外ではなく MAX (or Min)の時にしたいため. add (RAQ)の場合は 0 以外としても問題ない.
-        |a: isize, b: isize| a + b,
+        // 注意: es, em が異なるのは、0 で update をかける時 0 以外ではなく MAX (or Min)の時にしたいため.（判定時にem を参照）
+        // add (RAQ)の場合は 0 以外としても問題ない.
+        std::isize::MAX,
+        0,
+        |a: isize, b: isize| a.saturating_add(b),
         |_: isize, b: isize| b, // 注意: update
         |_: isize, b: isize| b, // 注意: update, 前回の lazy を捨てる
         |a: isize, n: usize| a * n as isize,

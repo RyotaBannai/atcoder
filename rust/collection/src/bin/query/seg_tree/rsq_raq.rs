@@ -18,7 +18,7 @@
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use library::{query::*, utils::read::*};
+use library::{query::seg_tree::*, utils::read::*};
 
 /**
  * Range Add Query (RAQ) and Range Sum Query(RSQ)
@@ -37,6 +37,7 @@ fn main() {
     let f = |a: isize, b: isize| a + b;
     let mut seg = LazySegTree::new(
         n,
+        0,
         0,
         0,
         0,

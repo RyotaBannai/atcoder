@@ -1,47 +1,42 @@
 /**
- * @cpg_dirspec range_minimum_query
+ * @cpg_dirspec lca
  *
- * cpg run -p src/bin/query/seg_tree/range_minimum_query.rs
+ * cpg run -p src/bin/graph/other/lca.rs
  */
 // use proconio::{fastout, input, marker::Chars};
-// use std::cmp::{
-//     max, min,
-//     Ordering::{Equal, Greater, Less},
-// };
+// use superslice::Ext;
 // use ac_library_rs::modint::ModInt998244353 as Mint;
 // use superslice::{self, Ext};
 // use derive_new::new;
-// #[derive(new)]
 // use indexmap::indexmap;
 // use std::collections::{BTreeMap, BTreeSet};
 // type Map = BTreeMap<String, usize>;
-// type Set = BTreeSet<(usize, char)>;
+// type Set = BTreeSet<usize>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use library::{query::seg_tree::*, utils::read::*};
+use library::{graph::euler_tour::*, query::seg_tree::*, utils::read::*};
 
 /**
- * Range Minimum Query (RMQ)
- *
- * https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_A
- *
- * tags: #segment_tree #セグメント木 #セグ木 #セグメントツリー
- *
+ * LCA: Lowest Common Ancestor
  */
 
 // #[fastout]
 fn main() {
     let a = read::<usize>();
-    let (n, q) = (a[0], a[1]);
-    let mut qs = vec![];
-    for _ in 0..q {
+    let (n, e) = (a[0], a[1]);
+    let mut list = vec![vec![]; n + 1];
+    for _ in 0..e {
         let b = read::<usize>();
-        qs.push((b[0], (b[1], b[2])));
+        let (s, t, w) = (b[0], b[1], b[2] as isize);
+        list[s].push(Vertex::new(s, t, w));
+        list[t].push(Vertex::new(t, s, w));
     }
 
+    let et = euler_tour_vertex(Vertex::new(0, 1, 1), list);
+
+    // RMQ
     let mut seg = LazySegTree::new(
         n,
-        (1 << 31) - 1,
         (1 << 31) - 1,
         (1 << 31) - 1,
         (1 << 31) - 1,
@@ -51,6 +46,11 @@ fn main() {
         |a: isize, _: usize| a,        // mul 1
         |a: isize, x: isize| a > x,
     );
+
+    for (i, &d) in et.depth.iter().enumerate() {
+        seg.set(i, (d, et.visit[i])); // 深さをキー、value に頂点番号を持つ
+    }
+    seg.build();
 
     for (t, q) in qs {
         if t == 0 {
