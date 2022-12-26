@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec select_stages
  *
- * cpg run -p src/bin/yukicoder/select_stages.rs
+ * cpg run -p src/bin/other/yukicoder/select_stages.rs
  */
 use itertools::Itertools;
 use std::io;

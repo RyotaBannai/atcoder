@@ -41,7 +41,7 @@ fn main() {
         list[t].push(Vertex::new(t, s, w));
     }
 
-    let et = euler_tour_vertex(Vertex::new(0, 1, 1), list);
+    let et = euler_tour(Vertex::new(0, 1, 1), list);
 
     for x in &et.i {
         print!("{} ", x);

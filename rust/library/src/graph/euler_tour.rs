@@ -17,6 +17,7 @@ pub struct EulerTour {
     pub visit: Vec<usize>,      // timestamps: 頂点を訪れるたびに追加していく
     pub i: Vec<usize>,          // 頂点に入った時刻
     pub o: Vec<usize>,          // 頂点から出た時刻
+    pub o2: Vec<usize>,         // timestamps 上において頂点から出た時刻(vcost2 に対応)
     pub vcost1: Vec<isize>,     // 頂点訪問時のコスト（戻る時は空）
     pub vcost2: Vec<isize>,     // 頂点訪問時のコスト（戻る時は負値）
     pub depth: Vec<usize>,      // 各頂点における根からの深さ
@@ -32,6 +33,7 @@ impl EulerTour {
             visit: vec![0],
             i: vec![0; n],
             o: vec![0; n],
+            o2: vec![0; n],
             vcost1: vec![],
             vcost2: vec![],
             depth: vec![],
@@ -42,10 +44,12 @@ impl EulerTour {
 
     fn dfs(&mut self, u: Vertex, p: Vertex) {
         self.visit.push(u.to);
+        self.o2[u.to] = self.timer;
         if self.list[u.to].len() == 1 && self.list[u.to][0].to == p.to {
             self.i[u.to] = self.timer;
             self.o[u.to] = self.timer;
             self.timer += 1; // 葉：親に戻る時にtimer を増やす.
+            self.o2[u.to] = self.timer;
             return;
         }
 
@@ -61,6 +65,7 @@ impl EulerTour {
         }
         self.o[u.to] = self.timer;
         self.timer += 1; // ノード：親に戻る時にtimer を増やす.
+        self.o2[u.to] = self.timer;
     }
 
     fn make_cost_table(&mut self, u: Vertex, p: Vertex) {
@@ -137,13 +142,14 @@ impl EulerTour {
  * - https://maspypy.com/euler-tour-%E3%81%AE%E3%81%8A%E5%8B%89%E5%BC%B7
  *
  */
-pub fn euler_tour_vertex(s: Vertex, list: Vec<Vec<Vertex>>) -> EulerTour {
+pub fn euler_tour(s: Vertex, list: Vec<Vec<Vertex>>) -> EulerTour {
     let mut et = EulerTour::new(list);
     et.dfs(s.clone(), Vertex::new(0, 0, 0));
     et.make_cost_table(s, Vertex::new(0, 0, 0));
     et.visit = et.visit.into_iter().skip(1).collect::<Vec<usize>>();
     et.i = et.i.into_iter().skip(1).collect::<Vec<usize>>();
     et.o = et.o.into_iter().skip(1).collect::<Vec<usize>>();
+    et.o2 = et.o2.into_iter().skip(1).collect::<Vec<usize>>();
     et.sub = et.sub.into_iter().skip(1).collect::<Vec<Vec<usize>>>();
     et.p = et.p.into_iter().skip(1).collect::<Vec<usize>>();
     et

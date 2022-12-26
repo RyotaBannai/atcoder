@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec eleven_lover
  *
- * cpg run -p src/bin/other/eleven_lover.rs
+ * cpg run -p src/bin/other/aoj/eleven_lover.rs
  */
 use std::collections::{BTreeMap, BTreeSet};
 type Map = BTreeMap<isize, usize>;

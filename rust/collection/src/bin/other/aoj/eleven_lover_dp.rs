@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec eleven_lover
  *
- * cpg run -p src/bin/other/eleven_lover_dp.rs
+ * cpg run -p src/bin/other/aoj/eleven_lover_dp.rs
  */
 use library::utils::read::*;
 

@@ -152,10 +152,6 @@ name = "union_of_rectangles"
 path = "src/bin/query/other/union_of_rectangles.rs"
 
 [[bin]]
-name = "select_stages"
-path = "src/bin/yukicoder/select_stages.rs"
-
-[[bin]]
 name = "bit_dp"
 path = "src/bin/dp/bit_dp.rs"
 
@@ -332,12 +328,20 @@ name = "ext_gcd"
 path = "src/bin/number_theory/ext_gcd.rs"
 
 [[bin]]
+name = "tree_euler_tour"
+path = "src/bin/other/aoj/tree.rs"
+
+[[bin]]
 name = "eleven_lover"
-path = "src/bin/other/eleven_lover.rs"
+path = "src/bin/other/aoj/eleven_lover.rs"
 
 [[bin]]
 name = "eleven_lover_dp"
-path = "src/bin/other/eleven_lover_dp.rs"
+path = "src/bin/other/aoj/eleven_lover_dp.rs"
+
+[[bin]]
+name = "select_stages"
+path = "src/bin/other/yukicoder/select_stages.rs"
 
 [dependencies]
 num = "=0.2.1"
