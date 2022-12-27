@@ -1,8 +1,8 @@
 #[derive(Debug, Clone)]
 pub struct Vertex {
-    from: usize,
-    to: usize,
-    w: isize,
+    pub from: usize,
+    pub to: usize,
+    pub w: isize,
 }
 impl Vertex {
     pub fn new(from: usize, to: usize, w: isize) -> Self {

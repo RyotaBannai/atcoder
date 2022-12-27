@@ -36,35 +36,36 @@ fn mid(l: usize, r: usize) -> usize {
 }
 
 #[derive(Debug, Clone)]
-pub struct LazySegTree<T> {
+pub struct LazySegTree<T, U> {
     pub n: usize, // ノード数
     pub dat: Vec<T>,
-    pub lazy: Vec<T>,
+    pub lazy: Vec<U>,
     es: T,                       // 葉の初期値
     ex: T,                       // モノイドXでの単位元
-    em: T,                       // モノイドMでの単位元
+    em: U,                       // モノイドMでの単位元
     ec: isize,                   // モノイドCでの単位元（探索の無効値）
     fx: fn(a: T, b: T) -> T,     // a.min(b) など
-    fa: fn(a: T, b: T) -> T,     // a + b など
-    fm: fn(a: T, b: T) -> T,     // a.saturated_add(b) など
-    fp: fn(a: T, n: usize) -> T, // a.saturated_add(b) など
+    fa: fn(a: T, x: U) -> T,     // a + x など
+    fm: fn(x: U, y: U) -> U,     // a.saturated_add(b) など
+    fp: fn(x: U, n: usize) -> U, // a.saturated_add(b) など
     fc: fn(a: T, b: T) -> bool,  // a < b など
 }
-impl<T> LazySegTree<T>
+impl<T, U> LazySegTree<T, U>
 where
     T: Clone + PartialEq + Debug + Copy,
+    U: Clone + PartialEq + Debug + Copy,
 {
     #[allow(clippy::too_many_arguments)]
     pub fn new(
         leafs: usize,
-        es: T,
-        ex: T,
-        em: T,
+        es: T, // ノードの単位元（初期値）
+        ex: T, // ノードの単位元（無効値）// RMQ 時の範囲外値など
+        em: U, // lazy に使う単位元（無効値）
         ec: isize,
-        fx: fn(a: T, b: T) -> T,
-        fa: fn(a: T, b: T) -> T,
-        fm: fn(a: T, b: T) -> T,
-        fp: fn(a: T, n: usize) -> T,
+        fx: fn(a: T, b: T) -> T, // ２つ子間の比較を結果にするからargs は T,T->T
+        fa: fn(a: T, x: U) -> T, // 流れてくるx に対して、ノードのごとに処理をしてノードの型を返す(a,x は異なる型) T,U->T
+        fm: fn(x: U, y: U) -> U, // 既存のlazy と流れてくる新しいx 間の関係を処理するから U,U->U
+        fp: fn(x: U, n: usize) -> U, // 流れてくるx に対するノードの部分木の個数を施してその結果を返す. U,usize->U
         fc: fn(a: T, b: T) -> bool,
     ) -> Self {
         // 必要最低限の最小二分木のメモリを確保 leafs = 7 の時 n = 8 確保するため.
@@ -76,7 +77,7 @@ where
         Self {
             n,
             dat: vec![es; n * 2],
-            lazy: vec![es; n * 2],
+            lazy: vec![em; n * 2],
             es,
             ex,
             em,
@@ -115,13 +116,14 @@ where
             self.lazy[left(k)] = (self.fm)(self.lazy[left(k)], self.lazy[k]);
             self.lazy[right(k)] = (self.fm)(self.lazy[right(k)], self.lazy[k]);
         }
+
         self.dat[k] = (self.fa)(self.dat[k], (self.fp)(self.lazy[k], len)); // 自分を更新
         self.lazy[k] = self.em; // 初期化
     }
-    pub fn update(&mut self, a: usize, b: usize, x: T) {
+    pub fn update(&mut self, a: usize, b: usize, x: U) {
         self.update_sub(a, b, x, 0, 0, self.n);
     }
-    fn update_sub(&mut self, a: usize, b: usize, x: T, k: usize, l: usize, r: usize) {
+    fn update_sub(&mut self, a: usize, b: usize, x: U, k: usize, l: usize, r: usize) {
         self.eval(k, r - l);
         if a <= l && r <= b {
             // 完全に内側の時
