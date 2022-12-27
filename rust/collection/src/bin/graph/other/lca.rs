@@ -57,7 +57,7 @@ fn main() {
     let et = euler_tour(Vertex::new(0, 1, 1), list);
 
     // RMQ tuple
-    let mut seg = LazySegTree::<(usize, usize)>::new(
+    let mut seg = LazySegTree::new(
         et.visit.len(),
         ((1 << 31) - 1, 0),
         ((1 << 31) - 1, 0),
