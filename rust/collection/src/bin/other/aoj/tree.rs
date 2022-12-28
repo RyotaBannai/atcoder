@@ -131,6 +131,7 @@ fn main() {
                 chmax!(ma, x);
             }
             // max+1 としない.. depth は負の位置はすでに上の階層に戻っているから、上の階層+1 にすると右側の開区間がちょうど一つ浅いdepth を含んでしまう.
+            // または o を使ったときの max+1 はok
             let lca = seg_lca.query(mi, ma).1 - 1; // 0-index に戻す
             let plca = seg_dist.query(0, et.i[lca] + 1);
 

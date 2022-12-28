@@ -52,7 +52,7 @@ pub struct LazySegTree<T, U> {
 }
 impl<T, U> LazySegTree<T, U>
 where
-    T: Clone + PartialEq + Debug + Copy,
+    T: Clone + PartialEq + Debug,
     U: Clone + PartialEq + Debug + Copy,
 {
     #[allow(clippy::too_many_arguments)]
@@ -76,7 +76,7 @@ where
         }
         Self {
             n,
-            dat: vec![es; n * 2],
+            dat: vec![es.clone(); n * 2],
             lazy: vec![em; n * 2],
             es,
             ex,
@@ -101,7 +101,7 @@ where
     // n = 8 とした時、n-2 は一番後ろの内部節点なので、そこから根まで順に更新
     pub fn build(&mut self) {
         for k in (0..self.n - 1).rev() {
-            self.dat[k] = (self.fx)(self.dat[left(k)], self.dat[right(k)]);
+            self.dat[k] = (self.fx)(self.dat[left(k)].clone(), self.dat[right(k)].clone());
         }
     }
     // 保持していた値を子に伝搬し、自身の値を更新
@@ -117,7 +117,7 @@ where
             self.lazy[right(k)] = (self.fm)(self.lazy[right(k)], self.lazy[k]);
         }
 
-        self.dat[k] = (self.fa)(self.dat[k], (self.fp)(self.lazy[k], len)); // 自分を更新
+        self.dat[k] = (self.fa)(self.dat[k].clone(), (self.fp)(self.lazy[k], len)); // 自分を更新
         self.lazy[k] = self.em; // 初期化
     }
     pub fn update(&mut self, a: usize, b: usize, x: U) {
@@ -134,7 +134,7 @@ where
             // 指定区間 [a,b), 探索区間 [l,r)
             self.update_sub(a, b, x, left(k), l, mid(l, r));
             self.update_sub(a, b, x, right(k), mid(l, r), r);
-            self.dat[k] = (self.fx)(self.dat[left(k)], self.dat[right(k)]);
+            self.dat[k] = (self.fx)(self.dat[left(k)].clone(), self.dat[right(k)].clone());
         }
     }
     // the minimum element of [a,b)
@@ -145,10 +145,10 @@ where
         self.eval(k, r - l);
         if r <= a || b <= l {
             // 完全に外側
-            self.ex
+            self.ex.clone()
         } else if a <= l && r <= b {
             // 完全に内側
-            self.dat[k]
+            self.dat[k].clone()
         } else {
             // ? i.g. [0,8)->[0,4) k: 0->1 (k:管理してるノードの配列のindex)
             let vl = self.query_sub(a, b, left(k), l, mid(l, r));
@@ -180,14 +180,14 @@ where
         r: usize,
     ) -> isize {
         self.eval(k, r - l);
-        if (self.fc)(self.dat[k], x) || r <= a || b <= l {
+        if (self.fc)(self.dat[k].clone(), x.clone()) || r <= a || b <= l {
             // 自分の値がxより大きい(or より小さいなど) or [a,b)が[l,r)の範囲外なら
             self.ec
         } else if k >= self.n - 1 {
             // ? 葉 k は全ノードの各頂点の値の配列に対する index. 葉の数を n とすると、葉以外のノード数（内部接点数）は n-1
             (k - (self.n - 1)) as isize
         } else {
-            let vr = self.find_rightest_sub(a, b, x, right(k), mid(l, r), r);
+            let vr = self.find_rightest_sub(a, b, x.clone(), right(k), mid(l, r), r);
             if vr != self.ec {
                 vr
             } else {
@@ -205,12 +205,12 @@ where
         r: usize,
     ) -> isize {
         self.eval(k, r - l);
-        if (self.fc)(self.dat[k], x) || r <= a || b <= l {
+        if (self.fc)(self.dat[k].clone(), x.clone()) || r <= a || b <= l {
             self.ec
         } else if k >= self.n - 1 {
             (k - (self.n - 1)) as isize
         } else {
-            let vl = self.find_leftest_sub(a, b, x, left(k), l, mid(l, r));
+            let vl = self.find_leftest_sub(a, b, x.clone(), left(k), l, mid(l, r));
             if vl != self.ec {
                 vl
             } else {

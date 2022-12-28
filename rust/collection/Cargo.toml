@@ -343,6 +343,10 @@ path = "src/bin/other/aoj/eleven_lover_dp.rs"
 name = "select_stages"
 path = "src/bin/other/yukicoder/select_stages.rs"
 
+[[bin]]
+name = "new_year_tree"
+path = "src/bin/other/cf/new_year_tree.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
