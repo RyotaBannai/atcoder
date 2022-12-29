@@ -1,12 +1,12 @@
 use super::vertex::Vertex;
 pub struct Hld {
-    size: Vec<usize>,       // 各頂点を部分木の根とした時の部分木のサイズ
-    parent: Vec<usize>,     // 木上での各頂点の親
-    depth: Vec<usize>,      // 木上での各頂点の根からの深さ
-    hld: Vec<usize>,        // 連結成分を並べた配列. これをセグ木にのせる.
-    pos: Vec<usize>,        // 各頂点がhld 上のどこにあるか index を管理したもの
-    a: Vec<usize>,          // HLDした時の連結成分で一番浅い頂点（根に近い）
-    list: Vec<Vec<Vertex>>, // 連接リスト
+    pub size: Vec<usize>,       // 各頂点を部分木の根とした時の部分木のサイズ
+    pub parent: Vec<usize>,     // 木上での各頂点の親
+    pub depth: Vec<usize>,      // 木上での各頂点の根からの深さ
+    pub hld: Vec<usize>,        // 連結成分を並べた配列. これをセグ木にのせる.
+    pub pos: Vec<usize>,        // 各頂点がhld 上のどこにあるか index を管理したもの
+    pub a: Vec<usize>,          // HLDした時の連結成分で一番浅い頂点（根に近い）
+    pub list: Vec<Vec<Vertex>>, // 連接リスト
 }
 impl Hld {
     pub fn new(list: Vec<Vec<Vertex>>) -> Self {

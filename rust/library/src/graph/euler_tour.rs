@@ -11,7 +11,6 @@ pub struct EulerTour {
     pub vcost2: Vec<isize>,     // 頂点訪問時のコスト（戻る時は負値）
     pub depth: Vec<usize>,      // 各頂点における根からの深さ
     pub p: Vec<usize>,          // 各頂点の親
-    pub sub: Vec<Vec<usize>>,   // 頂点i の部分木のリスト
 }
 impl EulerTour {
     fn new(list: Vec<Vec<Vertex>>) -> Self {
@@ -27,7 +26,6 @@ impl EulerTour {
             vcost2: vec![],
             depth: vec![],
             p: vec![0; n],
-            sub: vec![vec![]; n],
         }
     }
 
@@ -65,7 +63,7 @@ impl EulerTour {
         self.run(u, p, 0);
     }
 
-    fn run(&mut self, u: Vertex, p: Vertex, dep: usize) -> Vec<usize> {
+    fn run(&mut self, u: Vertex, p: Vertex, dep: usize) {
         // コストはpathの累積でない.
         // 葉、ノード：頂点に入るときに値を入れる.
         self.vcost1[self.timer] = u.w;
@@ -75,23 +73,18 @@ impl EulerTour {
         if self.list[u.to].len() == 1 && self.list[u.to][0].to == p.to {
             self.timer += 1;
             self.vcost2[self.timer] = -u.w; // 葉：頂点を出る時に負値を入れる.
-            return vec![u.to];
         }
 
-        let mut sub = vec![];
+        // let mut sub = vec![];
         for y in self.list[u.to].clone() {
             // 木だからサイクルを気にしない.（連結で閉路を持たない）
             if y.to != p.to {
                 self.timer += 1;
-                sub.append(&mut self.run(y, u.clone(), dep + 1));
                 self.depth[self.timer] = dep;
             }
         }
-        self.sub[u.to] = sub.clone();
-        sub.push(u.to);
         self.timer += 1;
         self.vcost2[self.timer] = -u.w; // ノード：頂点を出る時に負値を入れる.
-        sub
     }
 }
 
@@ -139,7 +132,6 @@ pub fn euler_tour(s: Vertex, list: Vec<Vec<Vertex>>) -> EulerTour {
     et.i = et.i.into_iter().skip(1).collect::<Vec<usize>>();
     et.o = et.o.into_iter().skip(1).collect::<Vec<usize>>();
     et.o2 = et.o2.into_iter().skip(1).collect::<Vec<usize>>();
-    et.sub = et.sub.into_iter().skip(1).collect::<Vec<Vec<usize>>>();
     et.p = et.p.into_iter().skip(1).collect::<Vec<usize>>();
     et
 }

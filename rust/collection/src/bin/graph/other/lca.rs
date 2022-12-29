@@ -14,7 +14,12 @@
 // type Set = BTreeSet<usize>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use library::{graph::euler_tour::*, query::seg_tree::*, utils::read::*, *};
+use library::{
+    graph::{euler_tour::*, vertex::*},
+    query::seg_tree::*,
+    utils::read::*,
+    *,
+};
 
 /**
  * LCA: Lowest Common Ancestor

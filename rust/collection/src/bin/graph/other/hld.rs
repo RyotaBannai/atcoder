@@ -17,7 +17,7 @@ use std::os::unix::process::parent_id;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 use library::{
-    graph::{euler_tour::*, vertex::*},
+    graph::{hld::*, vertex::*},
     query::seg_tree::*,
     utils::read::*,
     *,
