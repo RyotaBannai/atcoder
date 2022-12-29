@@ -43,7 +43,7 @@ fn main() {
         list[t].push(Vertex::new(t, s, 0));
     }
 
-    let et = euler_tour(Vertex::new(0, 1, 0), list);
+    let et = euler_tour(Vertex::new(0, 1, 0), &list);
 
     // RSQ_RAQ
     let mut seg = LazySegTree::new(

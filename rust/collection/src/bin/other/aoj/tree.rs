@@ -29,8 +29,6 @@ use library::{
  *
  * tags: #EulerTour #オイラーツアー #セグ木 #segment_tree
  *
- * MLE テストケース #27 までok
- *
  * u,v それぞれのpath をオイラーツアーにより求める.
  * 頂点u の根からのパスの距離を d(u) としたとき
  * u,v 間の距離は d(u)+d(v)-2*d(lca)
@@ -62,7 +60,7 @@ fn main() {
     //     println!("{:?}", &xs);
     // }
 
-    let et = euler_tour(Vertex::new(0, 1, 1), list.clone());
+    let et = euler_tour(Vertex::new(0, 1, 1), &list);
 
     // println!("depth {:?}", &et.depth);
     // println!("visit {:?}", &et.visit);
@@ -164,26 +162,9 @@ fn main() {
             }
 
             // 意図的にセグ木のlazy を更新.
-            // println!("{:?}", v + 1);
-            // println!("{:?}", &list[v + 1]);
-            // for i in 0..et.visit.len() {
-            //     seg_dist.query(i, i + 1);
-            // }
-
+            // seg_dist.force_update();
             // 葉の状態を表示.
-            // let nn = seg_dist.n;
-            // println!("visit {:?}", &et.visit);
-            // println!(
-            //     "{:?}",
-            //     &seg_dist
-            //         .dat
-            //         .iter()
-            //         .enumerate()
-            //         .skip_while(|(j, _)| *j < nn - 1)
-            //         .take(et.vcost2.len())
-            //         .map(|x| x.1)
-            //         .collect_vec()
-            // );
+            // seg_dist.show_leafs();
             // println!();
         }
     }

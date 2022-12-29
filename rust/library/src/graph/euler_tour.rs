@@ -1,19 +1,19 @@
 use super::vertex::Vertex;
 #[derive(Debug, Clone)]
-pub struct EulerTour {
-    timer: usize,               // 頂点間を移動する時のタイムスタンプ
-    pub list: Vec<Vec<Vertex>>, // 隣接リスト
-    pub visit: Vec<usize>,      // timestamps: 頂点を訪れるたびに追加していく
-    pub i: Vec<usize>,          // 頂点に入った時刻
-    pub o: Vec<usize>,          // 頂点から出た時刻
-    pub o2: Vec<usize>,         // timestamps 上において頂点から出た時刻(vcost2 に対応)
-    pub vcost1: Vec<isize>,     // 頂点訪問時のコスト（戻る時は空）
-    pub vcost2: Vec<isize>,     // 頂点訪問時のコスト（戻る時は負値）
-    pub depth: Vec<usize>,      // 各頂点における根からの深さ
-    pub p: Vec<usize>,          // 各頂点の親
+pub struct EulerTour<'a> {
+    timer: usize,                   // 頂点間を移動する時のタイムスタンプ
+    pub list: &'a Vec<Vec<Vertex>>, // 隣接リスト
+    pub visit: Vec<usize>,          // timestamps: 頂点を訪れるたびに追加していく
+    pub i: Vec<usize>,              // 頂点に入った時刻
+    pub o: Vec<usize>,              // 頂点から出た時刻
+    pub o2: Vec<usize>,             // timestamps 上において頂点から出た時刻(vcost2 に対応)
+    pub vcost1: Vec<isize>,         // 頂点訪問時のコスト（戻る時は空）
+    pub vcost2: Vec<isize>,         // 頂点訪問時のコスト（戻る時は負値）
+    pub depth: Vec<usize>,          // 各頂点における根からの深さ
+    pub p: Vec<usize>,              // 各頂点の親
 }
-impl EulerTour {
-    fn new(list: Vec<Vec<Vertex>>) -> Self {
+impl<'a> EulerTour<'a> {
+    fn new(list: &'a Vec<Vec<Vertex>>) -> Self {
         let n = list.len();
         Self {
             timer: 0,
@@ -70,18 +70,20 @@ impl EulerTour {
         self.vcost2[self.timer] = u.w;
         self.depth[self.timer] = dep;
         self.p[u.to] = p.to;
-        if self.list[u.to].len() == 1 && self.list[u.to][0].to == p.to {
+        if self.list[u.to].is_empty() || self.list[u.to].len() == 1 && self.list[u.to][0].to == p.to
+        {
             self.timer += 1;
             self.vcost2[self.timer] = -u.w; // 葉：頂点を出る時に負値を入れる.
+            return;
         }
-
-        // let mut sub = vec![];
         for y in self.list[u.to].clone() {
             // 木だからサイクルを気にしない.（連結で閉路を持たない）
-            if y.to != p.to {
-                self.timer += 1;
-                self.depth[self.timer] = dep;
+            if y.to == p.to {
+                continue;
             }
+            self.timer += 1;
+            self.run(y, u.clone(), dep + 1);
+            self.depth[self.timer] = dep;
         }
         self.timer += 1;
         self.vcost2[self.timer] = -u.w; // ノード：頂点を出る時に負値を入れる.
@@ -124,7 +126,7 @@ impl EulerTour {
  * - https://maspypy.com/euler-tour-%E3%81%AE%E3%81%8A%E5%8B%89%E5%BC%B7
  *
  */
-pub fn euler_tour(s: Vertex, list: Vec<Vec<Vertex>>) -> EulerTour {
+pub fn euler_tour(s: Vertex, list: &Vec<Vec<Vertex>>) -> EulerTour {
     let mut et = EulerTour::new(list);
     et.dfs(s.clone(), Vertex::new(0, 0, 0));
     et.make_cost_table(s, Vertex::new(0, 0, 0));

@@ -59,7 +59,7 @@ fn main() {
     //     println!("{:?}", &xs);
     // }
 
-    let et = euler_tour(Vertex::new(0, 1, 1), list);
+    let et = euler_tour(Vertex::new(0, 1, 1), &list);
 
     // RMQ tuple
     let mut seg = LazySegTree::new(
