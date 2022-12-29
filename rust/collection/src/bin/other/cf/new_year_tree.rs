@@ -14,7 +14,12 @@ use std::collections::{BTreeMap, HashSet};
 // type Map = BTreeMap<String, usize>;
 type Set = HashSet<isize>;
 // use std::collections::{BinaryHeap, VecDeque};
-use library::{graph::euler_tour::*, query::seg_tree::*, utils::read::*, *};
+use library::{
+    graph::{euler_tour::*, vertex::*},
+    query::seg_tree::*,
+    utils::read::*,
+    *,
+};
 
 /**
  * E. New Year Tree
@@ -105,25 +110,13 @@ fn main() {
             // 意図的にセグ木のlazy を更新.
             // println!("{:?}", v + 1);
             // println!("{:?}", &list[v + 1]);
-            // for i in 0..et.visit.len() {
-            //     seg.query(i, i + 1);
-            // }
+            // seg.force_update();
 
             // 葉の状態を表示.
             // println!("{:?}", &seg.dat);
             // let nn = seg.n;
             // println!("visit {:?}", &et.visit);
-            // println!(
-            //     "{:?}",
-            //     &seg
-            //         .dat
-            //         .iter()
-            //         .enumerate()
-            //         .skip_while(|(j, _)| *j < nn - 1)
-            //         .take(et.vcost2.len())
-            //         .map(|x| x.1)
-            //         .collect_vec()
-            // );
+            // seg.show_leafs();
             // println!();
         }
     }

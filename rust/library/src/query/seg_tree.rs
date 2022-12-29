@@ -37,7 +37,8 @@ fn mid(l: usize, r: usize) -> usize {
 
 #[derive(Debug, Clone)]
 pub struct LazySegTree<T, U> {
-    pub n: usize, // ノード数
+    pub leafs: usize, // 元の入力サイズ
+    pub n: usize,     // ノード数
     pub dat: Vec<T>,
     pub lazy: Vec<U>,
     es: T,                       // 葉の初期値
@@ -75,6 +76,7 @@ where
             n *= 2;
         }
         Self {
+            leafs,
             n,
             dat: vec![es.clone(); n * 2],
             lazy: vec![em; n * 2],
@@ -217,5 +219,25 @@ where
                 self.find_leftest_sub(a, b, x, right(k), mid(l, r), r)
             }
         }
+    }
+
+    // lazy の値を全て適用して、最新の状態にする
+    pub fn force_update(&mut self) {
+        for i in 0..self.n / 2 {
+            self.query(i, i + 1);
+        }
+    }
+    // 葉の状態を表示.
+    pub fn show_leafs(&self) {
+        println!(
+            "{:?}",
+            self.dat
+                .iter()
+                .enumerate()
+                .skip_while(|(j, _)| *j < self.n - 1)
+                .take(self.leafs)
+                .map(|x| x.1)
+                .collect::<Vec<_>>()
+        );
     }
 }

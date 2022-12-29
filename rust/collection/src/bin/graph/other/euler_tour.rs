@@ -14,7 +14,10 @@
 // type Set = BTreeSet<usize>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use library::{graph::euler_tour::*, utils::read::*};
+use library::{
+    graph::{euler_tour::*, vertex::*},
+    utils::read::*,
+};
 
 /**
  * オイラーツアー

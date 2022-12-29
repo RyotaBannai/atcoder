@@ -1,15 +1,4 @@
-#[derive(Debug, Clone)]
-pub struct Vertex {
-    pub from: usize,
-    pub to: usize,
-    pub w: isize,
-}
-impl Vertex {
-    pub fn new(from: usize, to: usize, w: isize) -> Self {
-        Self { from, to, w }
-    }
-}
-
+use super::vertex::Vertex;
 #[derive(Debug, Clone)]
 pub struct EulerTour {
     timer: usize,               // 頂点間を移動する時のタイムスタンプ
