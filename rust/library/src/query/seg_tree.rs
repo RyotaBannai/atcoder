@@ -5,7 +5,9 @@ use std::fmt::Debug;
  *
  * tags: #seg_tree #セグ木
  *
- * RMQ (Range Minimam Query), RUQ（Range Update Query）
+ * RMQ (Range Min/Max Query),
+ * RUQ（Range Update Query）
+ * RAQ（Range Add Query）
  *
  * https://algo-logic.info/segment-tree/
  *
@@ -13,10 +15,6 @@ use std::fmt::Debug;
  * 左の子：dat[2*i+1]
  * 右の子：dat[2*i+2]
  * 親：dat[(i-1)/2]
- *
- * RMQ：[0,n-1] について、区間ごとの最小値を管理する構造体
- * update(i,x): i 番目の要素を x に更新。O(log(n))
- * query(a,b): [a,b) での最小の要素を取得。O(log(n))
  *
  * fx: 葉以外のノードが持つべき値の決め方(min? sum?)
  * fa: 葉の更新時の処理(add? update?)
@@ -36,37 +34,39 @@ fn mid(l: usize, r: usize) -> usize {
 }
 
 #[derive(Debug, Clone)]
-pub struct LazySegTree<T, U> {
+pub struct LazySegTree<T> {
     pub leafs: usize, // 元の入力サイズ
     pub n: usize,     // ノード数
     pub dat: Vec<T>,
-    pub lazy: Vec<U>,
-    es: T,                       // 葉の初期値
-    ex: T,                       // モノイドXでの単位元
-    em: U,                       // モノイドMでの単位元
-    ec: isize,                   // モノイドCでの単位元（探索の無効値）
-    fx: fn(a: T, b: T) -> T,     // a.min(b) など
-    fa: fn(a: T, x: U) -> T,     // a + x など
-    fm: fn(x: U, y: U) -> U,     // a.saturated_add(b) など
-    fp: fn(x: U, n: usize) -> U, // a.saturated_add(b) など
-    fc: fn(a: T, b: T) -> bool,  // a < b など
+    pub lazy: Vec<isize>,
+    pub lazy_flag: Vec<bool>,
+    es: T,                                          // 葉の初期値
+    ex: T,                                          // モノイドXでの単位元
+    em: isize,                                      // モノイドMでの単位元
+    ec: isize,                                      // モノイドCでの単位元（探索の無効値）
+    fx: fn(a: T, b: T) -> T,                        // a.min(b) など
+    fa: fn(a: T, y: isize) -> T,                    // a + x など
+    fu: fn(a: T, y: isize) -> T,                    // x など
+    fma: fn(x: isize, y: isize, n: usize) -> isize, //
+    fmu: fn(x: isize, y: isize, n: usize) -> isize, // .saturated_add(b) など
+    fc: fn(a: T, b: T) -> bool,                     // a < b など
 }
-impl<T, U> LazySegTree<T, U>
+impl<T> LazySegTree<T>
 where
     T: Clone + PartialEq + Debug,
-    U: Clone + PartialEq + Debug + Copy,
 {
     #[allow(clippy::too_many_arguments)]
     pub fn new(
         leafs: usize,
-        es: T, // ノードの単位元（初期値）
-        ex: T, // ノードの単位元（無効値）// RMQ 時の範囲外値など
-        em: U, // lazy に使う単位元（無効値）
+        es: T,     // ノードの単位元（初期値）
+        ex: T,     // ノードの単位元（無効値）// RMQ 時の範囲外値など
+        em: isize, // lazy に使う単位元（無効値）
         ec: isize,
         fx: fn(a: T, b: T) -> T, // ２つ子間の比較を結果にするからargs は T,T->T
-        fa: fn(a: T, x: U) -> T, // 流れてくるx に対して、ノードのごとに処理をしてノードの型を返す(a,x は異なる型) T,U->T
-        fm: fn(x: U, y: U) -> U, // 既存のlazy と流れてくる新しいx 間の関係を処理するから U,U->U
-        fp: fn(x: U, n: usize) -> U, // 流れてくるx に対するノードの部分木の個数を施してその結果を返す. U,usize->U
+        fa: fn(a: T, x: isize) -> T, // 流れてくるx に対して、ノードのごとに処理をしてノードの型を返す(a,x は異なる型) T,isize->T
+        fu: fn(a: T, x: isize) -> T, // 流れてくるx に対して、ノードのごとに処理をしてノードの型を返す(a,x は異なる型) T,isize->T
+        fma: fn(x: isize, y: isize, n: usize) -> isize, // 既存のlazy と流れてくる新しいx 間の関係を処理するから isize,isize->isize nは部分木の個数
+        fmu: fn(x: isize, y: isize, n: usize) -> isize, // 既存のlazy と流れてくる新しいx 間の関係を処理するから isize,isize->isize nは部分木の個数
         fc: fn(a: T, b: T) -> bool,
     ) -> Self {
         // 必要最低限の最小二分木のメモリを確保 leafs = 7 の時 n = 8 確保するため.
@@ -80,14 +80,16 @@ where
             n,
             dat: vec![es.clone(); n * 2],
             lazy: vec![em; n * 2],
+            lazy_flag: vec![false; n * 2],
             es,
             ex,
             em,
             ec,
             fx,
             fa,
-            fm,
-            fp,
+            fu,
+            fma,
+            fmu,
             fc,
         }
     }
@@ -108,29 +110,41 @@ where
     }
     // 保持していた値を子に伝搬し、自身の値を更新
     // len: 指定区間の長さ
-    pub fn eval(&mut self, k: usize, len: usize) {
-        // 更新する子がなければ終了
-        if self.lazy[k] == self.em {
-            return;
+    pub fn eval(&mut self, k: usize) {
+        if self.lazy_flag[k] {
+            // 更新
+            self.dat[k] = (self.fu)(self.dat[k].clone(), self.lazy[k]);
+            if k < self.n - 1 {
+                self.lazy[left(k)] = (self.fmu)(self.lazy[left(k)], self.lazy[k] / 2, 1);
+                self.lazy[right(k)] = (self.fmu)(self.lazy[right(k)], self.lazy[k] / 2, 1);
+                self.lazy_flag[left(k)] = true;
+                self.lazy_flag[right(k)] = true;
+            }
+            self.lazy[k] = self.em; // 初期化
+            self.lazy_flag[k] = false;
+        } else {
+            //  追加
+            if self.lazy[k] == self.em {
+                return;
+            }
+            self.dat[k] = (self.fa)(self.dat[k].clone(), self.lazy[k]);
+            if k < self.n - 1 {
+                self.lazy[left(k)] = (self.fma)(self.lazy[left(k)], self.lazy[k] / 2, 1);
+                self.lazy[right(k)] = (self.fma)(self.lazy[right(k)], self.lazy[k] / 2, 1);
+            }
+            self.lazy[k] = self.em; // 初期化
         }
-        // 葉でなければ子に伝播
-        if k < self.n - 1 {
-            self.lazy[left(k)] = (self.fm)(self.lazy[left(k)], self.lazy[k]);
-            self.lazy[right(k)] = (self.fm)(self.lazy[right(k)], self.lazy[k]);
-        }
-
-        self.dat[k] = (self.fa)(self.dat[k].clone(), (self.fp)(self.lazy[k], len)); // 自分を更新
-        self.lazy[k] = self.em; // 初期化
     }
-    pub fn update(&mut self, a: usize, b: usize, x: U) {
+    pub fn update(&mut self, a: usize, b: usize, x: isize) {
         self.update_sub(a, b, x, 0, 0, self.n);
     }
-    fn update_sub(&mut self, a: usize, b: usize, x: U, k: usize, l: usize, r: usize) {
-        self.eval(k, r - l);
+    fn update_sub(&mut self, a: usize, b: usize, x: isize, k: usize, l: usize, r: usize) {
+        self.eval(k);
         if a <= l && r <= b {
             // 完全に内側の時
-            self.lazy[k] = (self.fm)(self.lazy[k], x);
-            self.eval(k, r - l);
+            self.lazy[k] = (self.fmu)(self.lazy[k], x, r - l);
+            self.lazy_flag[k] = true;
+            self.eval(k);
         } else if a < r && l < b {
             // 一部の区間がかぶる時
             // 指定区間 [a,b), 探索区間 [l,r)
@@ -139,12 +153,28 @@ where
             self.dat[k] = (self.fx)(self.dat[left(k)].clone(), self.dat[right(k)].clone());
         }
     }
+
+    pub fn add(&mut self, a: usize, b: usize, x: isize) {
+        self.add_sub(a, b, x, 0, 0, self.n);
+    }
+    fn add_sub(&mut self, a: usize, b: usize, x: isize, k: usize, l: usize, r: usize) {
+        self.eval(k);
+        if a <= l && r <= b {
+            self.lazy[k] = (self.fma)(self.lazy[k], x, r - l);
+            self.eval(k);
+        } else if a < r && l < b {
+            self.add_sub(a, b, x, left(k), l, mid(l, r));
+            self.add_sub(a, b, x, right(k), mid(l, r), r);
+            self.dat[k] = (self.fx)(self.dat[left(k)].clone(), self.dat[right(k)].clone());
+        }
+    }
+
     // the minimum element of [a,b)
     pub fn query(&mut self, a: usize, b: usize) -> T {
         self.query_sub(a, b, 0, 0, self.n)
     }
     fn query_sub(&mut self, a: usize, b: usize, k: usize, l: usize, r: usize) -> T {
-        self.eval(k, r - l);
+        self.eval(k);
         if r <= a || b <= l {
             // 完全に外側
             self.ex.clone()
@@ -181,7 +211,7 @@ where
         l: usize,
         r: usize,
     ) -> isize {
-        self.eval(k, r - l);
+        self.eval(k);
         if (self.fc)(self.dat[k].clone(), x.clone()) || r <= a || b <= l {
             // 自分の値がxより大きい(or より小さいなど) or [a,b)が[l,r)の範囲外なら
             self.ec
@@ -206,7 +236,7 @@ where
         l: usize,
         r: usize,
     ) -> isize {
-        self.eval(k, r - l);
+        self.eval(k);
         if (self.fc)(self.dat[k].clone(), x.clone()) || r <= a || b <= l {
             self.ec
         } else if k >= self.n - 1 {
@@ -223,7 +253,7 @@ where
 
     // lazy の値を全て適用して、最新の状態にする
     pub fn force_update(&mut self) {
-        for i in 0..self.n / 2 {
+        for i in 0..self.n {
             self.query(i, i + 1);
         }
     }

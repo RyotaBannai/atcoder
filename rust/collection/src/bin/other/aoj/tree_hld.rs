@@ -1,7 +1,7 @@
 /**
  * @cpg_dirspec tree_euler_tour
  *
- * cpg run -p src/bin/other/aoj/tree_euler_tour2.rs
+ * cpg run -p src/bin/other/aoj/tree_hld.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 // use superslice::Ext;
