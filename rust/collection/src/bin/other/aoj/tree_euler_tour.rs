@@ -1,8 +1,7 @@
-// use itertools::Itertools;
 /**
  * @cpg_dirspec tree_euler_tour
  *
- * cpg run -p src/bin/other/aoj/tree.rs
+ * cpg run -p src/bin/other/aoj/tree_euler_tour.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 // use superslice::Ext;

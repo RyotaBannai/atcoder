@@ -71,7 +71,7 @@ fn main() {
             let v = scan!(sc, usize) - 1;
             let i = et.i[v];
             let o2 = et.o2[v];
-            let mut num = seg.query(i, o2);
+            let num = seg.query(i, o2);
             wr.write(num.count_ones()).unwrap();
         } else {
             let (v, x) = (scan!(sc, usize) - 1, scan!(sc, isize));

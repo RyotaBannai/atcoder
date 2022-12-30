@@ -1,15 +1,15 @@
 use super::vertex::Vertex;
-pub struct Hld {
-    pub size: Vec<usize>,       // 各頂点を部分木の根とした時の部分木のサイズ
-    pub parent: Vec<usize>,     // 木上での各頂点の親
-    pub depth: Vec<usize>,      // 木上での各頂点の根からの深さ
-    pub hld: Vec<usize>,        // 連結成分を並べた配列. これをセグ木にのせる.
-    pub pos: Vec<usize>,        // 各頂点がhld 上のどこにあるか index を管理したもの
-    pub a: Vec<usize>,          // HLDした時の連結成分で一番浅い頂点（根に近い）
-    pub list: Vec<Vec<Vertex>>, // 連接リスト
+pub struct Hld<'a> {
+    pub size: Vec<usize>,           // 各頂点を部分木の根とした時の部分木のサイズ
+    pub parent: Vec<usize>,         // 木上での各頂点の親
+    pub depth: Vec<usize>,          // 木上での各頂点の根からの深さ
+    pub hld: Vec<usize>,            // 連結成分を並べた配列. これをセグ木にのせる.
+    pub pos: Vec<usize>,            // 各頂点がhld 上のどこにあるか index を管理したもの
+    pub a: Vec<usize>,              // HLDした時の連結成分で一番浅い頂点（根に近い）
+    pub list: &'a Vec<Vec<Vertex>>, // 連接リスト
 }
-impl Hld {
-    pub fn new(list: Vec<Vec<Vertex>>) -> Self {
+impl<'a> Hld<'a> {
+    pub fn new(list: &'a Vec<Vec<Vertex>>) -> Self {
         let n = list.len();
         Self {
             size: vec![0; n],
@@ -72,7 +72,7 @@ impl Hld {
     pub fn lcm(&self, u: &mut usize, v: &mut usize) -> (usize, Vec<(usize, usize)>) {
         // clone だとTLE.
         // loop がquery 時にもう一回回るのはこの場合問題ない
-        let (a, dep, par, pos) = (&self.a, &self.depth, &self.parent, &self.pos);
+        let (a, dep, par) = (&self.a, &self.depth, &self.parent);
         let mut pp = vec![];
         while a[*u] != a[*v] {
             // 連結成分の'一番浅い頂点'の'深さ'で比較
@@ -80,14 +80,21 @@ impl Hld {
                 std::mem::swap(u, v);
             }
             // depth が深い方を処理
-            pp.push((pos[a[*u]], pos[*u]));
+            pp.push((a[*u], *u));
             *u = par[a[*u]]; // '同じ連結成分の一番浅い頂点の'親にする
         }
         // u,v はこの時点で同じ連結成分に属する
         if dep[*u] > dep[*v] {
             std::mem::swap(u, v);
         }
-        pp.push((pos[*u], pos[*v]));
+        pp.push((*u, *v));
         (a[*u], pp)
+    }
+
+    pub fn k2pos(&self, ps: &mut Vec<(usize, usize)>) {
+        for p in ps {
+            let (u, v) = p;
+            *p = (self.pos[*u], self.pos[*v]);
+        }
     }
 }

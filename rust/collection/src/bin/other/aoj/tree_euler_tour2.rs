@@ -1,7 +1,7 @@
 /**
- * @cpg_dirspec hld
+ * @cpg_dirspec tree_euler_tour
  *
- * cpg run -p src/bin/graph/other/hld.rs
+ * cpg run -p src/bin/other/aoj/tree_euler_tour2.rs
  */
 // use proconio::{fastout, input, marker::Chars};
 // use superslice::Ext;
@@ -22,18 +22,17 @@ use library::{
 };
 
 /**
- * HL分解：Heavy Light Decomposition
- * solved with Segment Tree
- *
- * https://judge.yosupo.jp/problem/vertex_add_path_sum
- *
- */
+* F : Tree / 木
+*
+* https://onlinejudge.u-aizu.ac.jp/problems/2667
+*
+* tags: #HLD #セグ木 #segment_tree
+*/
 
 // #[fastout]
 fn main() {
     let a = read::<usize>();
     let (n, q) = (a[0], a[1]);
-    let w = read::<usize>();
     let mut list = vec![vec![]; n + 1];
     for i in 1..n {
         let b = read::<usize>();
@@ -61,33 +60,33 @@ fn main() {
         |a: isize, x: isize| a > x,
     );
 
-    for (i, &u) in hld.hld.iter().enumerate() {
-        seg.set(i, w[u - 1] as isize); // 各頂点の重さを入れる
-    }
-    seg.build();
-
-    // println!();
-
-    for i in 0..q {
+    // read query
+    for _ in 0..q {
         let b = read::<usize>();
-        let t = b[0];
-        if t == 0 {
-            // add
-            let (i, x) = (b[1] + 1, b[2] as isize);
-            let p = hld.pos[i];
-            seg.update(p, p + 1, x);
-        } else {
-            // range query
-            let (l, r) = (&mut (b[1] + 1), &mut (b[2] + 1));
-            let mut sum = 0;
-            let (_, ps) = &mut hld.lcm(l, r);
+        if b[0] == 0 {
+            let (u, v) = (&mut (b[1] + 1), &mut (b[2] + 1));
+            if u == v {
+                println!("0");
+                continue;
+            }
+            let (_, ps) = &mut hld.lcm(u, v);
             hld.k2pos(ps);
 
-            // 頂点の総和だから最後の区間もそのまま処理してok
-            for (p1, p2) in ps {
-                sum += seg.query(*p1, *p2 + 1);
+            let mut sum = 0;
+            for (i, (p1, p2)) in ps.iter().enumerate() {
+                if i == ps.len() - 1 {
+                    // 最後の連結成分の区間はlcm になっていて、その頂点の重さは含めたくない（辺の重みだけ加算したい）ため
+                    // p1 の子の位置からの区間を求める.
+                    // それ以外の連結成分は移動する時の辺として全て見なして良いからp1 の位置からの区間で求める.
+                    sum += seg.query(*p1 + 1, *p2 + 1);
+                } else {
+                    sum += seg.query(*p1, *p2 + 1);
+                }
             }
             println!("{}", sum);
+        } else {
+            let (v, x) = (b[1] + 1, b[2] as isize);
+            seg.update(hld.pos[v] + 1, hld.pos[v] + hld.size[v], x);
         }
     }
 }
