@@ -1,0 +1,24 @@
+---
+type: Batch
+timelimit: 2s
+match: Lines
+
+cases:
+  - name: sample1
+    in: |
+      abbcd
+      abccd
+    out: |
+      5
+  - name: sample2
+    in: |
+      watanoharayasosimakaketekogiidenuto
+      watanoharakogiidetemirebahisakatano
+    out: |
+      20
+
+extend:
+  - type: Text
+    path: "./a"
+    in: /in/*.txt
+    out: /out/*.txt
