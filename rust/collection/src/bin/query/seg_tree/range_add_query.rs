@@ -34,17 +34,17 @@ fn main() {
     let a = read::<usize>();
     let (n, q) = (a[0], a[1]);
 
-    let f = |a: isize, b: isize| a + b;
     let mut seg = LazySegTree::new(
         n,
         0,
         0,
         0,
         0,
-        f,
-        f,
-        f,
-        |a: isize, n: usize| a * n as isize,
+        |a: isize, b: isize| a + b,
+        |a: isize, b: isize, n: usize| a + b * n as isize,
+        |_: isize, b: isize, n: usize| b * n as isize,
+        |a: isize, b: isize| a + b,
+        |_: isize, b: isize| b,
         |a: isize, x: isize| a > x,
     );
 

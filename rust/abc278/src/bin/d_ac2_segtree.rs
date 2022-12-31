@@ -14,9 +14,9 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
-use library::query::*;
+use library::query::seg_tree::LazySegTree;
 
-#[fastout]
+// #[fastout]
 fn main() {
     input! {
         n: usize,
@@ -30,10 +30,12 @@ fn main() {
         std::isize::MAX,
         std::isize::MAX,
         std::isize::MAX,
+        std::isize::MAX,
         |a: isize, b: isize| a.min(b),
+        |a: isize, b: isize, n: usize| a + b * n as isize,
+        |_: isize, b: isize, n: usize| b * n as isize,
+        |a: isize, b: isize| a + b,
         |_: isize, b: isize| b,
-        |_: isize, b: isize| b,
-        |a: isize, n: usize| a * n as isize,
         |a: isize, x: isize| a > x,
     );
 

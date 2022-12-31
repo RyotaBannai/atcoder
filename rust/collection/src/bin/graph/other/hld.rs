@@ -57,7 +57,8 @@ fn main() {
         f,
         f,
         f,
-        |a: isize, n: usize| a * n as isize,
+        |a: isize, b: isize, n: usize| a + b * n as isize,
+        |a: isize, b: isize, n: usize| a + b * n as isize,
         |a: isize, x: isize| a > x,
     );
 
@@ -75,7 +76,7 @@ fn main() {
             // add
             let (i, x) = (b[1] + 1, b[2] as isize);
             let p = hld.pos[i];
-            seg.update(p, p + 1, x);
+            seg.add(p, p + 1, x);
         } else {
             // range query
             let (l, r) = (&mut (b[1] + 1), &mut (b[2] + 1));

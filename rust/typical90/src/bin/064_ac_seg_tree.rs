@@ -10,7 +10,7 @@ use proconio::{fastout, input, marker::Chars};
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use typical90::query::disjoint_set::*;
+use library::query::seg_tree::*;
 
 /**
  * 064 - Uplift（★3）
@@ -21,7 +21,7 @@ use typical90::query::disjoint_set::*;
  *
  */
 
-#[fastout]
+// #[fastout]
 fn main() {
     input! {
         n: usize,
@@ -36,11 +36,13 @@ fn main() {
         0,
         0,
         0,
+        0,
         f,
-        f,
-        f,
-        |a: isize, n: usize| a * n as isize,
-        |a: isize, x: isize| a > x,
+        |a: isize, b: isize, _: usize| a + b,
+        |_: isize, _: isize, _: usize| unimplemented!(),
+        |a: isize, b: isize| a + b,
+        |_: isize, _: isize| unimplemented!(),
+        |a: isize, x: isize| unimplemented!(),
     );
     for (i, x) in a.iter().enumerate() {
         seg.set(i, *x);
@@ -71,7 +73,7 @@ fn main() {
             sum += ((r1 + x) - r2).abs();
         }
 
-        seg.update(l, r + 1, x); // r の位置まで更新したい
+        seg.add(l, r + 1, x); // r の位置まで更新したい
         println!("{}", sum);
     }
 }

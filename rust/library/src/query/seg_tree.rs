@@ -40,16 +40,16 @@ pub struct LazySegTree<T> {
     pub dat: Vec<T>,
     pub lazy: Vec<isize>,
     pub lazy_flag: Vec<bool>,
-    es: T,                                          // 葉の初期値
-    ex: T,                                          // モノイドXでの単位元
-    em: isize,                                      // モノイドMでの単位元
-    ec: isize,                                      // モノイドCでの単位元（探索の無効値）
-    fx: fn(a: T, b: T) -> T,                        // a.min(b) など
-    fa: fn(a: T, y: isize) -> T,                    // a + x など
-    fu: fn(a: T, y: isize) -> T,                    // x など
-    fma: fn(x: isize, y: isize, n: usize) -> isize, //
-    fmu: fn(x: isize, y: isize, n: usize) -> isize, // .saturated_add(b) など
-    fc: fn(a: T, b: T) -> bool,                     // a < b など
+    es: T,                                 // 葉の初期値
+    ex: T,                                 // モノイドXでの単位元
+    em: isize,                             // モノイドMでの単位元
+    ec: isize,                             // モノイドCでの単位元（探索の無効値）
+    fx: fn(a: T, b: T) -> T,               // a.min(b) など
+    fa: fn(a: T, x: isize, n: usize) -> T, // a + x など
+    fu: fn(a: T, x: isize, n: usize) -> T, // x など
+    fma: fn(x: isize, y: isize) -> isize,  //
+    fmu: fn(x: isize, y: isize) -> isize,  // .saturated_add(b) など
+    fc: fn(a: T, b: T) -> bool,            // a < b など
 }
 impl<T> LazySegTree<T>
 where
@@ -63,10 +63,10 @@ where
         em: isize, // lazy に使う単位元（無効値）
         ec: isize,
         fx: fn(a: T, b: T) -> T, // ２つ子間の比較を結果にするからargs は T,T->T
-        fa: fn(a: T, x: isize) -> T, // 流れてくるx に対して、ノードのごとに処理をしてノードの型を返す(a,x は異なる型) T,isize->T
-        fu: fn(a: T, x: isize) -> T, // 流れてくるx に対して、ノードのごとに処理をしてノードの型を返す(a,x は異なる型) T,isize->T
-        fma: fn(x: isize, y: isize, n: usize) -> isize, // 既存のlazy と流れてくる新しいx 間の関係を処理するから isize,isize->isize nは部分木の個数
-        fmu: fn(x: isize, y: isize, n: usize) -> isize, // 既存のlazy と流れてくる新しいx 間の関係を処理するから isize,isize->isize nは部分木の個数
+        fa: fn(a: T, x: isize, n: usize) -> T, // 流れてくるx に対して、ノードのごとに処理をしてノードの型を返す(a,x は異なる型) T,isize->T
+        fu: fn(a: T, x: isize, n: usize) -> T, // 流れてくるx に対して、ノードのごとに処理をしてノードの型を返す(a,x は異なる型) T,isize->T
+        fma: fn(x: isize, y: isize) -> isize, // 既存のlazy と流れてくる新しいx 間の関係を処理するから isize,isize->isize nは部分木の個数
+        fmu: fn(x: isize, y: isize) -> isize, // 既存のlazy と流れてくる新しいx 間の関係を処理するから isize,isize->isize nは部分木の個数
         fc: fn(a: T, b: T) -> bool,
     ) -> Self {
         // 必要最低限の最小二分木のメモリを確保 leafs = 7 の時 n = 8 確保するため.
@@ -110,13 +110,13 @@ where
     }
     // 保持していた値を子に伝搬し、自身の値を更新
     // len: 指定区間の長さ
-    pub fn eval(&mut self, k: usize) {
+    pub fn eval(&mut self, k: usize, l: usize, r: usize) {
         if self.lazy_flag[k] {
             // 更新
-            self.dat[k] = (self.fu)(self.dat[k].clone(), self.lazy[k]);
+            self.dat[k] = (self.fu)(self.dat[k].clone(), self.lazy[k], r - l);
             if k < self.n - 1 {
-                self.lazy[left(k)] = (self.fmu)(self.lazy[left(k)], self.lazy[k] / 2, 1);
-                self.lazy[right(k)] = (self.fmu)(self.lazy[right(k)], self.lazy[k] / 2, 1);
+                self.lazy[left(k)] = (self.fmu)(self.lazy[left(k)], self.lazy[k]);
+                self.lazy[right(k)] = (self.fmu)(self.lazy[right(k)], self.lazy[k]);
                 self.lazy_flag[left(k)] = true;
                 self.lazy_flag[right(k)] = true;
             }
@@ -127,10 +127,10 @@ where
             if self.lazy[k] == self.em {
                 return;
             }
-            self.dat[k] = (self.fa)(self.dat[k].clone(), self.lazy[k]);
+            self.dat[k] = (self.fa)(self.dat[k].clone(), self.lazy[k], r - l);
             if k < self.n - 1 {
-                self.lazy[left(k)] = (self.fma)(self.lazy[left(k)], self.lazy[k] / 2, 1);
-                self.lazy[right(k)] = (self.fma)(self.lazy[right(k)], self.lazy[k] / 2, 1);
+                self.lazy[left(k)] = (self.fma)(self.lazy[left(k)], self.lazy[k]);
+                self.lazy[right(k)] = (self.fma)(self.lazy[right(k)], self.lazy[k]);
             }
             self.lazy[k] = self.em; // 初期化
         }
@@ -139,12 +139,12 @@ where
         self.update_sub(a, b, x, 0, 0, self.n);
     }
     fn update_sub(&mut self, a: usize, b: usize, x: isize, k: usize, l: usize, r: usize) {
-        self.eval(k);
+        self.eval(k, l, r);
         if a <= l && r <= b {
             // 完全に内側の時
-            self.lazy[k] = (self.fmu)(self.lazy[k], x, r - l);
+            self.lazy[k] = (self.fmu)(self.lazy[k], x);
             self.lazy_flag[k] = true;
-            self.eval(k);
+            self.eval(k, l, r);
         } else if a < r && l < b {
             // 一部の区間がかぶる時
             // 指定区間 [a,b), 探索区間 [l,r)
@@ -158,10 +158,10 @@ where
         self.add_sub(a, b, x, 0, 0, self.n);
     }
     fn add_sub(&mut self, a: usize, b: usize, x: isize, k: usize, l: usize, r: usize) {
-        self.eval(k);
+        self.eval(k, l, r);
         if a <= l && r <= b {
-            self.lazy[k] = (self.fma)(self.lazy[k], x, r - l);
-            self.eval(k);
+            self.lazy[k] = (self.fma)(self.lazy[k], x);
+            self.eval(k, l, r);
         } else if a < r && l < b {
             self.add_sub(a, b, x, left(k), l, mid(l, r));
             self.add_sub(a, b, x, right(k), mid(l, r), r);
@@ -174,7 +174,7 @@ where
         self.query_sub(a, b, 0, 0, self.n)
     }
     fn query_sub(&mut self, a: usize, b: usize, k: usize, l: usize, r: usize) -> T {
-        self.eval(k);
+        self.eval(k, l, r);
         if r <= a || b <= l {
             // 完全に外側
             self.ex.clone()
@@ -211,7 +211,7 @@ where
         l: usize,
         r: usize,
     ) -> isize {
-        self.eval(k);
+        self.eval(k, l, r);
         if (self.fc)(self.dat[k].clone(), x.clone()) || r <= a || b <= l {
             // 自分の値がxより大きい(or より小さいなど) or [a,b)が[l,r)の範囲外なら
             self.ec
@@ -236,7 +236,7 @@ where
         l: usize,
         r: usize,
     ) -> isize {
-        self.eval(k);
+        self.eval(k, l, r);
         if (self.fc)(self.dat[k].clone(), x.clone()) || r <= a || b <= l {
             self.ec
         } else if k >= self.n - 1 {

@@ -26,7 +26,7 @@ use ac_library_rs::modint::ModInt1000000007 as Mint;
  *
  */
 
-#[fastout]
+// #[fastout]
 fn main() {
     input! {
         n: usize,

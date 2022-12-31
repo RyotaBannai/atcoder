@@ -11,7 +11,7 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
-use typical90::nt_lib::*;
+use library::nt_lib::*;
 
 /**
  * 038 - Large LCM（★3）
@@ -22,7 +22,7 @@ use typical90::nt_lib::*;
  *
  */
 
-#[fastout]
+// #[fastout]
 fn main() {
     input! {
         a: usize,

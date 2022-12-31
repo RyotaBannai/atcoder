@@ -13,7 +13,7 @@ use proconio::{fastout, input, marker::Chars};
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use library::query::*;
+use library::query::seg_tree::*;
 
 /**
  * Segment Tree
@@ -24,7 +24,7 @@ use library::query::*;
  *
  */
 
-#[fastout]
+// #[fastout]
 fn main() {
     input! {
         n: usize,
@@ -38,10 +38,12 @@ fn main() {
         -1,
         -1,
         -1,
-        |a: isize, b: isize| a.max(b), // min
-        |_: isize, b: isize| b,        // replace
-        |_: isize, b: isize| b,        // replace
-        |a: isize, _: usize| a,        // mul 1
+        -1,
+        |a: isize, b: isize| a.max(b),                 // min
+        |_: isize, b: isize, n: usize| b * n as isize, // replace
+        |_: isize, b: isize, n: usize| b * n as isize, // replace
+        |a: isize, b: isize| a + b,                    // mul 1
+        |a: isize, b: isize| b,                        // mul 1
         |a: isize, x: isize| a < x,
     );
     for (i, x) in a.iter().enumerate() {

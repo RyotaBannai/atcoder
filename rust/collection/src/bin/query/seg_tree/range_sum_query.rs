@@ -40,14 +40,24 @@ fn main() {
         let b = read::<usize>();
         qs.push((b[0], (b[1], b[2])));
     }
-    let f = |a: isize, b: isize| a + b;
-    let fp = |a: isize, n: usize| a * n as isize;
-    let mut seg = LazySegTree::new(n, 0, 0, 0, 0, f, f, f, fp, |a: isize, x: isize| a > x);
+    let mut seg = LazySegTree::new(
+        n,
+        0,
+        0,
+        0,
+        0,
+        |a: isize, b: isize| a + b,
+        |a: isize, b: isize, n: usize| a + b * n as isize,
+        |_: isize, b: isize, n: usize| b * n as isize,
+        |a: isize, b: isize| a + b,
+        |_: isize, b: isize| b,
+        |a: isize, x: isize| a > x,
+    );
 
     for (t, q) in qs {
         if t == 0 {
             let (x, v) = q;
-            seg.update(x - 1, x, v as isize);
+            seg.add(x - 1, x, v as isize);
         } else {
             let (l, r) = q;
             println!("{}", seg.query(l - 1, r));

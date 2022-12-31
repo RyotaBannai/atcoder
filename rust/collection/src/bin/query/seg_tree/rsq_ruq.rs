@@ -43,9 +43,10 @@ fn main() {
         std::isize::MAX,
         0,
         |a: isize, b: isize| a.saturating_add(b),
-        |_: isize, b: isize| b, // 注意: update
-        |_: isize, b: isize| b, // 注意: update, 前回の lazy を捨てる
-        |a: isize, n: usize| a * n as isize,
+        |a: isize, b: isize, n: usize| a + b * n as isize, // 注意: update
+        |_: isize, b: isize, n: usize| b * n as isize,     // 注意: update, 前回の lazy を捨てる
+        |a: isize, b: isize| a + b,
+        |_: isize, b: isize| b,
         |a: isize, x: isize| a > x,
     );
 

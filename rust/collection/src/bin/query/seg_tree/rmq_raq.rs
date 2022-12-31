@@ -34,7 +34,6 @@ fn main() {
     let a = read::<usize>();
     let (n, q) = (a[0], a[1]);
 
-    let f = |a: isize, b: isize| a + b;
     let mut seg = LazySegTree::new(
         n,
         0,
@@ -42,9 +41,10 @@ fn main() {
         0,               // 注意: add 用だから単位元は 0
         std::isize::MAX,
         |a: isize, b: isize| a.min(b),
-        f,
-        f,
-        |a: isize, _: usize| a,
+        |a: isize, b: isize, n: usize| a + b * n as isize,
+        |_: isize, b: isize, n: usize| b * n as isize,
+        |a: isize, b: isize| a + b,
+        |_: isize, b: isize| b,
         |a: isize, x: isize| a > x,
     );
 
@@ -53,7 +53,7 @@ fn main() {
         let t = b[0];
         if t == 0 {
             let (l, r, x) = (b[1] as usize, b[2] as usize, b[3]);
-            seg.update(l, r + 1, x);
+            seg.add(l, r + 1, x);
         } else {
             let (l, r) = (b[1] as usize, b[2] as usize);
             println!("{}", seg.query(l, r + 1));

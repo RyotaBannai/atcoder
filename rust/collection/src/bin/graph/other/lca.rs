@@ -27,8 +27,6 @@ use library::{
  *
  * https://onlinejudge.u-aizu.ac.jp/problems/GRL_5_C
  *
- * MLE テストケース#24 までは通る.
- *
  */
 
 // #[fastout]
@@ -66,12 +64,13 @@ fn main() {
         et.visit.len(),
         ((1 << 31) - 1, 0),
         ((1 << 31) - 1, 0),
-        ((1 << 31) - 1, 0),
+        (1 << 31) - 1,
         0,
         |a: (usize, usize), b: (usize, usize)| a.min(b), // min
-        |_: (usize, usize), b: (usize, usize)| b,        // update(replace)
-        |_: (usize, usize), b: (usize, usize)| b,        // update(replace)
-        |a: (usize, usize), _: usize| a,                 // mul 1
+        |a: (usize, usize), _: isize, _: usize| a,
+        |a: (usize, usize), _: isize, _: usize| a,
+        |_: isize, y: isize| y,
+        |_: isize, y: isize| y,
         |a: (usize, usize), x: (usize, usize)| a > x,
     );
 

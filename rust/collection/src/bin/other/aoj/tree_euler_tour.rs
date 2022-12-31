@@ -73,7 +73,6 @@ fn main() {
     type Det = (isize, usize, usize);
 
     // RSQ_RAQ
-    let f = |a: isize, b: isize| a + b;
     let mut seg_dist = LazySegTree::new(
         et.vcost2.len(),
         (0, 0, 0),
@@ -81,9 +80,10 @@ fn main() {
         0,
         0,
         |a: Det, b: Det| (a.0 + b.0, a.1 + b.1, a.2 + b.2),
-        |a: Det, x: isize| (a.0 + x * (a.1 as isize - a.2 as isize), a.1, a.2),
-        f,
-        |a: isize, _: usize| a,
+        |a: Det, x: isize, _: usize| (a.0 + x * (a.1 as isize - a.2 as isize), a.1, a.2), // n は使わない. この要素数を1,2 で管理していてこっちでけ計算
+        |a: Det, b: isize, _: usize| unimplemented!(),
+        |a: isize, b: isize| a + b as isize,
+        |_: isize, _: isize| unimplemented!(),
         |a: Det, x: Det| a.0 > x.0,
     );
 
@@ -101,12 +101,13 @@ fn main() {
         et.visit.len(),
         ((1 << 31) - 1, 0),
         ((1 << 31) - 1, 0),
-        ((1 << 31) - 1, 0),
+        (1 << 31) - 1,
         0,
         |a: (usize, usize), b: (usize, usize)| a.min(b), // min
-        |_: (usize, usize), b: (usize, usize)| b,        // update(replace)
-        |_: (usize, usize), b: (usize, usize)| b,        // update(replace)
-        |a: (usize, usize), _: usize| a,                 // mul 1
+        |a: (usize, usize), _: isize, _: usize| a,
+        |a: (usize, usize), _: isize, _: usize| a,
+        |_: isize, y: isize| y,
+        |_: isize, y: isize| y,
         |a: (usize, usize), x: (usize, usize)| a > x,
     );
 
@@ -157,7 +158,7 @@ fn main() {
             for u in &list[v + 1] {
                 let i = et.i[u.to - 1];
                 let o2 = et.o2[u.to - 1];
-                seg_dist.update(i, o2 + 1, x);
+                seg_dist.add(i, o2 + 1, x);
             }
 
             // 意図的にセグ木のlazy を更新.

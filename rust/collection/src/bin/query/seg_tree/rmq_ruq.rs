@@ -41,9 +41,10 @@ fn main() {
         (1 << 31) - 1,
         (1 << 31) - 1,
         |a: isize, b: isize| a.min(b),
+        |a: isize, b: isize, n: usize| a + b * n as isize,
+        |_: isize, b: isize, n: usize| b * n as isize,
+        |a: isize, b: isize| a + b,
         |_: isize, b: isize| b,
-        |_: isize, b: isize| b,
-        |a: isize, _: usize| a,
         |a: isize, x: isize| a > x,
     );
 

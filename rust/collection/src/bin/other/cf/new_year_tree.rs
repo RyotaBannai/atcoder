@@ -52,10 +52,11 @@ fn main() {
         0u64,
         0,
         0,
-        |a: u64, b: u64| a | b,          // or
-        |_: u64, x: isize| 1 << (x - 1), // この区間は全部x
-        |_: isize, b: isize| b,          // replace
-        |a: isize, _: usize| a,
+        |a: u64, b: u64| a | b, // or
+        |_: u64, _: isize, _: usize| unimplemented!(),
+        |_: u64, x: isize, _: usize| 1 << (x - 1), // この区間は全部x
+        |_: isize, _: isize| unimplemented!(),
+        |_: isize, b: isize| b,
         |_: u64, _: u64| unimplemented!(),
     );
 
