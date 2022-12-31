@@ -46,17 +46,17 @@ fn main() {
     hld.run(1, 0, 1);
 
     // RSQ RAQ
-    let f = |a: isize, b: isize| a + b;
     let mut seg = LazySegTree::new(
         n,
         0,
         0,
         0,
         0,
-        f,
-        f,
-        f,
-        |a: isize, n: usize| a * n as isize,
+        |a: isize, b: isize| a + b,
+        |a: isize, b: isize, n: usize| a + b * n as isize,
+        |a: isize, b: isize, n: usize| unimplemented!(),
+        |a: isize, b: isize| a + b,
+        |a: isize, b: isize| unimplemented!(),
         |a: isize, x: isize| a > x,
     );
 
@@ -86,7 +86,7 @@ fn main() {
             println!("{}", sum);
         } else {
             let (v, x) = (b[1] + 1, b[2] as isize);
-            seg.update(hld.pos[v] + 1, hld.pos[v] + hld.size[v], x);
+            seg.add(hld.pos[v] + 1, hld.pos[v] + hld.size[v], x);
         }
     }
 }
