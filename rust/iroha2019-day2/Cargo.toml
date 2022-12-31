@@ -60,6 +60,10 @@ path = "src/bin/j.rs"
 name = "iroha2019-day2-k"
 path = "src/bin/k.rs"
 
+[[bin]]
+name = "iroha2019-day2-k_ac"
+path = "src/bin/k_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"

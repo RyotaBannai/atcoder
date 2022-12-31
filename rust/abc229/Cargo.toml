@@ -45,6 +45,14 @@ path = "src/bin/g.rs"
 name = "abc229-h"
 path = "src/bin/h.rs"
 
+[[bin]]
+name = "abc229-e_ac"
+path = "src/bin/e_ac.rs"
+
+[[bin]]
+name = "abc229-d_ac"
+path = "src/bin/d_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
@@ -87,5 +95,6 @@ rustc-hash = "=1.1.0"
 smallvec = "=1.2.0"
 derive-new = "0.5.9"
 ac-library-rs  = { git = "https://github.com/rust-lang-ja/ac-library-rs" }
+library = { path = "../library" }
 
 [dev-dependencies]

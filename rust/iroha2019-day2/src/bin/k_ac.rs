@@ -1,6 +1,4 @@
-use std::iter::Scan;
-
-use proconio::{fastout, input, marker::Chars};
+// use proconio::{fastout, input, marker::Chars};
 // use superslice::Ext;
 // use ac_library_rs::modint::ModInt998244353 as Mint;
 // use superslice::{self, Ext};
@@ -53,10 +51,10 @@ fn main() {
         0,
         0,
         |a: isize, b: isize| a + b,
-        |a: isize, b: isize| a + b,
-        |_: isize, b: isize| b,
         |a: isize, b: isize, n: usize| a + b * n as isize,
         |_: isize, b: isize, n: usize| b * n as isize,
+        |a: isize, b: isize| a + b,
+        |_: isize, b: isize| b,
         |_: isize, _: isize| unimplemented!(),
     );
 
