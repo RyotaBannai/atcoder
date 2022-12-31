@@ -93,11 +93,9 @@ where
             fc,
         }
     }
-    /*
-    値の更新には O(log n) だけかかるため、 n 個の更新を行おうとすると O(nlog n) だけかかる.
-    はじめに n 個の要素を葉にセットしてから、後で同時に更新することで、これを O(n)に抑えられる.
-    i番目は、配列上では i+n-1 番目に格納されている(i=0-index)
-    */
+    // 値の更新には O(log n) だけかかるため、 n 個の更新を行おうとすると O(nlog n) だけかかる.
+    // はじめに n 個の要素を葉にセットしてから、後で同時に更新することで、これを O(n)に抑えられる.
+    // i番目は、配列上では i+n-1 番目に格納されている(i=0-index)
     pub fn set(&mut self, i: usize, x: T) {
         self.dat[i + self.n - 1] = x;
     }
@@ -108,8 +106,7 @@ where
             self.dat[k] = (self.fx)(self.dat[left(k)].clone(), self.dat[right(k)].clone());
         }
     }
-    // 保持していた値を子に伝搬し、自身の値を更新
-    // len: 指定区間の長さ
+    // 遅延させていたデータ更新を実行
     pub fn eval(&mut self, k: usize, l: usize, r: usize) {
         if self.lazy_flag[k] {
             // 更新
@@ -169,7 +166,6 @@ where
         }
     }
 
-    // the minimum element of [a,b)
     pub fn query(&mut self, a: usize, b: usize) -> T {
         self.query_sub(a, b, 0, 0, self.n)
     }
@@ -192,9 +188,7 @@ where
     // [a,b) で x以下or以上(fc)の要素を持つ最右位置はどこか O(log(n))
     // fc|a,x| !(a<=x) or a > x各内部接点は最小（fx|a,b| min(a,b)）を持ってるとき、x が各要素以上の最大の index を取得（leftest は最小の index）
     // fc|a,x| !(a>=x) or a < x 各内部接点は最大（fx|a,b| max(a,b)）を持ってるとき、x が各要素以下の最大の index を取得（leftest は最小の index）
-    /**
-     * https://atcoder.jp/contests/practice2/tasks/practice2_j のクエリーt=3 のようなケース
-     */
+    // https://atcoder.jp/contests/practice2/tasks/practice2_j のクエリーt=3 のようなケース
     pub fn find_rightest(&mut self, a: usize, b: usize, x: T) -> isize {
         self.find_rightest_sub(a, b, x, 0, 0, self.n) // k=0 グラフの根から探索開始
     }
