@@ -5,7 +5,11 @@ use proconio::{fastout, input};
  *
  * https://atcoder.jp/contests/abc233/tasks/abc233_c
  *
+ * 問題文の制約の
+ * 「袋に入っているボールの個数の総積は10^5 を超えない。」
+ * というのは、各袋から一つだけ取り出したボールの全組み合わせは10^5 以下になるということ（全通り試せる.）
  */
+
 #[derive(new)]
 struct Rec {
     v: Vec<Vec<usize>>,
