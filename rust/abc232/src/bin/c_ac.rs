@@ -35,16 +35,23 @@ fn main() {
     }
 
     let ps = (1..=n).permutations(n);
-    'next_p: for p in ps {
+    for p in ps {
+        let mut ok = true;
         for i in 1..n {
             for j in 1..=n {
                 if mat1[i][j] != mat2[p[i - 1]][p[j - 1]] {
-                    continue 'next_p;
+                    ok = false;
+                    break;
                 }
             }
+            if !ok {
+                break;
+            }
         }
-        println!("Yes");
-        return;
+        if ok {
+            println!("Yes");
+            return;
+        }
     }
     println!("No");
 }

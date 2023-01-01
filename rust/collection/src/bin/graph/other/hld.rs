@@ -55,10 +55,10 @@ fn main() {
         0,
         0,
         f,
-        f,
-        f,
         |a: isize, b: isize, n: usize| a + b * n as isize,
         |a: isize, b: isize, n: usize| a + b * n as isize,
+        f,
+        f,
         |a: isize, x: isize| a > x,
     );
 
