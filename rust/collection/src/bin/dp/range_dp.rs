@@ -69,7 +69,7 @@ impl Rec {
             self.dp[l][r] = self.dp[l][r].max((r - l) as isize);
         } else {
             // そうでない場合　→ w[l] - w[r-1] <=1 だけど間に他の数が残る場合や、 w[l] - w[r-1] >= 2 の場合
-            // i を区間 [l+1,r-1) でずらながら l~i, i~r のそれぞれの区間の最大値を求めていく
+            // i を区間 [l+1,r-1) でずらしながら l~i, i~r のそれぞれの区間の最大値を求めていく
             let mut ma = 0;
             for i in l + 1..r {
                 ma = ma.max(self.rec(l, i) + self.rec(i, r));

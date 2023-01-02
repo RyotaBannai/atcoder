@@ -164,6 +164,10 @@ name = "range_dp"
 path = "src/bin/dp/range_dp.rs"
 
 [[bin]]
+name = "hatsudennsho"
+path = "src/bin/other/algo_method/hatsudennsho.rs"
+
+[[bin]]
 name = "all_directions_tree_dp"
 path = "src/bin/dp/all_directions_tree_dp.rs"
 
