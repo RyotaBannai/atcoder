@@ -26,6 +26,8 @@ use library::utils::read::read;
  *
  * http://poj.org/problem?id=2456
  *
+ * tags: #二分探索
+ *
  * sample のテストケースしか試してない.
  * lr の区間の調整しないとだめかも.
  *
