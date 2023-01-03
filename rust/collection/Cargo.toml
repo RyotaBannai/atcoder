@@ -359,6 +359,10 @@ path = "src/bin/other/yukicoder/select_stages.rs"
 name = "new_year_tree"
 path = "src/bin/other/cf/new_year_tree.rs"
 
+[[bin]]
+name = "2456_aggressive_cows"
+path = "src/bin/other/poj/2456_aggressive_cows.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
