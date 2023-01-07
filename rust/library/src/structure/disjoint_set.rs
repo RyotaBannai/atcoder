@@ -1,3 +1,5 @@
+use std::collections::{BTreeMap, BTreeSet};
+
 /**
  * UnionFind
  */
@@ -37,6 +39,71 @@ impl DisjointSet {
             if self.rank[x] == self.rank[y] {
                 // rank 更新前は同じ可能性がある
                 self.rank[y] += 1;
+            }
+        }
+    }
+}
+
+/**
+ * UnionFind
+ * - 連結成分内の要素をグループ管理
+ */
+pub struct DisjointSetGroups {
+    rank: Vec<usize>,
+    p: Vec<usize>,
+    pub comps: BTreeMap<usize, BTreeSet<usize>>,
+}
+impl DisjointSetGroups {
+    pub fn new(n: usize) -> Self {
+        let mut p = vec![0; n + 1];
+        let mut rank = vec![0; n + 1];
+        for i in 1..=n {
+            p[i] = i;
+            rank[i] = 0;
+        }
+        let mut comps = BTreeMap::new();
+        for i in 1..=n {
+            comps.entry(i).or_insert(BTreeSet::<usize>::new()).insert(i);
+        }
+        Self { rank, p, comps }
+    }
+    pub fn same(&mut self, x: usize, y: usize) -> bool {
+        self.find(x) == self.find(y)
+    }
+    pub fn find(&mut self, x: usize) -> usize {
+        if x != self.p[x] {
+            self.p[x] = self.find(self.p[x]);
+        }
+        self.p[x]
+    }
+    pub fn merge(&mut self, x: usize, y: usize) -> bool {
+        let px = self.find(x);
+        let py = self.find(y);
+        // すでに繋がっている
+        if px == py {
+            return false;
+        }
+        self.link(px, py);
+        true
+    }
+    pub fn link(&mut self, x: usize, y: usize) {
+        if self.rank[x] > self.rank[y] {
+            self.p[y] = x; // ランクが大き方につける
+            self.merge_set(y, x); // x にset を集める
+        } else {
+            self.p[x] = y;
+            if self.rank[x] == self.rank[y] {
+                // rank 更新前は同じ可能性がある
+                self.rank[y] += 1;
+            }
+            self.merge_set(x, y); // y にset を集める
+        }
+    }
+    // a の集合をb の集合にmerge する
+    fn merge_set(&mut self, a: usize, b: usize) {
+        if let Some(mut sa) = self.comps.remove(&a) {
+            if let Some(sb) = self.comps.get_mut(&b) {
+                sb.append(&mut sa);
             }
         }
     }
