@@ -47,6 +47,8 @@ impl DisjointSet {
 /**
  * UnionFind
  * - 連結成分内の要素をグループ管理
+ * - set のmerge が遅いため必須時のみで利用.
+ *
  */
 pub struct DisjointSetGroups {
     rank: Vec<usize>,
