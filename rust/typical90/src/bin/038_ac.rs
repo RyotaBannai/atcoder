@@ -11,7 +11,7 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
-use library::nt_lib::*;
+use library::number::*;
 
 /**
  * 038 - Large LCM（★3）
@@ -25,8 +25,8 @@ use library::nt_lib::*;
 // #[fastout]
 fn main() {
     input! {
-        a: usize,
-        b: usize
+        a: isize,
+        b: isize
     }
     let l = 1_000_000_000_000_000_000;
     let g = gcd(vec![a, b]);

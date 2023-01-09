@@ -13,6 +13,7 @@ use proconio::{fastout, input, marker::Chars};
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 use itertools::iproduct;
+use library::utils::conv::*;
 use library::*;
 
 /**
@@ -36,11 +37,7 @@ fn main() {
     }
     let t = a
         .iter()
-        .map(|s| {
-            s.iter()
-                .map(|c| c.to_digit(10).unwrap())
-                .collect::<Vec<_>>()
-        })
+        .map(|s| s.iter().map(|&c| toi(c)).collect::<Vec<_>>())
         .collect::<Vec<_>>();
 
     let mut ans = 0;

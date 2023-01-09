@@ -11,6 +11,8 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+use library::number::*;
+
 /**
  * 022 - Cubic Cake（★2）
  *
@@ -18,33 +20,12 @@ use proconio::{fastout, input, marker::Chars};
  *
 */
 
-/**
- * 最大公約数を求める
- * 引数は３以上可
- */
-pub fn gcd(xs: Vec<usize>) -> usize {
-    if xs.is_empty() {
-        return 0;
-    }
-    let mut ret = xs[0];
-    for mut a in xs {
-        let mut b = ret;
-        while a % b != 0 {
-            let tmp = b;
-            b = a % b;
-            a = tmp;
-        }
-        ret = b;
-    }
-    ret
-}
-
 #[fastout]
 fn main() {
     input! {
-        x: usize,
-        y: usize,
-        z: usize,
+        x: isize,
+        y: isize,
+        z: isize,
     }
 
     // 「最終的に何回か切った際に全て立方体になる」=> 全立方体の辺が一致=>各辺の最大公約数になる

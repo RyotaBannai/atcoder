@@ -11,6 +11,8 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+use library::utils::conv::*;
+
 /**
  * 067 - Base 8 to 9（★2）
  *
@@ -32,11 +34,7 @@ fn main() {
     let a = 8;
     let b = 9;
     // Vec<usize> に変換して、一の位が先に来るように rev しておく.
-    let mut ans = n
-        .iter()
-        .rev()
-        .map(|c| c.to_digit(10).unwrap() as usize)
-        .collect::<Vec<_>>();
+    let mut ans = n.iter().rev().map(|&c| toi(c)).collect::<Vec<_>>();
 
     for _ in 0..k {
         let mut sum = 0;

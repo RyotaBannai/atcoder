@@ -28,18 +28,13 @@ fn main() {
     used[n] = true;
 
     let mut sum = 0;
-    loop {
-        match q.pop_back() {
-            Some(i) => {
-                sum += t[i];
-                for &x in &v[i] {
-                    if !used[x] {
-                        q.push_back(x);
-                        used[x] = true; // 一度取得した技は修練しない
-                    }
-                }
+    while let Some(i) = q.pop_back() {
+        sum += t[i];
+        for &x in &v[i] {
+            if !used[x] {
+                q.push_back(x);
+                used[x] = true; // 一度取得した技は修練しない
             }
-            None => break,
         }
     }
 

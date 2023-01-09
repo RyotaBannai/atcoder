@@ -12,6 +12,7 @@ use proconio::{fastout, input, marker::Chars};
 // type Map = BTreeMap<String, usize>;
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
+use library::utils::conv::*;
 
 /**
  * E - Σ[k=0..10^100]floor(X／10^k)
@@ -24,10 +25,6 @@ use proconio::{fastout, input, marker::Chars};
  * X の0 より大きくなる部分をうまく計算するだけで良い.
  *
  */
-
-fn toi(c: &char) -> usize {
-    c.to_digit(10).unwrap() as usize
-}
 
 fn main() {
     input! {

@@ -16,5 +16,5 @@ use library::{number::*, utils::read::*};
 
 fn main() {
     read::<usize>();
-    println!("{}", lcm(read::<usize>()));
+    println!("{}", lcm(read::<isize>()));
 }

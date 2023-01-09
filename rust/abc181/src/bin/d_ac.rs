@@ -15,6 +15,8 @@ type Map = BTreeMap<usize, usize>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+use library::utils::conv::*;
+
 /**
  * D - Hachi
  *
@@ -35,7 +37,7 @@ fn main() {
 
     let mut map = Map::new();
     for c in s {
-        let k = c.to_digit(10).unwrap() as usize;
+        let k = toi(c);
         if let Some(x) = map.get_mut(&k) {
             *x = (*x + 1).min(3); // 最大3つまで管理できれば下３桁見れる.
         } else {

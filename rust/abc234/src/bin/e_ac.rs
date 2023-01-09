@@ -14,6 +14,7 @@ use proconio::{fastout, input, marker::Chars};
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
+use library::utils::conv::*;
 
 /**
  * E - Arithmetic Number
@@ -24,10 +25,6 @@ use proconio::{fastout, input, marker::Chars};
  *
  */
 
-fn toc(i: isize) -> char {
-    i as u8 as char
-}
-
 #[allow(clippy::comparison_chain)]
 #[allow(clippy::manual_range_contains)]
 fn main() {
@@ -35,10 +32,7 @@ fn main() {
         x: Chars,
     }
     let mut d = x.len();
-    let chs = x
-        .iter()
-        .map(|c| toc(c.to_digit(10).unwrap() as isize))
-        .collect_vec();
+    let chs = x.iter().map(|&c| toc(toi(c))).collect_vec();
     let mut f = chs[0] as u8 as isize;
 
     let mut ans = vec![toc(9); 18]; // 最大を確保
@@ -50,7 +44,7 @@ fn main() {
                 // 桁全て確認
                 // 単調増加
                 for &sy in &[1, -1isize] {
-                    let mut t = vec![toc(f)];
+                    let mut t = vec![toc(f as usize)];
                     let mut prev = f;
                     let mut ok = true;
                     for _ in 0..d - 1 {
@@ -59,7 +53,7 @@ fn main() {
                             ok = false;
                             break;
                         }
-                        t.push(toc(nx));
+                        t.push(toc(nx as usize));
                         prev = nx;
                     }
                     if ok {

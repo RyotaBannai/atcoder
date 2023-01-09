@@ -3,7 +3,7 @@
  *
  * cpg run -p src/bin/other/aoj/eleven_lover_dp.rs
  */
-use library::utils::read::*;
+use library::utils::{conv::*, read::*};
 
 /**
  * Problem H: Eleven Lover
@@ -25,7 +25,7 @@ fn main() {
         let mut ans = 0;
 
         for (i, c) in a.iter().enumerate() {
-            let n = c.to_digit(10).unwrap() as usize;
+            let n = toi(*c);
             if n != 0 {
                 // 無条件に加える:= この桁(i) が先頭に使われるケースを想定.
                 // 1234 であれば、１を無視して、2を先頭として検討するとき、2%11=2 となるケースとして、do[i+1][2] の組み合わせは１増える.

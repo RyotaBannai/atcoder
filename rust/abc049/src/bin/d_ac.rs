@@ -21,6 +21,10 @@ use library::structure::disjoint_set::*;
  * https://atcoder.jp/contests/abc049/tasks/arc065_b
  *
  * tags: #union_find
+ *
+ * 連結されている都市数>=2 が考えられるから、
+ * 頂点u の道路、鉄道のroot をキーにしたmap にどちらも一致する都市数をカウント.
+ *
  */
 
 // #[fastout]

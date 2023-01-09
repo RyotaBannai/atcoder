@@ -11,6 +11,8 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+use library::number::*;
+
 /**
  * FizzBuzz Sum Hard
  *
@@ -25,9 +27,9 @@ use proconio::{fastout, input, marker::Chars};
 #[fastout]
 fn main() {
     input! {
-        n:usize,
-        a:usize,
-        b:usize
+        n:isize,
+        a:isize,
+        b:isize
     };
 
     let i = n / a;
@@ -36,7 +38,7 @@ fn main() {
     let j = n / b;
     let sum_2 = (b + (j * b)) * j / 2;
 
-    let lcm = num::integer::lcm(a, b);
+    let lcm = lcm(vec![a, b]);
     let k = n / lcm;
     let sum_3 = (lcm + (k * lcm)) * k / 2;
 

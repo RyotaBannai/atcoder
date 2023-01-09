@@ -31,17 +31,12 @@ fn main() {
     used.borrow_mut()[n] = true;
 
     let mut sum = 0;
-    loop {
-        match q.pop_back() {
-            Some(i) => {
-                sum += t[i];
-                v[i].iter().filter(|&&x| !used.borrow()[x]).for_each(|&x| {
-                    q.push_back(x);
-                    used.borrow_mut()[x] = true; // 一度取得した技は修練しない
-                });
-            }
-            None => break,
-        }
+    while let Some(i) = q.pop_back() {
+        sum += t[i];
+        v[i].iter().filter(|&&x| !used.borrow()[x]).for_each(|&x| {
+            q.push_back(x);
+            used.borrow_mut()[x] = true; // 一度取得した技は修練しない
+        });
     }
 
     println!("{}", sum);

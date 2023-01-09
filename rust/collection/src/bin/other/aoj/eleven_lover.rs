@@ -5,7 +5,7 @@
  */
 use std::collections::{BTreeMap, BTreeSet};
 type Map = BTreeMap<isize, usize>;
-use library::utils::read::*;
+use library::utils::{conv::*, read::*};
 
 /**
  * Problem H: Eleven Lover
@@ -42,7 +42,7 @@ fn main() {
         let mut so = vec![0isize; len + 1];
         let mut se = vec![0isize; len + 1];
         for (i, c) in a.iter().enumerate() {
-            let b = c.to_digit(10).unwrap() as isize;
+            let b = toi(*c) as isize;
             // 桁の偶奇
             if (i + len) % 2 == 0 {
                 so[i + 1] += so[i] + b;

@@ -32,7 +32,7 @@ use library::number::*;
 // #[fastout]
 fn main() {
     input! {
-        mut k : usize
+        mut k : isize
     }
 
     for i in 2..=2_000_000 {

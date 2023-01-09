@@ -45,6 +45,18 @@ path = "src/bin/g.rs"
 name = "abc226-h"
 path = "src/bin/h.rs"
 
+[[bin]]
+name = "abc226-c_ac"
+path = "src/bin/c_ac.rs"
+
+[[bin]]
+name = "abc226-c_ac2"
+path = "src/bin/c_ac2.rs"
+
+[[bin]]
+name = "abc226-d_ac"
+path = "src/bin/d_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
@@ -85,5 +97,6 @@ text_io = "=0.1.8"
 whiteread = "=0.5.0"
 rustc-hash = "=1.1.0"
 smallvec = "=1.2.0"
+library = { path = "../library" }
 
 [dev-dependencies]

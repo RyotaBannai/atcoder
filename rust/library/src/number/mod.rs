@@ -152,7 +152,7 @@ pub fn euler_phi(n: usize) -> usize {
  * 最大公約数を求める
  * 引数は３以上可
  */
-pub fn gcd(xs: Vec<usize>) -> usize {
+pub fn gcd(xs: Vec<isize>) -> isize {
     if xs.is_empty() {
         return 0;
     }
@@ -172,7 +172,7 @@ pub fn gcd(xs: Vec<usize>) -> usize {
  * 最小公倍数
  * 引数は３以上可
  */
-pub fn lcm(xs: Vec<usize>) -> usize {
+pub fn lcm(xs: Vec<isize>) -> isize {
     if xs.is_empty() {
         return 0;
     }
