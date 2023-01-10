@@ -80,6 +80,10 @@ name = "lca"
 path = "src/bin/graph/other/lca.rs"
 
 [[bin]]
+name = "topological_sort"
+path = "src/bin/graph/other/topological_sort.rs"
+
+[[bin]]
 name = "range_query_1d"
 path = "src/bin/query/kdtree/range_query_1d.rs"
 

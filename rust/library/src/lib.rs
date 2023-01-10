@@ -4,9 +4,9 @@
  * e.g.
  * cargo equip --bin [bin_name] --remove docs --minify libs --exclude-atcoder-crates --exclude easy-ext ac-library-rs | pbcopy
  */
-pub mod geometry;
-pub mod graph;
-pub mod number;
-pub mod query;
-pub mod structure;
+// pub mod geometry;
+// pub mod graph;
+// pub mod number;
+// pub mod query;
+// pub mod structure;
 pub mod utils;
