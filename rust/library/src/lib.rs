@@ -6,6 +6,7 @@
  */
 pub mod geometry;
 pub mod graph;
+pub mod matrix;
 pub mod number;
 pub mod query;
 pub mod structure;
