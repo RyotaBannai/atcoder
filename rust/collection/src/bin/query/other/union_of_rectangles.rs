@@ -39,7 +39,7 @@ fn main() {
     //     let a = read::<isize>();
     //     v.push((a[0], a[1], a[2], a[3]));
     // }
-    let cp2 = compress2(v, false, false);
+    let cp2 = compress2d_rect(v, false, false);
     let (compressed, xs, ys) = (cp2.compressed, cp2.xs, cp2.ys);
 
     let x_len = xs.len();

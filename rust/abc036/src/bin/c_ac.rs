@@ -30,7 +30,7 @@ fn main() {
         n: usize,
         mut a: [usize; n]
     }
-    let na = compress1(a);
+    let na = compress(a);
     for x in na {
         println!("{}", x);
     }
