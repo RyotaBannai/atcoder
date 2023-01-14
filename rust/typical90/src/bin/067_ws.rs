@@ -11,6 +11,8 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+use library::utils::conv::a_to_b_i;
+
 /**
  * @workspace
  *
@@ -29,51 +31,16 @@ use proconio::{fastout, input, marker::Chars};
 #[fastout]
 fn main() {
     input! {
-        n : usize,
+        n: usize,
         k: usize
     }
 
     // let n = 21;
     // let k = 1;
 
-    fn a_to_b(a: usize, b: usize, n: usize) -> usize {
-        // a to 10
-        let mut sum = 0;
-        let mut d = 10;
-        let mut aa = 1;
-        loop {
-            let rest = n % d / (d / 10);
-            sum += rest * aa;
-            if n / d == 0 {
-                break;
-            }
-            d *= 10;
-            aa *= a;
-        }
-
-        // 10 to b
-        let mut v = vec![];
-        loop {
-            let rest = sum % b;
-            v.push(rest);
-            sum /= b;
-            if sum == 0 {
-                // 商がなくなるまで繰り返す
-                break;
-            }
-        }
-        let mut ret = 0;
-        let mut d = 1;
-        for x in v.iter() {
-            ret += x * d;
-            d *= 10;
-        }
-        ret
-    }
-
     let mut ans = n;
     for _ in 0..k {
-        ans = a_to_b(8, 9, ans);
+        ans = a_to_b_i(8, 9, ans);
 
         let mut tmp = 0;
         let mut d = 10;

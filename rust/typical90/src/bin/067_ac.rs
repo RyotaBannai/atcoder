@@ -1,3 +1,4 @@
+use itertools::Itertools;
 use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{min, max};
 // use ac_library_rs::modint::ModInt998244353 as Mint;
@@ -30,32 +31,16 @@ fn main() {
         n: Chars,
         k: usize
     }
-
     let a = 8;
     let b = 9;
     // Vec<usize> に変換して、一の位が先に来るように rev しておく.
-    let mut ans = n.iter().rev().map(|&c| toi(c)).collect::<Vec<_>>();
+    let mut ans = n.into_iter().rev().map(toi).collect_vec();
 
     for _ in 0..k {
-        let mut sum = 0;
-        let mut aa = 1;
-        // 8->10 へ変換
-        for c in ans.iter() {
-            sum += aa * c;
-            aa *= a;
-        }
-        // 10->9 へ変換
-        let mut v = vec![];
-        loop {
-            let rest = sum % b;
-            v.push(if rest == 8 { 5 } else { rest } as usize);
-            sum /= b;
-            if sum == 0 {
-                // 商がなくなるまで繰り返す
-                break;
-            }
-        }
-        ans = v;
+        ans = a_to_b_v(a, b, &ans)
+            .iter()
+            .map(|&x| if x == 8 { 5 } else { x } as usize)
+            .collect_vec();
     }
 
     for c in ans.iter().rev() {

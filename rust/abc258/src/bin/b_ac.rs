@@ -1,3 +1,4 @@
+use itertools::Itertools;
 use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
@@ -36,9 +37,9 @@ fn main() {
         a: [Chars;n]
     }
     let t = a
-        .iter()
-        .map(|s| s.iter().map(|&c| toi(c)).collect::<Vec<_>>())
-        .collect::<Vec<_>>();
+        .into_iter()
+        .map(|s| s.into_iter().map(toi).collect_vec())
+        .collect::<Vec<Vec<usize>>>();
 
     let mut ans = 0;
     for mut i in 0..n {
