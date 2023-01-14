@@ -1,56 +1,52 @@
 [package]
-name = "abc215"
+name = "abc214"
 version = "0.1.0"
 edition = "2018"
 
 [package.metadata.cargo-compete.bin]
-abc215-a = { alias = "a", problem = "https://atcoder.jp/contests/abc215/tasks/abc215_a" }
-abc215-b = { alias = "b", problem = "https://atcoder.jp/contests/abc215/tasks/abc215_b" }
-abc215-c = { alias = "c", problem = "https://atcoder.jp/contests/abc215/tasks/abc215_c" }
-abc215-d = { alias = "d", problem = "https://atcoder.jp/contests/abc215/tasks/abc215_d" }
-abc215-e = { alias = "e", problem = "https://atcoder.jp/contests/abc215/tasks/abc215_e" }
-abc215-f = { alias = "f", problem = "https://atcoder.jp/contests/abc215/tasks/abc215_f" }
-abc215-g = { alias = "g", problem = "https://atcoder.jp/contests/abc215/tasks/abc215_g" }
-abc215-h = { alias = "h", problem = "https://atcoder.jp/contests/abc215/tasks/abc215_h" }
+abc214-a = { alias = "a", problem = "https://atcoder.jp/contests/abc214/tasks/abc214_a" }
+abc214-b = { alias = "b", problem = "https://atcoder.jp/contests/abc214/tasks/abc214_b" }
+abc214-c = { alias = "c", problem = "https://atcoder.jp/contests/abc214/tasks/abc214_c" }
+abc214-d = { alias = "d", problem = "https://atcoder.jp/contests/abc214/tasks/abc214_d" }
+abc214-e = { alias = "e", problem = "https://atcoder.jp/contests/abc214/tasks/abc214_e" }
+abc214-f = { alias = "f", problem = "https://atcoder.jp/contests/abc214/tasks/abc214_f" }
+abc214-g = { alias = "g", problem = "https://atcoder.jp/contests/abc214/tasks/abc214_g" }
+abc214-h = { alias = "h", problem = "https://atcoder.jp/contests/abc214/tasks/abc214_h" }
 
 [[bin]]
-name = "abc215-a"
+name = "abc214-a"
 path = "src/bin/a.rs"
 
 [[bin]]
-name = "abc215-b"
+name = "abc214-b"
 path = "src/bin/b.rs"
 
 [[bin]]
-name = "abc215-c"
+name = "abc214-c"
 path = "src/bin/c.rs"
 
 [[bin]]
-name = "abc215-d"
+name = "abc214-d"
 path = "src/bin/d.rs"
 
 [[bin]]
-name = "abc215-e"
+name = "abc214-e"
 path = "src/bin/e.rs"
 
 [[bin]]
-name = "abc215-f"
+name = "abc214-f"
 path = "src/bin/f.rs"
 
 [[bin]]
-name = "abc215-g"
+name = "abc214-g"
 path = "src/bin/g.rs"
 
 [[bin]]
-name = "abc215-h"
+name = "abc214-h"
 path = "src/bin/h.rs"
 
 [[bin]]
-name = "abc215-d_ac"
-path = "src/bin/d_ac.rs"
-
-[[bin]]
-name = "abc215-b_ac"
+name = "abc214-b_ac"
 path = "src/bin/b_ac.rs"
 
 [dependencies]
