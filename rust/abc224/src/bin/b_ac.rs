@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
 //     Ordering::{Equal, Greater, Less},
@@ -14,7 +14,27 @@
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * Mongeness
+ *
+ * https://atcoder.jp/contests/abc224/tasks/abc224_b
+ *
+ */
+
 // #[fastout]
 fn main() {
-    todo!();
+    input! {
+        h: usize,
+        w: usize,
+        g: [[usize; w];h ]
+    }
+    for i in 0..h - 1 {
+        for j in 0..w - 1 {
+            if g[i][j] + g[i + 1][j + 1] > g[i][j + 1] + g[i + 1][j] {
+                println!("No");
+                return;
+            }
+        }
+    }
+    println!("Yes");
 }
