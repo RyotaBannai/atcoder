@@ -81,3 +81,13 @@ pub fn a_to_b_v(a: usize, b: usize, xs: &[usize]) -> Vec<usize> {
     }
     v
 }
+
+// 英子文字を数値に変換.
+pub fn alp_to_i(c: char) -> usize {
+    (c as u8 - b'a') as usize
+}
+
+// 英大文字を数値に変換.
+pub fn calp_to_i(c: char) -> usize {
+    (c as u8 - b'A') as usize
+}
