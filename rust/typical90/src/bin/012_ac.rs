@@ -42,7 +42,7 @@ use proconio::{fastout, input, marker::Chars};
  */
 use typical90::structure::disjoint_set::*;
 
-#[fastout]
+// #[fastout]
 fn main() {
     input! {
         h: usize,
