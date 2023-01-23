@@ -10,7 +10,7 @@ use proconio::{fastout, input, marker::Chars};
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use typical90::nt_lib::*;
+use library::number::*;
 
 /**
  * 075 - Magic For Balls（★3）
@@ -31,7 +31,7 @@ use typical90::nt_lib::*;
  * - ABC084-D 「2017-like Number」
  */
 
-#[fastout]
+// #[fastout]
 fn main() {
     input! {
         n: usize

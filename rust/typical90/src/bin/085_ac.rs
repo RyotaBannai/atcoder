@@ -10,7 +10,7 @@ use proconio::{fastout, input, marker::Chars};
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use typical90::number::*;
+use library::number::*;
 
 /**
  * 085 - Multiplication 085（★4）
@@ -31,7 +31,7 @@ use typical90::number::*;
  * - ABC020-D 「LCM Rush」
  */
 
-#[fastout]
+// #[fastout]
 fn main() {
     input! {
         k: usize

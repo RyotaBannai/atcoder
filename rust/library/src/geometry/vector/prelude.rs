@@ -1,3 +1,4 @@
+use std::ops::{AddAssign, DivAssign, MulAssign, SubAssign};
 use std::{
     cmp::{
         Ordering,
@@ -49,10 +50,26 @@ impl Sub for Vector {
         Vector::new(self.x - other.x, self.y - other.y)
     }
 }
+impl SubAssign for Vector {
+    fn sub_assign(&mut self, other: Self) {
+        *self = Self {
+            x: self.x - other.x,
+            y: self.y - other.y,
+        };
+    }
+}
 impl Add for Vector {
     type Output = Self;
     fn add(self, other: Self) -> Self {
         Vector::new(self.x + other.x, self.y + other.y)
+    }
+}
+impl AddAssign for Vector {
+    fn add_assign(&mut self, other: Self) {
+        *self = Self {
+            x: self.x + other.x,
+            y: self.y + other.y,
+        };
     }
 }
 impl Mul<f64> for Vector {
@@ -61,10 +78,26 @@ impl Mul<f64> for Vector {
         Vector::new(self.x * k, self.y * k)
     }
 }
+impl MulAssign<f64> for Vector {
+    fn mul_assign(&mut self, k: f64) {
+        *self = Self {
+            x: self.x * k,
+            y: self.y * k,
+        };
+    }
+}
 impl Div<f64> for Vector {
     type Output = Self;
     fn div(self, k: f64) -> Self {
         Vector::new(self.x / k, self.y / k)
+    }
+}
+impl DivAssign<f64> for Vector {
+    fn div_assign(&mut self, k: f64) {
+        *self = Self {
+            x: self.x / k,
+            y: self.y / k,
+        };
     }
 }
 

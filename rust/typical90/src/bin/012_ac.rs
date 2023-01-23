@@ -40,7 +40,7 @@ use proconio::{fastout, input, marker::Chars};
  * 赤で塗るときに、上下左右が赤なら全て連結したい
  *
  */
-use typical90::structure::disjoint_set::*;
+use library::structure::disjoint_set::*;
 
 // #[fastout]
 fn main() {
