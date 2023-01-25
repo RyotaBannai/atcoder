@@ -121,6 +121,7 @@ pub fn points_at_intersection_line_from_le(c: Circle, mut le: LinearEquation) ->
 *
 * points_at_intersection_line_from_le と同様の結果を期待できる
 */
+#[allow(dead_code)]
 fn points_at_intersection_line_from_le_2(c: Circle, le: LinearEquation) -> Vec<Vector> {
     let mut res = Vec::with_capacity(2);
     // 単位ベクトルとベクトルの内積をすれば、|base|=1 となって計算が楽
