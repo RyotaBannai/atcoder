@@ -39,6 +39,10 @@ path = "src/bin/f.rs"
 name = "abc198-e_ac"
 path = "src/bin/e_ac.rs"
 
+[[bin]]
+name = "abc198-c_ac"
+path = "src/bin/c_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
@@ -83,5 +87,6 @@ derive-new = "0.5.9"
 easy-ext = "1.0.0"
 ac-library-rs  = { git = "https://github.com/rust-lang-ja/ac-library-rs" }
 library = { path = "../library" }
+# num-bigfloat = "1.6.1"
 
 [dev-dependencies]
