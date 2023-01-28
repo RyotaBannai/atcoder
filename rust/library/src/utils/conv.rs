@@ -6,9 +6,9 @@ pub fn toi(c: char) -> usize {
     c.to_digit(10).unwrap() as usize
 }
 
-pub fn calc_num(v: Vec<char>) -> usize {
+pub fn calc_num(v: &[char]) -> usize {
     let mut num = 0;
-    for x in v {
+    for &x in v {
         num *= 10;
         num += toi(x);
     }

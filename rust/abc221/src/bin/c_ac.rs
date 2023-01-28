@@ -47,8 +47,8 @@ fn main() {
             for i in 1..len - 1 {
                 let a = xs[..i].iter().cloned().collect_vec();
                 let b = xs[i..].iter().cloned().collect_vec();
-                let num1 = calc_num(a);
-                let num2 = calc_num(b);
+                let num1 = calc_num(&a);
+                let num2 = calc_num(&b);
                 ma = ma.max(num1 * num2);
             }
         }
