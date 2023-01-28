@@ -14,7 +14,17 @@ use proconio::{fastout, input, marker::Chars};
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use library::utils::conv::{calc_num, toi};
+use library::utils::conv::{calc_num, count_d};
+
+/**
+ * Doubled
+ *
+ * https://atcoder.jp/contests/abc196/tasks/abc196_c
+ *
+ * 1000,0999 とか 20 の場合に気を付ける.
+ *
+ *
+ */
 
 // #[fastout]
 fn main() {
@@ -23,13 +33,7 @@ fn main() {
     }
     let n = calc_num(&cs);
     cs = cs.into_iter().rev().collect_vec();
-    let mut len = 0;
-    let mut m = n;
-    while m > 0 {
-        len += 1;
-        m /= 10;
-    }
-
+    let len = count_d(n);
     let mut ans = 0;
     let mut d = 2usize;
     loop {
@@ -37,8 +41,8 @@ fn main() {
         if d > len {
             break;
         }
-        let low = 10usize.pow((d as u32 / 2) - 1);
-        // n の前半部分の最大値と比較した最小
+
+        let low = 10usize.pow((d as u32 / 2) - 1); // n桁の最小 1,10,100,...
         if d < len {
             // 前半部分の最大値
             let mut up = 0;
@@ -47,14 +51,16 @@ fn main() {
             }
             ans += up - low + 1;
         } else {
-            let fst = calc_num(&cs[d / 2..d].iter().cloned().rev().collect_vec());
-            let sec = calc_num(&cs[0..d / 2].iter().cloned().rev().collect_vec());
-            let up = fst.min(sec);
-            if up >= low {
-                // 10,000,000 の時
-                // 0 - 1,000 となる.
-                // 他にも 1000,0999 とかもだめ.
-                ans += up - low + 1;
+            let mut fst = calc_num(&cs[d / 2..d].iter().cloned().rev().collect_vec());
+            let snd = calc_num(&cs[0..d / 2].iter().cloned().rev().collect_vec());
+
+            // 一番下の桁を一つ減らせばそれ以下の、前後同じになる文字列の組みは全て作れる.
+            if snd < fst {
+                fst -= 1;
+            }
+            // 1009 みたいな,fst>snc かつlow と同じ数値になるケースでは 0909 となって偶数桁数にならない
+            if count_d(fst) >= d / 2 {
+                ans += fst - low + 1;
             }
         }
 

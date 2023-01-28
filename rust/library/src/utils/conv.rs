@@ -6,6 +6,7 @@ pub fn toi(c: char) -> usize {
     c.to_digit(10).unwrap() as usize
 }
 
+// 先頭が最大桁の数 ex. calc(vec!['1','0','0']) <=> 100
 pub fn calc_num(v: &[char]) -> usize {
     let mut num = 0;
     for &x in v {
@@ -90,4 +91,14 @@ pub fn alp_to_i(c: char) -> usize {
 // 英大文字を数値に変換.
 pub fn calp_to_i(c: char) -> usize {
     (c as u8 - b'A') as usize
+}
+
+// 整数n の桁数を数える
+pub fn count_d(mut n: usize) -> usize {
+    let mut len = 0;
+    while n > 0 {
+        len += 1;
+        n /= 10;
+    }
+    len
 }
