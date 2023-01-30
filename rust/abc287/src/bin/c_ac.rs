@@ -19,6 +19,8 @@ use std::collections::{BinaryHeap, VecDeque};
  *
  * https://atcoder.jp/contests/abc287/tasks/abc287_c
  *
+ * tags: #star #スター #グラフ
+ *
  * 連結かどうか、巡回してるかどうかチェック
  *
  */
@@ -31,17 +33,26 @@ fn main() {
         uv: [(usize, usize); m]
     }
 
+    let mut deg = vec![0; n + 1]; // 入次数を管理
     let mut list = vec![Set::new(); n + 1];
     for (u, v) in uv {
         list[u].insert(v);
         list[v].insert(u);
+        deg[u] += 1;
+        deg[v] += 1;
+
+        // グラフがスターになっている時とかはパスグラフになり得ないから入次数でチェック
+        if deg[u] > 2 || deg[v] > 2 {
+            println!("No");
+            return;
+        }
     }
 
     let mut q = VecDeque::new();
     let mut used = vec![false; n + 1];
     used[0] = true;
 
-    q.push_back((1, 0)); // 連結だから1 から初めて良い
+    q.push_back((1, 0)); // 連結だから1 から初めて良い // 端から始めなくても良い.
 
     // p: 親
     while let Some((u, p)) = q.pop_back() {
@@ -56,7 +67,10 @@ fn main() {
                 println!("No");
                 return;
             }
-            q.push_back((v, u));
+            deg[v] -= 1;
+            if deg[v] <= 1 {
+                q.push_back((v, u));
+            }
         }
     }
 
