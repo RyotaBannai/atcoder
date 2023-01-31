@@ -1,3 +1,5 @@
+use itertools::Itertools;
+
 pub fn toc(i: usize) -> char {
     i as u8 as char
 }
@@ -58,6 +60,15 @@ pub fn build_i(xs: &[usize]) -> usize {
         d *= 10;
     }
     ret
+}
+
+pub fn deassemble_i(mut x: usize) -> Vec<usize> {
+    let mut ret = vec![];
+    while x > 0 {
+        ret.push(x % 10);
+        x /= 10;
+    }
+    ret.into_iter().rev().collect_vec()
 }
 
 // xs のindex 0 は一の位, n-1 は最大桁が入ることを想定

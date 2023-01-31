@@ -8,9 +8,9 @@ fn main() {
     for i in 0..s.len() {
         if (i % 2 == 0) ^ s[i].is_ascii_lowercase() {
             // どちらかのみ条件満たしているなら不正解なため ^
-            println!("{}", "No");
+            println!("No");
             return;
         }
     }
-    println!("{}", "Yes");
+    println!("Yes");
 }
