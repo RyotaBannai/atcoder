@@ -120,6 +120,10 @@ pub fn factorize(n: usize) -> BTreeMap<usize, usize> {
 /**
  * 約数
  * sorted
+ *
+ * 計算量
+ * O(√N)
+ *
  */
 pub fn divisor(n: usize) -> Vec<usize> {
     let mut divisors = BTreeSet::<usize>::new();
