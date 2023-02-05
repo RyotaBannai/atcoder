@@ -43,6 +43,10 @@ path = "src/bin/c_ac.rs"
 name = "abc189-b_ac"
 path = "src/bin/b_ac.rs"
 
+[[bin]]
+name = "abc189-d_ac"
+path = "src/bin/d_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
@@ -83,5 +87,7 @@ text_io = "=0.1.8"
 whiteread = "=0.5.0"
 rustc-hash = "=1.1.0"
 smallvec = "=1.2.0"
+ac-library-rs  = { git = "https://github.com/rust-lang-ja/ac-library-rs" }
+library = { path = "../library" }
 
 [dev-dependencies]

@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
 //     Ordering::{Equal, Greater, Less},
@@ -14,6 +14,29 @@
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+use library::{chmax, chmin};
+use std::usize::MAX;
+
+/**
+ * Mandarin Orange
+ *
+ * tags: #全探索 #10^8
+ *
+ *
+ */
 fn main() {
-    todo!();
+    input! {
+        n: usize,
+        a: [usize; n]
+    }
+
+    let mut ans = 0;
+    for l in 0..n {
+        let mut mi = MAX;
+        for r in l..n {
+            chmin!(mi, a[r]);
+            chmax!(ans, mi * (r - l + 1));
+        }
+    }
+    println!("{}", ans);
 }
