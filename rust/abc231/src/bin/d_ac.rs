@@ -6,6 +6,7 @@ use proconio::{fastout, input};
  *
  * https://atcoder.jp/contests/abc231/tasks/abc231_d
  *
+ * tags: #dfs
  *
  * 1~N の数字を M 個の数値を繋げながら、横一直線に並べることができるか判定せよ
  *

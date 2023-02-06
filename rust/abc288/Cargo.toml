@@ -1,65 +1,53 @@
 [package]
-name = "jsc2021"
+name = "abc288"
 version = "0.1.0"
 edition = "2018"
 
 [package.metadata.cargo-compete.bin]
-jsc2021-a = { alias = "a", problem = "https://atcoder.jp/contests/jsc2021/tasks/jsc2021_a" }
-jsc2021-b = { alias = "b", problem = "https://atcoder.jp/contests/jsc2021/tasks/jsc2021_b" }
-jsc2021-c = { alias = "c", problem = "https://atcoder.jp/contests/jsc2021/tasks/jsc2021_c" }
-jsc2021-d = { alias = "d", problem = "https://atcoder.jp/contests/jsc2021/tasks/jsc2021_d" }
-jsc2021-e = { alias = "e", problem = "https://atcoder.jp/contests/jsc2021/tasks/jsc2021_e" }
-jsc2021-f = { alias = "f", problem = "https://atcoder.jp/contests/jsc2021/tasks/jsc2021_f" }
-jsc2021-g = { alias = "g", problem = "https://atcoder.jp/contests/jsc2021/tasks/jsc2021_g" }
-jsc2021-h = { alias = "h", problem = "https://atcoder.jp/contests/jsc2021/tasks/jsc2021_h" }
+abc288-a = { alias = "a", problem = "https://atcoder.jp/contests/abc288/tasks/abc288_a" }
+abc288-b = { alias = "b", problem = "https://atcoder.jp/contests/abc288/tasks/abc288_b" }
+abc288-c = { alias = "c", problem = "https://atcoder.jp/contests/abc288/tasks/abc288_c" }
+abc288-d = { alias = "d", problem = "https://atcoder.jp/contests/abc288/tasks/abc288_d" }
+abc288-e = { alias = "e", problem = "https://atcoder.jp/contests/abc288/tasks/abc288_e" }
+abc288-ex = { alias = "ex", problem = "https://atcoder.jp/contests/abc288/tasks/abc288_h" }
+abc288-f = { alias = "f", problem = "https://atcoder.jp/contests/abc288/tasks/abc288_f" }
+abc288-g = { alias = "g", problem = "https://atcoder.jp/contests/abc288/tasks/abc288_g" }
 
 [[bin]]
-name = "jsc2021-a"
+name = "abc288-a"
 path = "src/bin/a.rs"
 
 [[bin]]
-name = "jsc2021-b"
+name = "abc288-b"
 path = "src/bin/b.rs"
 
 [[bin]]
-name = "jsc2021-c"
+name = "abc288-c"
 path = "src/bin/c.rs"
 
 [[bin]]
-name = "jsc2021-d"
+name = "abc288-d"
 path = "src/bin/d.rs"
 
 [[bin]]
-name = "jsc2021-e"
+name = "abc288-e"
 path = "src/bin/e.rs"
 
 [[bin]]
-name = "jsc2021-f"
+name = "abc288-ex"
+path = "src/bin/ex.rs"
+
+[[bin]]
+name = "abc288-f"
 path = "src/bin/f.rs"
 
 [[bin]]
-name = "jsc2021-g"
+name = "abc288-g"
 path = "src/bin/g.rs"
 
 [[bin]]
-name = "jsc2021-h"
-path = "src/bin/h.rs"
-
-[[bin]]
-name = "jsc2021-d_ac"
-path = "src/bin/d_ac.rs"
-
-[[bin]]
-name = "jsc2021-c_ac"
+name = "abc288-c_ac"
 path = "src/bin/c_ac.rs"
-
-[[bin]]
-name = "jsc2021-c_ac2"
-path = "src/bin/c_ac2.rs"
-
-[[bin]]
-name = "jsc2021-b_ac"
-path = "src/bin/b_ac.rs"
 
 [dependencies]
 num = "=0.2.1"
