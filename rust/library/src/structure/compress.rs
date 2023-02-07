@@ -2,7 +2,7 @@ use itertools::Itertools;
 use superslice::{self, Ext};
 
 // １元座標圧縮
-pub fn compress(xs: Vec<isize>) -> Vec<isize> {
+pub fn compress(xs: Vec<isize>) -> (Vec<isize>, Vec<isize>) {
     // 1. 元の座標上の値をソートしてユニークな値だけ取り出す
     // 2. それぞれの値を二分探索して、新しい位置(index)を探す
     // こうすることで、異なる値が同じ値（index）を取ることなく、値が乗らない座標は削除できる（圧縮できる）
@@ -14,7 +14,7 @@ pub fn compress(xs: Vec<isize>) -> Vec<isize> {
         *x = vals.lower_bound(&orig_val) as isize;
     }
 
-    nxs
+    (nxs, vals)
 }
 
 #[derive(Clone, Debug)]
