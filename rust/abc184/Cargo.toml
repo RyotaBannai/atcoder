@@ -1,47 +1,39 @@
 [package]
-name = "abc180"
+name = "abc184"
 version = "0.1.0"
 edition = "2018"
 
 [package.metadata.cargo-compete.bin]
-abc180-a = { alias = "a", problem = "https://atcoder.jp/contests/abc180/tasks/abc180_a" }
-abc180-b = { alias = "b", problem = "https://atcoder.jp/contests/abc180/tasks/abc180_b" }
-abc180-c = { alias = "c", problem = "https://atcoder.jp/contests/abc180/tasks/abc180_c" }
-abc180-d = { alias = "d", problem = "https://atcoder.jp/contests/abc180/tasks/abc180_d" }
-abc180-e = { alias = "e", problem = "https://atcoder.jp/contests/abc180/tasks/abc180_e" }
-abc180-f = { alias = "f", problem = "https://atcoder.jp/contests/abc180/tasks/abc180_f" }
+abc184-a = { alias = "a", problem = "https://atcoder.jp/contests/abc184/tasks/abc184_a" }
+abc184-b = { alias = "b", problem = "https://atcoder.jp/contests/abc184/tasks/abc184_b" }
+abc184-c = { alias = "c", problem = "https://atcoder.jp/contests/abc184/tasks/abc184_c" }
+abc184-d = { alias = "d", problem = "https://atcoder.jp/contests/abc184/tasks/abc184_d" }
+abc184-e = { alias = "e", problem = "https://atcoder.jp/contests/abc184/tasks/abc184_e" }
+abc184-f = { alias = "f", problem = "https://atcoder.jp/contests/abc184/tasks/abc184_f" }
 
 [[bin]]
-name = "abc180-a"
+name = "abc184-a"
 path = "src/bin/a.rs"
 
 [[bin]]
-name = "abc180-b"
+name = "abc184-b"
 path = "src/bin/b.rs"
 
 [[bin]]
-name = "abc180-c"
+name = "abc184-c"
 path = "src/bin/c.rs"
 
 [[bin]]
-name = "abc180-d"
+name = "abc184-d"
 path = "src/bin/d.rs"
 
 [[bin]]
-name = "abc180-e"
+name = "abc184-e"
 path = "src/bin/e.rs"
 
 [[bin]]
-name = "abc180-f"
+name = "abc184-f"
 path = "src/bin/f.rs"
-
-[[bin]]
-name = "abc180-d_ac"
-path = "src/bin/d_ac.rs"
-
-[[bin]]
-name = "abc180-c_ac"
-path = "src/bin/c_ac.rs"
 
 [dependencies]
 num = "=0.2.1"
@@ -52,8 +44,8 @@ num-iter = "=0.1.40"
 num-rational = "=0.2.4"
 num-traits = "=0.2.11"
 num-derive = "=0.3.0"
-ndarray = "=0.13.0"
-nalgebra = "=0.20.0"
+# ndarray = "=0.13.0"
+# nalgebra = "=0.20.0"
 alga = "=0.9.3"
 libm = "=0.2.1"
 rand = { version = "=0.7.3", features = ["small_rng"] }
@@ -83,6 +75,8 @@ text_io = "=0.1.8"
 whiteread = "=0.5.0"
 rustc-hash = "=1.1.0"
 smallvec = "=1.2.0"
+derive-new = "0.5.9"
+easy-ext = "1.0.0"
 ac-library-rs  = { git = "https://github.com/rust-lang-ja/ac-library-rs" }
 library = { path = "../library" }
 
