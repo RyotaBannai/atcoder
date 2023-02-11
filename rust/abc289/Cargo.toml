@@ -1,51 +1,65 @@
 [package]
-name = "abc181"
+name = "abc289"
 version = "0.1.0"
 edition = "2018"
 
 [package.metadata.cargo-compete.bin]
-abc181-a = { alias = "a", problem = "https://atcoder.jp/contests/abc181/tasks/abc181_a" }
-abc181-b = { alias = "b", problem = "https://atcoder.jp/contests/abc181/tasks/abc181_b" }
-abc181-c = { alias = "c", problem = "https://atcoder.jp/contests/abc181/tasks/abc181_c" }
-abc181-d = { alias = "d", problem = "https://atcoder.jp/contests/abc181/tasks/abc181_d" }
-abc181-e = { alias = "e", problem = "https://atcoder.jp/contests/abc181/tasks/abc181_e" }
-abc181-f = { alias = "f", problem = "https://atcoder.jp/contests/abc181/tasks/abc181_f" }
+abc289-a = { alias = "a", problem = "https://atcoder.jp/contests/abc289/tasks/abc289_a" }
+abc289-b = { alias = "b", problem = "https://atcoder.jp/contests/abc289/tasks/abc289_b" }
+abc289-c = { alias = "c", problem = "https://atcoder.jp/contests/abc289/tasks/abc289_c" }
+abc289-d = { alias = "d", problem = "https://atcoder.jp/contests/abc289/tasks/abc289_d" }
+abc289-e = { alias = "e", problem = "https://atcoder.jp/contests/abc289/tasks/abc289_e" }
+abc289-ex = { alias = "ex", problem = "https://atcoder.jp/contests/abc289/tasks/abc289_h" }
+abc289-f = { alias = "f", problem = "https://atcoder.jp/contests/abc289/tasks/abc289_f" }
+abc289-g = { alias = "g", problem = "https://atcoder.jp/contests/abc289/tasks/abc289_g" }
 
 [[bin]]
-name = "abc181-a"
+name = "abc289-a"
 path = "src/bin/a.rs"
 
 [[bin]]
-name = "abc181-b"
+name = "abc289-b"
 path = "src/bin/b.rs"
 
 [[bin]]
-name = "abc181-c"
+name = "abc289-c"
 path = "src/bin/c.rs"
 
 [[bin]]
-name = "abc181-d"
+name = "abc289-d"
 path = "src/bin/d.rs"
 
 [[bin]]
-name = "abc181-e"
+name = "abc289-e"
 path = "src/bin/e.rs"
 
 [[bin]]
-name = "abc181-f"
+name = "abc289-ex"
+path = "src/bin/ex.rs"
+
+[[bin]]
+name = "abc289-f"
 path = "src/bin/f.rs"
 
 [[bin]]
-name = "abc181-d_ac"
+name = "abc289-g"
+path = "src/bin/g.rs"
+
+[[bin]]
+name = "abc289-d_ac"
 path = "src/bin/d_ac.rs"
 
 [[bin]]
-name = "abc181-e_ac"
-path = "src/bin/e_ac.rs"
+name = "abc289-c_ac"
+path = "src/bin/c_ac.rs"
 
 [[bin]]
-name = "abc181-c_ac"
-path = "src/bin/c_ac.rs"
+name = "abc289-b_ac"
+path = "src/bin/b_ac.rs"
+
+[[bin]]
+name = "abc289-a_ac"
+path = "src/bin/a_ac.rs"
 
 [dependencies]
 num = "=0.2.1"
