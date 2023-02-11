@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
 //     Ordering::{Equal, Greater, Less},
@@ -14,7 +14,22 @@
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * Trapezoid Sum
+ *
+ * https://atcoder.jp/contests/abc181/tasks/abc181_b
+ *
+ */
+
 // #[fastout]
 fn main() {
-    todo!();
+    input! {
+        n: usize,
+        ab: [(usize, usize); n]
+    }
+    let mut sum = 0;
+    for (a, b) in ab {
+        sum += (b - a + 1) * (a + b) / 2;
+    }
+    println!("{}", sum);
 }
