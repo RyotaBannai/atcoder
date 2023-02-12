@@ -1,61 +1,43 @@
 [package]
-name = "abc257"
+name = "abl"
 version = "0.1.0"
 edition = "2018"
 
 [package.metadata.cargo-compete.bin]
-abc257-a = { alias = "a", problem = "https://atcoder.jp/contests/abc257/tasks/abc257_a" }
-abc257-b = { alias = "b", problem = "https://atcoder.jp/contests/abc257/tasks/abc257_b" }
-abc257-c = { alias = "c", problem = "https://atcoder.jp/contests/abc257/tasks/abc257_c" }
-abc257-d = { alias = "d", problem = "https://atcoder.jp/contests/abc257/tasks/abc257_d" }
-abc257-e = { alias = "e", problem = "https://atcoder.jp/contests/abc257/tasks/abc257_e" }
-abc257-ex = { alias = "ex", problem = "https://atcoder.jp/contests/abc257/tasks/abc257_h" }
-abc257-f = { alias = "f", problem = "https://atcoder.jp/contests/abc257/tasks/abc257_f" }
-abc257-g = { alias = "g", problem = "https://atcoder.jp/contests/abc257/tasks/abc257_g" }
+abl-a = { alias = "a", problem = "https://atcoder.jp/contests/abl/tasks/abl_a" }
+abl-b = { alias = "b", problem = "https://atcoder.jp/contests/abl/tasks/abl_b" }
+abl-c = { alias = "c", problem = "https://atcoder.jp/contests/abl/tasks/abl_c" }
+abl-d = { alias = "d", problem = "https://atcoder.jp/contests/abl/tasks/abl_d" }
+abl-e = { alias = "e", problem = "https://atcoder.jp/contests/abl/tasks/abl_e" }
+abl-f = { alias = "f", problem = "https://atcoder.jp/contests/abl/tasks/abl_f" }
 
 [[bin]]
-name = "abc257-a"
+name = "abl-a"
 path = "src/bin/a.rs"
 
 [[bin]]
-name = "abc257-b"
+name = "abl-b"
 path = "src/bin/b.rs"
 
 [[bin]]
-name = "abc257-c"
+name = "abl-c"
 path = "src/bin/c.rs"
 
 [[bin]]
-name = "abc257-d"
+name = "abl-d"
 path = "src/bin/d.rs"
 
 [[bin]]
-name = "abc257-e"
+name = "abl-e"
 path = "src/bin/e.rs"
 
 [[bin]]
-name = "abc257-ex"
-path = "src/bin/ex.rs"
-
-[[bin]]
-name = "abc257-f"
+name = "abl-f"
 path = "src/bin/f.rs"
 
 [[bin]]
-name = "abc257-g"
-path = "src/bin/g.rs"
-
-[[bin]]
-name = "abc257-c_ac"
+name = "abl-c_ac"
 path = "src/bin/c_ac.rs"
-
-[[bin]]
-name = "abc257-c_ac2"
-path = "src/bin/c_ac2.rs"
-
-[[bin]]
-name = "abc257-b_ac"
-path = "src/bin/b_ac.rs"
 
 [dependencies]
 num = "=0.2.1"
