@@ -18,13 +18,15 @@ use itertools::Itertools;
  * 素数表
  */
 // 素数だけ持っておく ver.
-pub fn prime(ma: usize) -> (Vec<bool>, Vec<usize>) {
+pub fn prime(ma: usize) -> (Vec<bool>, Vec<usize>, Vec<usize>) {
     let mut table = vec![false; ma + 1];
+    let mut table_2 = vec![0; ma + 1];
+    table_2[1] = 1;
     if ma == 0 || ma == 1 {
-        return (table, vec![]);
+        return (table, vec![], table_2);
     }
     let mut ps = vec![2];
-    for i in (3..=ma).step_by(2) {
+    for i in 3..=ma {
         let mut is_prime = true;
         for p in &ps {
             if p * p > i {
@@ -32,6 +34,7 @@ pub fn prime(ma: usize) -> (Vec<bool>, Vec<usize>) {
             }
             if i % p == 0 {
                 is_prime = false;
+                table_2[i] = *p;
                 break;
             }
         }
@@ -39,13 +42,11 @@ pub fn prime(ma: usize) -> (Vec<bool>, Vec<usize>) {
             ps.push(i);
         }
     }
-    // ps.iter().enumerate().for_each(|(i, x)| {
-    //     println!("{}", x);
-    // });
     for &x in &ps {
         table[x] = true;
+        table_2[x] = x;
     }
-    (table, ps)
+    (table, ps, table_2)
 }
 
 // pub fn prime(ma: usize) -> Vec<bool> {

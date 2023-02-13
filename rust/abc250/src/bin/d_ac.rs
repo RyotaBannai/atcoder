@@ -46,7 +46,7 @@ fn main() {
         return;
     }
 
-    let (_, ps) = prime((n as f64).cbrt() as usize);
+    let (_, ps, _) = prime((n as f64).cbrt() as usize);
     let mut ans = 0;
     for i in 0..ps.len() - 1 {
         for j in i + 1..ps.len() {

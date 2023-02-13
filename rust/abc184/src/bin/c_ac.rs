@@ -45,12 +45,12 @@ fn main() {
     }
 
     // 一手
-    // A (単調減少)
+    // A (単調減少) 同一直線上にあるか
     if a - b == c - d {
         println!("1");
         return;
     }
-    // B (単調増加)
+    // B (単調増加) 同一直線上にあるか
     if a + b == c + d {
         println!("1");
         return;
