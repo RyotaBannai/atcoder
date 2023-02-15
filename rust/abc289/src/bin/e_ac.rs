@@ -13,6 +13,18 @@ use proconio::{fastout, input, marker::Chars};
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 use std::collections::{BinaryHeap, VecDeque};
+use std::usize::MAX;
+
+/**
+ * Swap Places
+ *
+ * https://atcoder.jp/contests/abc289/tasks/abc289_e
+ *
+ * tags: #bfs
+ *
+ * 最短経路を求めたいときはbfs
+ *
+ */
 
 // #[fastout]
 fn main() {
@@ -37,11 +49,13 @@ fn main() {
         }
 
         let mut q = VecDeque::new();
-        q.push_back((1, n, 0, 0, 0));
+        q.push_back((1, n, 0));
 
         let mut ans = 0;
         let mut ok = false;
-        while let Some((t, a, pt, pa, cost)) = q.pop_front() {
+        let mut dist = vec![vec![MAX; n + 1]; n + 1];
+
+        while let Some((t, a, cost)) = q.pop_front() {
             // あった
             if t == n && a == 1 {
                 ok = true;
@@ -53,9 +67,11 @@ fn main() {
             for ct in list[t].clone() {
                 // 青木くんの移動
                 for ca in list[a].clone() {
-                    if nc[ct] != nc[ca] && ct != pt && ca != pa {
-                        q.push_back((ct, ca, t, a, cost + 1));
+                    if dist[ct][ca] != MAX || nc[ct] == nc[ca] {
+                        continue;
                     }
+                    dist[ct][ca] = cost + 1; // 初めて見つけた時が最短だから、queue に入れるときにdist を更新する
+                    q.push_back((ct, ca, cost + 1));
                 }
             }
         }
