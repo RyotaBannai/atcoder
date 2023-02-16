@@ -1,47 +1,43 @@
 [package]
-name = "abl"
+name = "abc176"
 version = "0.1.0"
 edition = "2018"
 
 [package.metadata.cargo-compete.bin]
-abl-a = { alias = "a", problem = "https://atcoder.jp/contests/abl/tasks/abl_a" }
-abl-b = { alias = "b", problem = "https://atcoder.jp/contests/abl/tasks/abl_b" }
-abl-c = { alias = "c", problem = "https://atcoder.jp/contests/abl/tasks/abl_c" }
-abl-d = { alias = "d", problem = "https://atcoder.jp/contests/abl/tasks/abl_d" }
-abl-e = { alias = "e", problem = "https://atcoder.jp/contests/abl/tasks/abl_e" }
-abl-f = { alias = "f", problem = "https://atcoder.jp/contests/abl/tasks/abl_f" }
+abc176-a = { alias = "a", problem = "https://atcoder.jp/contests/abc176/tasks/abc176_a" }
+abc176-b = { alias = "b", problem = "https://atcoder.jp/contests/abc176/tasks/abc176_b" }
+abc176-c = { alias = "c", problem = "https://atcoder.jp/contests/abc176/tasks/abc176_c" }
+abc176-d = { alias = "d", problem = "https://atcoder.jp/contests/abc176/tasks/abc176_d" }
+abc176-e = { alias = "e", problem = "https://atcoder.jp/contests/abc176/tasks/abc176_e" }
+abc176-f = { alias = "f", problem = "https://atcoder.jp/contests/abc176/tasks/abc176_f" }
 
 [[bin]]
-name = "abl-a"
+name = "abc176-a"
 path = "src/bin/a.rs"
 
 [[bin]]
-name = "abl-b"
+name = "abc176-b"
 path = "src/bin/b.rs"
 
 [[bin]]
-name = "abl-c"
+name = "abc176-c"
 path = "src/bin/c.rs"
 
 [[bin]]
-name = "abl-d"
+name = "abc176-d"
 path = "src/bin/d.rs"
 
 [[bin]]
-name = "abl-e"
+name = "abc176-e"
 path = "src/bin/e.rs"
 
 [[bin]]
-name = "abl-f"
+name = "abc176-f"
 path = "src/bin/f.rs"
 
 [[bin]]
-name = "abl-c_ac"
+name = "abc176-c_ac"
 path = "src/bin/c_ac.rs"
-
-[[bin]]
-name = "abl-b_ac"
-path = "src/bin/b_ac.rs"
 
 [dependencies]
 num = "=0.2.1"

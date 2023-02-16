@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
 //     Ordering::{Equal, Greater, Less},
@@ -14,7 +14,23 @@
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * Integer Preference
+ *
+ * https://atcoder.jp/contests/abl/tasks/abl_b
+ */
 // #[fastout]
 fn main() {
-    todo!();
+    input! {
+        a: usize,
+        b: usize,
+        c: usize,
+        d: usize,
+    }
+
+    if b < c || d < a {
+        println!("No");
+    } else {
+        println!("Yes");
+    }
 }
