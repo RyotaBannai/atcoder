@@ -1,63 +1,39 @@
 [package]
-name = "abc160"
+name = "abc164"
 version = "0.1.0"
 edition = "2018"
 
 [package.metadata.cargo-compete.bin]
-abc160-a = { alias = "a", problem = "https://atcoder.jp/contests/abc160/tasks/abc160_a" }
-abc160-b = { alias = "b", problem = "https://atcoder.jp/contests/abc160/tasks/abc160_b" }
-abc160-c = { alias = "c", problem = "https://atcoder.jp/contests/abc160/tasks/abc160_c" }
-abc160-d = { alias = "d", problem = "https://atcoder.jp/contests/abc160/tasks/abc160_d" }
-abc160-e = { alias = "e", problem = "https://atcoder.jp/contests/abc160/tasks/abc160_e" }
-abc160-f = { alias = "f", problem = "https://atcoder.jp/contests/abc160/tasks/abc160_f" }
+abc164-a = { alias = "a", problem = "https://atcoder.jp/contests/abc164/tasks/abc164_a" }
+abc164-b = { alias = "b", problem = "https://atcoder.jp/contests/abc164/tasks/abc164_b" }
+abc164-c = { alias = "c", problem = "https://atcoder.jp/contests/abc164/tasks/abc164_c" }
+abc164-d = { alias = "d", problem = "https://atcoder.jp/contests/abc164/tasks/abc164_d" }
+abc164-e = { alias = "e", problem = "https://atcoder.jp/contests/abc164/tasks/abc164_e" }
+abc164-f = { alias = "f", problem = "https://atcoder.jp/contests/abc164/tasks/abc164_f" }
 
 [[bin]]
-name = "abc160-a"
+name = "abc164-a"
 path = "src/bin/a.rs"
 
 [[bin]]
-name = "abc160-b"
+name = "abc164-b"
 path = "src/bin/b.rs"
 
 [[bin]]
-name = "abc160-c"
+name = "abc164-c"
 path = "src/bin/c.rs"
 
 [[bin]]
-name = "abc160-d"
+name = "abc164-d"
 path = "src/bin/d.rs"
 
 [[bin]]
-name = "abc160-e"
+name = "abc164-e"
 path = "src/bin/e.rs"
 
 [[bin]]
-name = "abc160-f"
+name = "abc164-f"
 path = "src/bin/f.rs"
-
-[[bin]]
-name = "abc160-f_ac"
-path = "src/bin/f_ac.rs"
-
-[[bin]]
-name = "abc160-e_ac"
-path = "src/bin/e_ac.rs"
-
-[[bin]]
-name = "abc160-d_ac"
-path = "src/bin/d_ac.rs"
-
-[[bin]]
-name = "abc160-c_ac"
-path = "src/bin/c_ac.rs"
-
-[[bin]]
-name = "abc160-a_ac"
-path = "src/bin/a_ac.rs"
-
-[[bin]]
-name = "abc160-b_ac"
-path = "src/bin/b_ac.rs"
 
 [dependencies]
 num = "=0.2.1"
@@ -103,6 +79,5 @@ derive-new = "0.5.9"
 easy-ext = "1.0.0"
 ac-library-rs  = { git = "https://github.com/rust-lang-ja/ac-library-rs" }
 library = { path = "../library" }
-
 
 [dev-dependencies]

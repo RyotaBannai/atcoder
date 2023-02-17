@@ -148,3 +148,25 @@ mod tests {
         assert_eq!(100.minmax(91), (91, 100));
     }
 }
+
+pub fn pair_sort<T>((a, b): (T, T)) -> (T, T)
+where
+    T: PartialOrd,
+{
+    if a < b {
+        (a, b)
+    } else {
+        (b, a)
+    }
+}
+
+pub fn pair_asort<T>((a, b): (T, T)) -> (T, T)
+where
+    T: PartialOrd,
+{
+    if a < b {
+        (b, a)
+    } else {
+        (a, b)
+    }
+}
