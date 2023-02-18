@@ -1,46 +1,46 @@
 [package]
-name = "abc166"
+name = "abc165"
 version = "0.1.0"
 edition = "2018"
 
 [package.metadata.cargo-compete.bin]
-abc166-a = { alias = "a", problem = "https://atcoder.jp/contests/abc166/tasks/abc166_a" }
-abc166-b = { alias = "b", problem = "https://atcoder.jp/contests/abc166/tasks/abc166_b" }
-abc166-c = { alias = "c", problem = "https://atcoder.jp/contests/abc166/tasks/abc166_c" }
-abc166-d = { alias = "d", problem = "https://atcoder.jp/contests/abc166/tasks/abc166_d" }
-abc166-e = { alias = "e", problem = "https://atcoder.jp/contests/abc166/tasks/abc166_e" }
-abc166-f = { alias = "f", problem = "https://atcoder.jp/contests/abc166/tasks/abc166_f" }
+abc165-a = { alias = "a", problem = "https://atcoder.jp/contests/abc165/tasks/abc165_a" }
+abc165-b = { alias = "b", problem = "https://atcoder.jp/contests/abc165/tasks/abc165_b" }
+abc165-c = { alias = "c", problem = "https://atcoder.jp/contests/abc165/tasks/abc165_c" }
+abc165-d = { alias = "d", problem = "https://atcoder.jp/contests/abc165/tasks/abc165_d" }
+abc165-e = { alias = "e", problem = "https://atcoder.jp/contests/abc165/tasks/abc165_e" }
+abc165-f = { alias = "f", problem = "https://atcoder.jp/contests/abc165/tasks/abc165_f" }
 
 [[bin]]
-name = "abc166-a"
+name = "abc165-a"
 path = "src/bin/a.rs"
 
 [[bin]]
-name = "abc166-b"
+name = "abc165-b"
 path = "src/bin/b.rs"
 
 [[bin]]
-name = "abc166-c"
+name = "abc165-c"
 path = "src/bin/c.rs"
 
 [[bin]]
-name = "abc166-d"
+name = "abc165-d"
 path = "src/bin/d.rs"
 
 [[bin]]
-name = "abc166-e"
+name = "abc165-e"
 path = "src/bin/e.rs"
 
 [[bin]]
-name = "abc166-f"
+name = "abc165-f"
 path = "src/bin/f.rs"
 
 [[bin]]
-name = "abc166-a_ac"
-path = "src/bin/a_ac.rs"
+name = "abc165-c_ac"
+path = "src/bin/c_ac.rs"
 
 [[bin]]
-name = "abc166-d_ac"
+name = "abc165-d_ac"
 path = "src/bin/d_ac.rs"
 
 [dependencies]
@@ -86,5 +86,6 @@ smallvec = "=1.2.0"
 derive-new = "0.5.9"
 easy-ext = "1.0.0"
 ac-library-rs  = { git = "https://github.com/rust-lang-ja/ac-library-rs" }
+library = { path = "../library" }
 
 [dev-dependencies]
