@@ -5,7 +5,8 @@ use std::convert::TryInto;
  *
  * https://atcoder.jp/contests/abc228/tasks/abc228_d
  *
- * 経路圧縮
+ * tags: #経路圧縮
+ *
  */
 fn main() {
     let mo = 1 << 20;
