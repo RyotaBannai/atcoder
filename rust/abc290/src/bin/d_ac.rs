@@ -15,35 +15,12 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
-// struct Rec {
-//     parent: Map,
-// }
-// impl Rec {
-//     fn new() -> Self {
-//         Self { parent: Map::new() }
-//     }
-//     // x の最短の親を探す
-//     fn find(&mut self, x: usize) -> usize {
-//         if let Some(&y) = self.parent.get(&x) {
-//             let p = self.find(y);
-//             *self.parent.entry(x).or_insert(0) = p;
-//             p
-//         } else {
-//             x
-//         }
-//     }
-//     // x の最短の親を探して, index i にセット
-//     fn find_set(&mut self, i: usize, x: usize) {
-//         *self.parent.entry(i).or_insert(0) = self.find(x);
-//     }
-// }
-
 /**
  * Marking
  *
  * https://atcoder.jp/contests/abc290/tasks/abc290_d
  *
- * tags: #gcd
+ * tags: #gcd #math
  *
  * n*d 回愚直にn+1 をせずに進んだ時の位置を L とすると、
  * L の位置を２回目に踏む時に必要なステップ数は何回だろうか？
