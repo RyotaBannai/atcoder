@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
 //     Ordering::{Equal, Greater, Less},
@@ -14,7 +14,26 @@
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * Sum of gcd of Tuples (Easy)
+ *
+ * https://atcoder.jp/contests/abc162/tasks/abc162_c
+ *
+ */
+use library::number::gcd;
 // #[fastout]
 fn main() {
-    todo!();
+    input! {
+        n: isize,
+    }
+    let mut ans = 0;
+    for i in 1isize..=n {
+        for j in 1isize..=n {
+            for k in 1isize..=n {
+                let g = gcd(vec![i, j, k]);
+                ans += g;
+            }
+        }
+    }
+    println!("{}", ans);
 }

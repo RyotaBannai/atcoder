@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
 //     Ordering::{Equal, Greater, Less},
@@ -14,7 +14,22 @@
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * ... (Triple Dots)
+ *
+ * https://atcoder.jp/contests/abc168/tasks/abc168_b
+ *
+ */
 // #[fastout]
 fn main() {
-    todo!();
+    input! {
+        k: usize,
+        s: Chars
+    }
+    if s.len() <= k {
+        println!("{}", s.into_iter().collect::<String>());
+        return;
+    }
+
+    println!("{}...", s.into_iter().take(k).collect::<String>());
 }

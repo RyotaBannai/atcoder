@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
 //     Ordering::{Equal, Greater, Less},
@@ -16,5 +16,15 @@
 
 // #[fastout]
 fn main() {
-    todo!();
+    input! {
+        n: Chars
+    }
+    println!(
+        "{}",
+        match n[n.len() - 1] {
+            '3' => "bon",
+            '0' | '1' | '6' | '8' => "pon",
+            _ => "hon",
+        }
+    )
 }

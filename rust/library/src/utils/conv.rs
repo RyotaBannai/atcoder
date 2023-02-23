@@ -94,6 +94,32 @@ pub fn a_to_b_v(a: usize, b: usize, xs: &[usize]) -> Vec<usize> {
     v
 }
 
+// saturating: b でi 桁が割り切れる時に0 の代わりにb にする.
+// ex. a=10 b=10 then return [9]
+// xs のindex 0 は一の位, n-1 は最大桁が入ることを想定
+// 返却値もindex 0 が一の位のvec
+pub fn saturating_a_to_b_v(a: usize, b: usize, xs: &[usize]) -> Vec<usize> {
+    let mut sum = 0;
+    let mut aa = 1;
+    // a->10 へ変換
+    for x in xs.iter() {
+        sum += aa * x;
+        aa *= a;
+    }
+    // 10->b へ変換
+    let mut v = vec![];
+    loop {
+        sum -= 1;
+        v.push(sum % b);
+        sum /= b;
+        if sum == 0 {
+            // 商がなくなるまで繰り返す
+            break;
+        }
+    }
+    v
+}
+
 // 英子文字を数値に変換.
 pub fn alp_to_i(c: char) -> usize {
     (c as u8 - b'a') as usize
@@ -102,6 +128,18 @@ pub fn alp_to_i(c: char) -> usize {
 // 英大文字を数値に変換.
 pub fn calp_to_i(c: char) -> usize {
     (c as u8 - b'A') as usize
+}
+
+// 数値を英子文字に変換.
+// 1<=0
+pub fn i_to_alp(i: usize) -> char {
+    (i as u8 + b'a') as char
+}
+
+// 数値を英大文字に変換.
+// 1<=0
+pub fn i_to_calp(i: usize) -> char {
+    (i as u8 + b'A') as char
 }
 
 // 整数n の桁数を数える

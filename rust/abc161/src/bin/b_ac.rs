@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
 //     Ordering::{Equal, Greater, Less},
@@ -14,7 +14,26 @@
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * Popular Vote
+ *
+ * https://atcoder.jp/contests/abc161/tasks/abc161_b
+ */
 // #[fastout]
 fn main() {
-    todo!();
+    input! {
+        n: usize,
+        m: usize,
+        mut a: [usize; n]
+    }
+
+    a.sort_unstable();
+    let s = a.iter().cloned().sum();
+    for x in a.into_iter().rev().take(m) {
+        if 4 * m * x < s {
+            println!("No");
+            return;
+        }
+    }
+    println!("Yes");
 }
