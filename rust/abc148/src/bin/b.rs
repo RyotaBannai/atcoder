@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
 //     Ordering::{Equal, Greater, Less},
@@ -16,5 +16,7 @@
 
 // #[fastout]
 fn main() {
-    todo!();
+    input! {
+        
+    }
 }

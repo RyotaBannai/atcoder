@@ -13,28 +13,36 @@ use proconio::{fastout, input, marker::Chars};
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use library::number::*;
 
-/**
- * C - Next Prime
- *
- * https://atcoder.jp/contests/abc149/tasks/abc149_c
- *
- * tags: #prime #素数判定 #math
- *
- * 先に篩にかけて素数表を作成しておく
- *
- */
 // #[fastout]
 fn main() {
     input! {
-        x: usize
+        n: usize,
+        m: usize,
+        xs: [(usize, String); m]
     }
-    let primes = prime(2 * x);
-    for x in x..2 * x {
-        if primes.0[x] {
-            println!("{}", x);
-            return;
+
+    let mut v = vec![false; n + 1];
+    let mut count = vec![0; n + 1];
+    for (no, re) in xs {
+        if !v[no] && re == "WA" {
+            count[no] += 1;
+        }
+        if v[no] {
+            continue;
+        }
+        if re == "AC" {
+            v[no] = true;
         }
     }
+    let mut ac = 0;
+    let mut p = 0;
+    for (i, x) in v.into_iter().enumerate().skip(1) {
+        if x {
+            p += count[i];
+            ac += 1;
+        }
+    }
+
+    println!("{} {}", ac, p);
 }

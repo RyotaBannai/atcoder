@@ -13,28 +13,13 @@ use proconio::{fastout, input, marker::Chars};
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-use library::number::*;
 
-/**
- * C - Next Prime
- *
- * https://atcoder.jp/contests/abc149/tasks/abc149_c
- *
- * tags: #prime #素数判定 #math
- *
- * 先に篩にかけて素数表を作成しておく
- *
- */
+use library::number::lcm;
 // #[fastout]
 fn main() {
     input! {
-        x: usize
+        a: isize,
+        b: isize
     }
-    let primes = prime(2 * x);
-    for x in x..2 * x {
-        if primes.0[x] {
-            println!("{}", x);
-            return;
-        }
-    }
+    println!("{}", lcm(vec![a, b]));
 }

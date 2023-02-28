@@ -19,7 +19,7 @@ use proconio::{fastout, input, marker::Chars};
  *
  * https://atcoder.jp/contests/abc149/tasks/abc149_c
  *
- * tags: #prime #素数判定
+ * tags: #prime #素数判定 #math
  *
  * √n までの整数で割りきれないなら素数
  */
@@ -39,7 +39,7 @@ fn is_prime(x: usize) -> bool {
     true
 }
 
-#[fastout]
+// #[fastout]
 fn main() {
     input! {
         x: usize
