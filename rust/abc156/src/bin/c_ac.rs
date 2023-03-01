@@ -1,3 +1,4 @@
+use library::chmin;
 use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
@@ -14,9 +15,28 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * Rally
+ *
+ * https://atcoder.jp/contests/abc156/tasks/abc156_c
+ *
+ * 全開始地点から探索する
+ *
+ */
 // #[fastout]
 fn main() {
     input! {
-        
+        n: usize,
+        a: [isize; n],
     }
+
+    let mut ans = std::isize::MAX;
+    for mid in 1..=100 {
+        let mut sum = 0;
+        for &x in &a {
+            sum += (x - mid) * (x - mid);
+        }
+        chmin!(ans, sum);
+    }
+    println!("{}", ans);
 }
