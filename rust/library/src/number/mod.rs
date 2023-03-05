@@ -10,6 +10,8 @@
  * e.g. cargo equip --bin [bin_name] --remove docs --minify libs --exclude-atcoder-crates --exclude easy-ext ac-library-rs | pbcopy
  *
  */
+pub mod combination;
+
 use std::collections::{BTreeMap, BTreeSet};
 
 use itertools::Itertools;
