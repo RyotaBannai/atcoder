@@ -20,7 +20,7 @@ use ac_library_rs::modint::ModInt1000000007 as Mint;
  *
  * https://atcoder.jp/contests/abc132/tasks/abc132_d
  *
- * tags: #組み合わせ #組合せ
+ * tags: #組合せ
  *
  *
  * 参考

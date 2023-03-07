@@ -21,7 +21,9 @@ use library::number::combination::*;
  *
  * https://atcoder.jp/contests/abc145/tasks/abc145_d
  *
- * tags: #組み合わせ #パスカルの三角形
+ * tags: #組合せ #パスカルの三角形 #二項定理 #math
+ *
+ * 繊維が２通りしかない場合は、二項定理を考える.
  *
  * コマの移動できるマスを数え上げるとパスカルの三角形に一致
  * n 段目で左からk 番目の組み合わせは n-1Ck-1 で求められる.
