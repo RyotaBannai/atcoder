@@ -14,9 +14,30 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * Bite Eating
+ *
+ * https://atcoder.jp/contests/abc131/tasks/abc131_b
+ *
+ * 全部足して、
+ * 絶対値が最大となる数値を最後に引く
+ *
+ */
+
 // #[fastout]
 fn main() {
     input! {
-        
+        n: isize,
+        l: isize,
     }
+    let mut mi = l;
+    let mut ans = 0;
+    for i in 0..n {
+        let t = l + i;
+        if mi.abs() > t.abs() {
+            mi = t;
+        }
+        ans += t;
+    }
+    println!("{}", ans - mi);
 }

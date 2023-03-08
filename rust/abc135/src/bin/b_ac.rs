@@ -13,10 +13,29 @@ use proconio::{fastout, input, marker::Chars};
 // type Set = BTreeSet<(usize, char)>;
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
-
+/**
+ * 0 or 1 Swap
+ *
+ * https://atcoder.jp/contests/abc135/tasks/abc135_b
+ *
+ * ちょうど２個だけ位置が異なる時は、それ以外は揃っているということだから、その２つをswap すれば昇順になる.
+ *
+ */
 // #[fastout]
 fn main() {
     input! {
-        
+        n: usize,
+        a: [usize;n]
+    }
+    let mut count = 0;
+    for i in 0..n {
+        if a[i] != i + 1 {
+            count += 1;
+        }
+    }
+    if count == 2 || count == 0 {
+        println!("YES");
+    } else {
+        println!("NO");
     }
 }

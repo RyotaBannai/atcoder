@@ -14,9 +14,21 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * Divide the Problems
+ *
+ * https://atcoder.jp/contests/abc132/tasks/abc132_c
+ */
 // #[fastout]
 fn main() {
     input! {
-        
+        n: usize,
+        mut d: [usize;n]
     }
+    d.sort_unstable();
+    if n % 2 != 0 {
+        println!("0");
+    }
+
+    println!("{}", d[n / 2] - d[n / 2 - 1]);
 }

@@ -17,6 +17,21 @@ use proconio::{fastout, input, marker::Chars};
 // #[fastout]
 fn main() {
     input! {
-        
+        n: usize,
+        s: Chars
     }
+    if n % 2 != 0 {
+        // 奇数長さだったら同じ文字列は並べない
+        println!("No");
+        return;
+    }
+
+    for i in 0..n / 2 {
+        let opp = i + n / 2;
+        if s[i] != s[opp] {
+            println!("No");
+            return;
+        }
+    }
+    println!("Yes");
 }

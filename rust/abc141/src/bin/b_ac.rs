@@ -1,4 +1,4 @@
-// use proconio::{fastout, input, marker::Chars};
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
 //     Ordering::{Equal, Greater, Less},
@@ -14,7 +14,27 @@
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * Tap Dance
+ *
+ * https://atcoder.jp/contests/abc141/tasks/abc141_b
+ *
+ */
+
 // #[fastout]
 fn main() {
-    todo!();
+    input! {
+        s: Chars
+    }
+    for i in 1..=s.len() {
+        if i % 2 == 0 && s[i - 1] == 'R' {
+            println!("No");
+            return;
+        }
+        if i % 2 != 0 && s[i - 1] == 'L' {
+            println!("No");
+            return;
+        }
+    }
+    println!("Yes");
 }

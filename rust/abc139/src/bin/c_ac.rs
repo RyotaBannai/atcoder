@@ -1,4 +1,5 @@
-// use proconio::{fastout, input, marker::Chars};
+use library::chmax;
+use proconio::{fastout, input, marker::Chars};
 // use std::cmp::{
 //     max, min,
 //     Ordering::{Equal, Greater, Less},
@@ -16,5 +17,19 @@
 
 // #[fastout]
 fn main() {
-    todo!();
+    input! {
+        n: usize,
+        h: [usize; n]
+    }
+    let mut ma = 0;
+    let mut count = 0;
+    for i in 1..n {
+        if h[i - 1] >= h[i] {
+            count += 1;
+            chmax!(ma, count);
+            continue;
+        }
+        count = 0;
+    }
+    println!("{}", ma);
 }

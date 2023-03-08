@@ -14,9 +14,19 @@ use proconio::{fastout, input, marker::Chars};
 // use easy_ext::ext;
 // use std::collections::{BinaryHeap, VecDeque};
 
+/**
+ * ROT N
+ *
+ * https://atcoder.jp/contests/abc146/tasks/abc146_b
+ *
+ */
 // #[fastout]
 fn main() {
     input! {
-        
+        n: u8,
+        s: Chars
+    }
+    for c in s {
+        print!("{}", ((c as u8 + n - b'A') % 26 + b'A') as char);
     }
 }
