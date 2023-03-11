@@ -5,7 +5,7 @@ use std::collections::{BTreeMap, BTreeSet};
  */
 pub struct DisjointSet {
     rank: Vec<usize>,
-    p: Vec<usize>,
+    pub p: Vec<usize>,
 }
 impl DisjointSet {
     pub fn new(n: usize) -> Self {
