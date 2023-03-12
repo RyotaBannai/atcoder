@@ -84,6 +84,10 @@ path = "src/bin/o.rs"
 name = "tupc2022-a_ac"
 path = "src/bin/a_ac.rs"
 
+[[bin]]
+name = "tupc2022-c_ac"
+path = "src/bin/c_ac.rs"
+
 [dependencies]
 num = "=0.2.1"
 num-bigint = "=0.2.6"
