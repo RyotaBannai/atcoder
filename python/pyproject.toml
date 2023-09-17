@@ -7,10 +7,11 @@ readme = "README.md"
 packages = [{ include = "python11_training" }]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = ">=3.11,<3.13"
 ruff = "^0.0.289"
 mypy = "^1.5.1"
 ipdb = "^0.13.13"
+scipy = "^1.11.2"
 
 
 [build-system]
