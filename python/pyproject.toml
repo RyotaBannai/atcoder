@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "python"
+version = "0.1.0"
+description = ""
+authors = ["RyotaBannai <ryotala0528@gmail.com>"]
+readme = "README.md"
+packages = [{ include = "python11_training" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+ruff = "^0.0.289"
+mypy = "^1.5.1"
+ipdb = "^0.13.13"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+select = [
+  "E",    # pycodestyle
+  "F",    # pyflakes
+  "UP",   # pyupgrade
+  "D",    # pydocstyle
+  "I001", # isort https://beta.ruff.rs/docs/faq/#does-ruff-support-jupyter-notebooks
+]
+
+src = ["src", "tests"]
+
+[tool.ruff.pydocstyle]
+convention = "google"
