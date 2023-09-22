@@ -8,8 +8,12 @@ def readline() -> list[int]:
     return list(map(int, input().strip().split(" ")))
 
 
+def readlines(n: int) -> list[list[int]]:
+    return [readline() for _ in range(n)]
+
+
 n, m, x = readline()
-dat = [readline() for _ in range(n)]
+dat = readlines(n)
 ans = 10**9
 for i in range(1 << n):
     # 各パターン
