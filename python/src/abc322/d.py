@@ -16,72 +16,52 @@
 TODO: 解説読む.
 
 """
+
 # import ipdb as pdb
+from itertools import product
+
 import numpy as np
+from numpy.typing import NDArray
 
 
-def readline() -> list[int]:
-    return list(map(int, input().strip().split(" ")))
-
-
-def readlines(n: int) -> list[list[int]]:
-    return [readline() for _ in range(n)]
-
-
-def f(S: str) -> list[list[int]]:
-    ret = []
-    for s in S:
-        tmp = []
-        for c in s:
-            if c == "#":
-                tmp.append(1)
-            else:
-                tmp.append(0)
-        ret.append(tmp)
-
-    return ret
-
-
-def wid(g):
+def f(arr: NDArray) -> tuple[NDArray, int, int]:
     # 行
     ci = 0
-    for i in range(4):
-        if all(x == 0 for x in g[i]):
-            ci += 1
+    for _ in range(4):
+        if np.all(arr[0, :] == 0):
+            arr = arr[np.r_[1:4, 0]]
         else:
             break
-    g = np.roll(g, -ci, axis=0)
 
     ci = 0
     for i in reversed(range(4)):
-        if all(x == 0 for x in g[i]):
+        if np.all(arr[i] == 0):
             ci += 1
         else:
             break
 
     # カラム
     cj = 0
-    for j in range(4):
-        if all(g[i][j] == 0 for i in range(4)):
-            cj += 1
+    for _ in range(4):
+        if np.all(arr[:, 0] == 0):
+            arr = arr[:, np.r_[1:4, 0]]
         else:
             break
-    g = np.roll(g, -cj, axis=1)
 
     cj = 0
     for j in reversed(range(4)):
-        if all(g[i][j] == 0 for i in range(4)):
+        if np.all(arr[:, j] == 0):
             cj += 1
         else:
             break
 
-    return (g, ci, cj)
+    return (arr, ci, cj)
 
 
-dat = [input().strip() for _ in range(12)]
-A, B, C = dat[:4], dat[4:8], dat[8:12]
-A, B, C = list(map(lambda gr: f(np.array(gr)), [A, B, C]))
-datA, datB, datC = list(map(wid, [A, B, C]))
+dat = np.array([list(input().strip()) for _ in range(12)])
+dat[dat == "#"] = 1
+dat[dat == "."] = 0
+datA, datB, datC = list(map(f, np.array_split(dat.astype(int), 3)))
 
 ones = datA[0].copy()
 ones += datB[0]
@@ -92,30 +72,32 @@ if ones.sum() != 16:
     exit(0)
 
 
-for ai in range(datA[1] + 1):
-    for aj in range(datA[2] + 1):
-        for bi in range(datB[1] + 1):
-            for bj in range(datB[2] + 1):
-                for ci in range(datC[1] + 1):
-                    for cj in range(datC[2] + 1):
-                        tmpA = np.roll(datA[0], ai, axis=0)
-                        tmpA = np.roll(tmpA, aj, axis=1)
-                        tmpB = np.roll(datB[0], bi, axis=0)
-                        tmpB = np.roll(tmpB, bj, axis=1)
-                        tmpC = np.roll(datC[0], ci, axis=0)
-                        tmpC = np.roll(tmpC, cj, axis=1)
-                        for i in range(4):
-                            tmpA = tmpA[::-1, :].T
-                            for i in range(4):
-                                tmpB = tmpB[::-1, :].T
-                                for i in range(4):
-                                    tmpC = tmpC[::-1, :].T
-                                    g = np.zeros((4, 4))
-                                    g += tmpA
-                                    g += tmpB
-                                    g += tmpC
-                                    if np.allclose(g, 1):
-                                        print("Yes")
-                                        exit(0)
+for ai, aj, bi, bj, ci, cj in product(
+    range(datA[1] + 1),
+    range(datA[2] + 1),
+    range(datB[1] + 1),
+    range(datB[2] + 1),
+    range(datC[1] + 1),
+    range(datC[2] + 1),
+):
+    tmpA = np.roll(datA[0], ai, axis=0)  # axis=0 行方向にロール
+    tmpA = np.roll(tmpA, aj, axis=1)  # axis=0 列方向にロール
+    tmpB = np.roll(datB[0], bi, axis=0)
+    tmpB = np.roll(tmpB, bj, axis=1)
+    tmpC = np.roll(datC[0], ci, axis=0)
+    tmpC = np.roll(tmpC, cj, axis=1)
+    for i in range(4):
+        tmpA = tmpA[::-1, :].T
+        for i in range(4):
+            tmpB = tmpB[::-1, :].T
+            for i in range(4):
+                tmpC = tmpC[::-1, :].T
+                g = np.zeros((4, 4))
+                g += tmpA
+                g += tmpB
+                g += tmpC
+                if np.allclose(g, 1):
+                    print("Yes")
+                    exit(0)
 
 print("No")
