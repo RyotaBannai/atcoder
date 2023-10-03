@@ -19,6 +19,7 @@ TODO: 解説読む.
 
 from itertools import product
 
+import ipdb as pdb
 import numpy as np
 from numpy.typing import NDArray
 
@@ -57,6 +58,21 @@ def f(arr: NDArray) -> tuple[NDArray, int, int]:
     return (arr, ci, cj)
 
 
+def rotate2d(arr: NDArray, time: int) -> NDArray:
+    m = time % 4
+    ret = arr
+    match m:
+        case 1:
+            ret = arr[::-1, :].T  # 90
+        case 2:
+            ret = arr[::-1, ::-1]  # 180
+        case 3:
+            ret = arr[:, ::-1].T  # 270
+        case _:
+            pass
+    return ret
+
+
 dat = np.array([list(input().strip()) for _ in range(12)])
 dat = np.select([dat == "#", dat == "."], [1, 0])
 datA, datB, datC = list(map(f, np.array_split(dat.astype(int), 3)))
@@ -70,32 +86,34 @@ if ones.sum() != 16:
     exit(0)
 
 
-for ai, aj, bi, bj, ci, cj in product(
+for ai, aj, bi, bj, ci, cj, i, j, k in product(
     range(datA[1] + 1),
     range(datA[2] + 1),
     range(datB[1] + 1),
     range(datB[2] + 1),
     range(datC[1] + 1),
     range(datC[2] + 1),
+    range(4),
+    range(4),
+    range(4),
 ):
-    tmpA = np.roll(datA[0], ai, axis=0)  # axis=0 行方向にロール
-    tmpA = np.roll(tmpA, aj, axis=1)  # axis=0 列方向にロール
+    # tmpA = datA[0].copy()[np.r_[(4 - ai) : 4, 0 : (4 - ai)], :]  # 縦にロール(後ろを前)
+    # tmpA = tmpA[:, np.r_[(4 - aj) : 4, 0 : (4 - aj)]]  # 横にロール(後ろを前)
+    tmpA = np.roll(datA[0], ai, axis=0)
+    tmpA = np.roll(tmpA, aj, axis=1)
     tmpB = np.roll(datB[0], bi, axis=0)
     tmpB = np.roll(tmpB, bj, axis=1)
     tmpC = np.roll(datC[0], ci, axis=0)
     tmpC = np.roll(tmpC, cj, axis=1)
-    for i in range(4):
-        tmpA = tmpA[::-1, :].T
-        for i in range(4):
-            tmpB = tmpB[::-1, :].T
-            for i in range(4):
-                tmpC = tmpC[::-1, :].T
-                g = np.zeros((4, 4))
-                g += tmpA
-                g += tmpB
-                g += tmpC
-                if np.allclose(g, 1):
-                    print("Yes")
-                    exit(0)
+    tmpA = rotate2d(tmpA, i)  # rot90(k=time) でも良さそう.
+    tmpB = rotate2d(tmpB, j)
+    tmpC = rotate2d(tmpC, k)
+    g = np.zeros((4, 4))
+    g += tmpA
+    g += tmpB
+    g += tmpC
+    if np.allclose(g, 1):
+        print("Yes")
+        exit(0)
 
 print("No")

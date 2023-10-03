@@ -15,7 +15,7 @@ N = readline()[0]
 S = input().strip()
 
 for i in range(N - 2):
-    if S[i] == "A" and S[i + 1] == "B" and S[i + 2] == "C":
+    if S[i : i + 3] == "ABC":
         print(i + 1)
         exit(0)
 
